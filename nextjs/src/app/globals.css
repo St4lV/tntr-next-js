@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Orbitron, sans-serif;
+    font-weight: bold;
+    color: aliceblue;
+    background-image: url("/tntr-bg.jpg") ;
+    background-size: 1920px 1080px;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2{
+  font-size: 1.5em;
+}
+
+/*HEADER & FOOTER*/
+
+header,footer{
+    position: fixed;
+    width: 100%;
+    height: 150px;
+    min-height: fit-content;
+    background-color: black;
+    display: flex;
+}
+
+/*HEADER*/
+
+header{
+    justify-content: center;
+    top:0px
+}
+
+.header-bar{
+    font-size: 2em;
+    margin-top:10px;
+}
+.burger-menu{
+    position: fixed;
+    left:5px;
+    top: 50px;
+}
+
+#burger-menu-icon{
+    width: 50px;
+    height: auto;
+    cursor: pointer;
+}
+
+/*FOOTER*/
+
+footer{
+  bottom: 0px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#song-cover{
+  height: 125px;
+}
+#src-bitrate-list{
+  background-color: black;
+}
+
+/*MAIN*/
+
+main{
+    margin-top: 150px;
+    margin-bottom: 150px;
+    padding: 0px 5px;
+    width: 95%;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+/*MAIN / HOME / SCHEDULE*/
+
+#schedule-table, #schedule-table *{
+    background-color: black;
+    text-align: center;
+}
+
+/*MAIN / HOME / LAST RELEASES*/
+
+.last-djs-img,.last-sets-img{
+    height: 150px;
+    border-radius: 50%;
+}
+
+/*MAIN / ARTISTES / DJs*/
+
+/*.available-djs{
+
+}*/
+
+.available-djs-img{
+    height: 150px;
+    border-radius: 50%;   
+}
+
+.artist-comp{
+    cursor:pointer;
+}
