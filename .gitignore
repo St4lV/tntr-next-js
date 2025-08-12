@@ -4,7 +4,7 @@
 
 # dependencies
 /nextjs/node_modules
-/nextjs//.pnp
+/nextjs/.pnp
 /nextjs/.pnp.*
 /nextjs/.yarn/*
 /nextjs/!.yarn/patches
@@ -26,8 +26,8 @@
 /nextjs/public/sitemap.xml
 
 # misc
-/nextjs.DS_Store
-/nextjs*.pem
+/nextjs/.DS_Store
+/nextjs/*.pem
 
 # debug
 /nextjs/npm-debug.log*
