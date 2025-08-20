@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 import { useGlobalContext } from "@/app/GlobalContext";
 
 
 export default function Home() {
 
   const {schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
-
+  const router = useRouter();
   const [table_open, setTableOpen] = useState(false);
   
   function updateScheduleRows(){
@@ -55,22 +55,30 @@ export default function Home() {
         ? `${durationHours}h${totalMinutes}`
         : `${durationMinutes}min`;
 
-      to_return += `<br/><li><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
+      to_return += `<br/><li class=" home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
       last_sets_list.innerHTML=to_return
     };
   };
 
   function updateLastDJs(){
     const last_djs_list = document.querySelector("#last-dj-list");
-    let to_return="";
-    if (!last_djs){
-      return
+    if (!last_djs){return}
+    let result=""
+
+    for (let i of last_djs){
+      result+=`<br/><li data-artist="${i.title_min}" class="last-dj-released home-last-release-comp"><h2 class="home-last-release-artist-title">${i.title}</h2><br><img src=${i.cover} class="last-djs-img"/><br><p class="home-last-release-artist-desc">${i.desc_short}</p></li><br/>`;
     }
-    for (let i of last_djs) {
-      console.log(i)
-      to_return += `<br/><li><img src=${i.cover} class="last-djs-img"/><br/>${i.title}<br>${i.desc_short}</li><br/>`;
-      last_djs_list.innerHTML=to_return
-    };
+    document.querySelector("#last-dj-list").innerHTML=result
+    const artist_elements_list=document.querySelectorAll(".last-dj-released")
+    for (let i of artist_elements_list){
+      i.addEventListener("click",function(){
+        ArtistPage(i.dataset.artist)
+      })
+    }
+
+    function ArtistPage(artist_name){
+      router.push(`/sets/${artist_name}`)
+    }
   };
 
   useEffect(() => {

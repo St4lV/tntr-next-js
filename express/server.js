@@ -1,18 +1,24 @@
 const express = require('express');
-const app = express();
-const port = 3001
 const fetch = require('node-fetch');
-const { Readable } = require('stream');
+const mongoose = require("mongoose");
+const argon2 = require("argon2")
+const cron = require('node-cron');
+const Joi = require('joi');
+const cookieParser = require("cookie-parser");
 
-const { get } = require('mongoose');
+const { Readable } = require('stream');
+const { connectDB } = require("./mongo-db-connect");
 
 require('dotenv').config();
 
+const app = express();
+const port = 3001
 app.use(express.json());
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
+
 
 const front_api_link= process.env.FRONTEND_API_ROUTE
 
@@ -49,11 +55,91 @@ async function get_request(address, req , method="GET") {
   }
 }
 
-//GET - Points de montage (96kbps / 128kbps / 320kbps) | GET à Azuracast
-/*app.get("/api/v1/radio/audio-fluxs", async (req, res) => {
-  const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/mounts`,req);
-  res.status(response.code).json(response);
-});*/
+// Template requête GET Media à Azuracast
+async function getMediaRequest(media_url,res){
+  const actual = await fetch(media_url, {
+      headers: {
+        "Authorization": `Bearer ${api_key}`
+      }
+    });
+
+    actual.headers.forEach((value, name) => res.setHeader(name, value));
+    if (typeof actual.body.pipe === 'function') {
+      actual.body.pipe(res);
+    } else {
+      Readable.fromWeb(actual.body).pipe(res);
+    }
+}
+
+/////////////////////// MONGODB UTILS ///////////////////////
+
+cron.schedule('0 * * * *', async () => {
+  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  await Authtoken.deleteMany({ timestamp: { $lt: oneWeekAgo } });
+});
+
+// MongoDB schemas
+
+const User = mongoose.model("User", new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  roles: { type: [String], default: ["user"] },
+  c_timestamp: {type: Date, required: false}
+}));
+
+const Password = mongoose.model("Password", new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  password_hash: { type: String, required: true }
+}));
+
+const Authtoken = mongoose.model("Authtoken", new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  token: { type: String, required: true },
+  useragent: {type: String, required: true},
+  timestamp: { type: Date, required: true}
+}));
+
+const AuthLog = mongoose.model("AuthLog", new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  log: [{
+    timestamp: { type: Date, default: Date.now },
+    action: { type: String, enum: ["LOGIN_SUCCESS", "LOGIN_FAILED"], required: true },
+    ip: { type: String, required: true },
+    useragent: { type: String },
+  }]
+}));
+
+// JOI SCHEMAS :
+
+const minUsernameChar = 6
+const maxUsernameChar = 20
+const maxEmailChar = 30
+
+const registerSchema = Joi.object({
+  username: Joi.string().alphanum().min(minUsernameChar).max(maxUsernameChar).required(),
+  email: Joi.string().email().max(maxEmailChar).required(),
+  password: Joi.string().min(8).regex(/[A-Z]/, 'need-upper-case').regex(/[a-z]/, 'need-lower-case').regex(/[^\w]/, 'need-special character').regex(/[0-9]/, "need-number").required(),
+});
+
+const loginSchema = Joi.object({
+  username: Joi.string().alphanum().min(minUsernameChar).max(maxUsernameChar).required(),
+  password: Joi.string().min(8).required(),
+});
+
+const userSelfModifyDataSchema = Joi.object({
+  username: Joi.string().alphanum().required(),
+  new_username: Joi.string().alphanum().min(minUsernameChar).max(maxUsernameChar).required(),
+  new_email: Joi.string().email().max(maxEmailChar).required(),
+
+});
+
+const userSelfModifyPasswordSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+  new_password: Joi.string().min(8).regex(/[A-Z]/, 'need-upper-case').regex(/[a-z]/, 'need-lower-case').regex(/[^\w]/, 'need-special character').regex(/[0-9]/, "need-number").required(),
+});
+
+/////////////////////// ENDPOINTS API ///////////////////////
 
 //GET - Actuellement joué | GET à Azuracast
 app.get("/api/v1/radio/now_playing", async (req, res) => {
@@ -189,7 +275,8 @@ app.get("/api/v1/radio/artists/latests", async (req, res) => {
         if (artist_sets_response.log.length>0){
 
           artists_sets.push({
-            title:i.title,
+            title:i.author,
+            title_min:i.title,
             desc:i.description,
             desc_short:i.description_short,
             cover:`${front_api_link}/radio/artists/${i.id}/cover`,
@@ -209,21 +296,7 @@ app.get("/api/v1/radio/artists/latests", async (req, res) => {
     }
 });
 
-// Template requête GET Media à Azuracast
-async function getMediaRequest(media_url,res){
-  const actual = await fetch(media_url, {
-      headers: {
-        "Authorization": `Bearer ${api_key}`
-      }
-    });
 
-    actual.headers.forEach((value, name) => res.setHeader(name, value));
-    if (typeof actual.body.pipe === 'function') {
-      actual.body.pipe(res);
-    } else {
-      Readable.fromWeb(actual.body).pipe(res);
-    }
-}
 
 //GET - Flux audios | GET à Azuracast
 app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
@@ -281,3 +354,4 @@ app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) =
     res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
+

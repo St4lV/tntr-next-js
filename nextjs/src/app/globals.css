@@ -92,11 +92,50 @@ main{
 
 /*MAIN / HOME / LAST RELEASES*/
 
+#last-dj-sets,#last-dj-list{
+    display: flex;
+    overflow-x: scroll;
+    width: 96%;
+    margin: 0 2%;
+    background-color: black;
+    border-radius: 5%;
+    padding: 20px 10px;
+}
+
 .last-djs-img,.last-sets-img{
     height: 150px;
     border-radius: 50%;
 }
 
+ .home-last-release-comp{
+    cursor:pointer;
+    background-color: black;
+    min-width: 200px;
+    height: 292px;
+    overflow-y: hidden;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.65em ;
+    padding: 5px 10px;
+    border: solid 5px white;
+    border-radius: 5%;
+    margin: 10px 5px;
+ }
+
+ .home-last-release-artist-title{
+    margin: 10px 0px;
+    text-wrap-mode:nowrap;
+    text-align: left;
+    padding: 5px 0px;
+ }
+
+ .home-last-release-artist-desc{
+    padding: 5px 0px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+ }
 /*MAIN / ARTISTES / DJs*/
 
 /*.available-djs{
@@ -105,9 +144,29 @@ main{
 
 .available-djs-img{
     height: 150px;
-    border-radius: 50%;   
+    border-radius: 50%;
+
+}
+#available-djs{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .artist-comp{
     cursor:pointer;
+    background-color: black;
+    min-width: 200px;
+    max-width: 200px;
+    height: 292px;
+    overflow-y: hidden;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9em ;
+    padding: 5px 10px;
+    border: solid 1px gray;
+    border-radius: 5%;
+    margin: 5px;
 }
+
