@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 
 const { Readable } = require('stream');
 const { connectDB } = require("./mongo-db-connect");
+const { type } = require('os');
+const { normalize } = require('path');
 
 require('dotenv').config();
 
@@ -17,10 +19,17 @@ app.use(express.json());
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
+  connectDB();
+  updateEpisodesFromAzuracast();
+  updateArtistFromAzuracast();
 });
 
 
 const front_api_link= process.env.FRONTEND_API_ROUTE
+
+function URLize(input){
+  return input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_")
+}
 
 /////////////////////// AZURACAST ///////////////////////
 
@@ -69,25 +78,149 @@ async function getMediaRequest(media_url,res){
     } else {
       Readable.fromWeb(actual.body).pipe(res);
     }
+  
 }
 
 /////////////////////// MONGODB UTILS ///////////////////////
 
-cron.schedule('0 * * * *', async () => {
+/*cron.schedule('0 * * * *', async () => {
   const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   await Authtoken.deleteMany({ timestamp: { $lt: oneWeekAgo } });
-});
+});*/
 
 // MongoDB schemas
 
-const User = mongoose.model("User", new mongoose.Schema({
+/*const User = mongoose.model("User", new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   roles: { type: [String], default: ["user"] },
   c_timestamp: {type: Date, required: false}
+}));*/
+
+const Artist = mongoose.model("Artist", new mongoose.Schema({
+  artist_name: { type: String, required: true, unique: false }, // Nom d'affichage
+  artiste_unique_name: { type: String, required: true, unique: true }, //Nom unique en minuscule
+  artist_id_azuracast:{ type: String, required: true, unique: true },
+  cover: { type: String}, //lien de l'image de la photo de profil de l'artiste
+  banner: { type: String}, //lien de l'image de la bannière de l'artiste
+  desc: { type: String}, //description
+  desc_short: { type: String},//description raccourcie azuracast
+  link: { type: String}, //lien de la page
+  external_links:[{ type: String}], //liens externes artiste
+  lang: { type: String}, 
+  c_timestamp: {type: Date, required: false}, //timestamp de création
+  owned_by:{type: String}, //Userid auquel l'artiste est relié 
+  enabled:{type: Boolean}, 
+  published:{type: Boolean},
 }));
 
-const Password = mongoose.model("Password", new mongoose.Schema({
+const Episode = mongoose.model("Episode", new mongoose.Schema({
+  artist_name: { type: String, required: true}, // Nom d'affichage
+  artiste_unique_name: { type: String, required: true}, //Nom unique en minuscule
+  artist_id_azuracast:{ type: String, required: true},
+  episode_name: { type: String, required: true}, // Nom d'affichage
+  episode_unique_name: { type: String, required: true}, //Nom unique en minuscule
+  episode_id_azuracast:{ type: String, required: true, unique: true },
+  cover: { type: String}, //lien de l'image de la photo de profil de l'artiste
+  banner: { type: String}, //lien de l'image de la bannière de l'artiste
+  desc: { type: String}, //description
+  desc_short: { type: String},//description raccourcie azuracast
+  c_timestamp: {type: Date, required: true}, //timestamp de création
+  p_timestamp: {type: Date, required: true},
+  owned_by: {type: String}, //Userid auquel l'artiste est relié 
+  has_media: {type: Boolean},
+  media: { type: String},
+  length:{ type:Number},
+  published:{type: Boolean},
+}));
+
+//MongoDB update de la liste des artistes
+
+async function updateArtistFromAzuracast(){
+  const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`);
+  
+  if (response.code!=200){return};
+  
+  const artists_raw_data=response.log
+
+  for (i of artists_raw_data){
+    /*const artist_episodes=await Episode.find({artist_id_azuracast:i.id});
+    let oldest_set_timestamp;
+    if(artist_episodes){
+      let oldest_sets_timestamps=[];
+      for (j of artist_episodes){
+        oldest_sets_timestamps.push(j.c_timestamp)
+      }
+      oldest_sets_timestamps.sort()
+      oldest_set_timestamp=oldest_sets_timestamps[0]
+    }*/
+    await Artist.findOneAndUpdate(
+      { artist_id_azuracast: i.id },
+      {
+        artist_name: i.author,
+        artiste_unique_name: URLize(i.title),
+        artist_id_azuracast:i.id,
+        cover: `${front_api_link}/radio/artists/${i.id}/cover`,
+        banner: "",
+        desc: i.description,
+        desc_short: i.description_short,
+        link: i.link,
+        external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
+        lang: i.language,
+        //c_timestamp:oldest_set_timestamp,
+        enabled:i.is_enabled, 
+        published:i.is_published,
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  };
+};
+
+async function updateEpisodesFromAzuracast() {
+
+  const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`);
+
+  if (response.code!=200){return};
+
+  for (let i of response.log){
+    if (i.is_published){
+      const artist_sets_response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcast/${i.id}/episodes`);
+      if (artist_sets_response.log.length>0){
+        
+        for (let j of artist_sets_response.log){
+          if(j.has_media){
+            await Episode.findOneAndUpdate(
+              { episode_id_azuracast: j.id },
+              {
+                artist_name:i.author,
+                artiste_unique_name: URLize(i.title),
+                artist_id_azuracast:i.id,
+                episode_name: j.title, // Nom d'affichage
+                episode_unique_name: URLize(j.title),
+                episode_id_azuracast:j.id,
+                cover: `${front_api_link}/radio/artists/${i.id}/${j.id}/cover`,
+                banner: "", //lien de l'image de la bannière de l'artiste
+                desc: j.description, //description
+                desc_short: j.description_short,//description raccourcie azuracast
+                length:j.media?.length ? j.media : "",
+                c_timestamp: new Date(j.created_at * 1000), //timestamp de création
+                p_timestamp: new Date(j.publish_at * 1000),
+                owned_by:"", //Userid auquel l'artiste est relié 
+                has_media:j.has_media,
+                media:`${front_api_link}/radio/artists/${i.id}/${j.id}.mp3`,
+                length:j.media.length,
+                published:j.is_published,
+              },
+              { upsert: true, new: true, setDefaultsOnInsert: true }
+            );
+          };
+        };
+      };
+    };
+  };
+};
+
+/*const Password = mongoose.model("Password", new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   password_hash: { type: String, required: true }
 }));
@@ -107,7 +240,7 @@ const AuthLog = mongoose.model("AuthLog", new mongoose.Schema({
     ip: { type: String, required: true },
     useragent: { type: String },
   }]
-}));
+}));*/
 
 // JOI SCHEMAS :
 
@@ -216,7 +349,7 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
 
     //Récupération des podcasts
     
-    const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`, req);
+    /*const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`, req);
 
     if (response.code!=200){return res.status(response.code).json(response)};
 
@@ -245,8 +378,21 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
           };
         };
       };
+    };*/
+    const episodes_list = await Episode.find({published:true,has_media:true});
+    let artists_sets=[];
+    for (let i of episodes_list){
+      artists_sets.push({
+        artist:i.artist_name,
+        title:i.episode_name,
+        duration:i.length,
+        cover:i.cover,
+        media:i.media,
+        release_date:Date.parse(i.p_timestamp)
+      });
     };
-    
+    console.log(artists_sets)
+
     //Décroissant puis 10 premiers
     let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
     
@@ -262,31 +408,21 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
 app.get("/api/v1/radio/artists/latests", async (req, res) => {
   try{
 
-    //Récupération des podcasts
-    
-    const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`, req);
-
-    if (response.code!=200){return res.status(response.code).json(response)};
-
+    const artists_list = await Artist.find({published:true,enabled:true});
     let artists_sets=[];
-    for (let i of response.log){
-      if (i.is_published){
-        const artist_sets_response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcast/${i.id}/episodes`, req);
-        if (artist_sets_response.log.length>0){
-
+    for (let i of artists_list){
           artists_sets.push({
-            title:i.author,
-            title_min:i.title,
-            desc:i.description,
-            desc_short:i.description_short,
-            cover:`${front_api_link}/radio/artists/${i.id}/cover`,
-            oldest_set_timestamp:artist_sets_response.log.slice(-1)[0].created_at});
-        };
+            title:i.artist_name,
+            title_min:i.artiste_unique_name,
+            desc:i.desc,
+            desc_short:i.desc_short,
+            cover:i.cover,
+            c_timestamp:Date.parse(i.c_timestamp)
+          });
       };
-    };
 
     //Décroissant puis 10 premiers
-    let latest_10_artists= artists_sets.sort((a, b) => b.oldest_set_timestamp - a.oldest_set_timestamp).slice(0,10);
+    let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
     
 
     return res.status(200).json({code:200,type:"Success",log:latest_10_artists});
@@ -295,8 +431,6 @@ app.get("/api/v1/radio/artists/latests", async (req, res) => {
       return { code: 500, type: "Internal Server Error", log: error.message };
     }
 });
-
-
 
 //GET - Flux audios | GET à Azuracast
 app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
@@ -355,3 +489,15 @@ app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) =
   }
 });
 
+//GET - Images des sets | GET à Azuracast
+app.get("/api/v1/radio/artists/:artist_id/:episode_id.mp3", async (req, res) => {
+  try {
+    const { artist_id,episode_id } = req.params;
+
+    await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+  }
+});
