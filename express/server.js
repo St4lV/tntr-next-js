@@ -26,6 +26,7 @@ app.listen(port, () => {
 
 
 const front_api_link= process.env.FRONTEND_API_ROUTE
+const frontend_domain= process.env.FRONTEND_DOMAIN
 
 function URLize(input){
   return input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_")
@@ -36,7 +37,6 @@ function URLize(input){
 const api_key = process.env.AZURACAST_PODCASTS_API_KEY
 const azuracast_server = process.env.AZURACAST_SERVER_API_ROUTE
 const station_shortcode = process.env.AZURACAST_STATION_SHORTCODE
-
 
 
 // Template requête GET à Azuracast
@@ -110,6 +110,7 @@ const Artist = mongoose.model("Artist", new mongoose.Schema({
   lang: { type: String}, 
   c_timestamp: {type: Date, required: false}, //timestamp de création
   owned_by:{type: String}, //Userid auquel l'artiste est relié 
+  dj_sets:{type:String},
   enabled:{type: Boolean}, 
   published:{type: Boolean},
 }));
@@ -164,9 +165,10 @@ async function updateArtistFromAzuracast(){
         banner: "",
         desc: i.description,
         desc_short: i.description_short,
-        link: i.link,
+        link: `${frontend_domain}/sets/${URLize(i.title)}`,
         external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
         lang: i.language,
+        dj_sets:`${front_api_link}/radio/artists/${i.id}/sets`,
         //c_timestamp:oldest_set_timestamp,
         enabled:i.is_enabled, 
         published:i.is_published,
@@ -312,7 +314,7 @@ app.post("/api/v1/radio/schedule", async (req, res) => {
   return res.status(response.code).json(response);
 });
 
-//GET - Artistes | GET à Azuracast
+//GET - Artistes | Query à MongoDB
 app.get("/api/v1/radio/artists", async (req, res) => {
 
   const artists_list = await Artist.find({published:true,enabled:true});
@@ -327,7 +329,8 @@ app.get("/api/v1/radio/artists", async (req, res) => {
             link:i.link,
             external_links:i.external_links,
             lang:i.lang,
-            episodes_nb:await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true}),
+            episodes:i.dj_sets,
+            episodes_nb:await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true}).length,
             c_timestamp:Date.parse(i.c_timestamp)
           });
       };
@@ -337,7 +340,7 @@ app.get("/api/v1/radio/artists", async (req, res) => {
   return res.status(artist_response.code).json(artist_response);
 });
 
-//GET - Derniers sets publiés | GET à Azuracast
+//GET - Derniers sets publiés | Query à MongoDB
 app.get("/api/v1/radio/sets/latests", async (req, res) => {
   try{
     const episodes_list = await Episode.find({published:true,has_media:true});
@@ -364,7 +367,7 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
     }
 });
 
-//GET - Derniers artistes publiés | GET à Azuracast
+//GET - Derniers artistes publiés | Query à MongoDB
 app.get("/api/v1/radio/artists/latests", async (req, res) => {
   try{
 
@@ -456,7 +459,6 @@ app.get("/api/v1/radio/artists/:artist_id/sets", async (req, res) => {
     res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
-
 
 //GET - Images des sets | GET à Azuracast
 app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) => {
