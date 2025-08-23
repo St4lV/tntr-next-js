@@ -314,31 +314,25 @@ app.post("/api/v1/radio/schedule", async (req, res) => {
 
 //GET - Artistes | GET à Azuracast
 app.get("/api/v1/radio/artists", async (req, res) => {
-  const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`, req);
-  
-  if (response.code!=200){return res.status(response.code).json(response)};
-  
-  const artists_raw_data=response.log
-  let artists_data=[]
 
-  for (i of artists_raw_data){
-    if (i.is_enabled && i.is_published){
-      const artist ={
-      title:i.author,
-      title_min:i.title,
-      cover:`${front_api_link}/radio/artists/${i.id}/cover`,
-      desc:i.description,
-      desc_short:i.description_short,
-      link:i.link,
-      external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
-      lang:i.language,
-      episodes_nb:i.episodes
+  const artists_list = await Artist.find({published:true,enabled:true});
+    let artists_sets=[];
+    for (let i of artists_list){
+          artists_sets.push({
+            title:i.artist_name,
+            title_min:i.artiste_unique_name,
+            cover:i.cover,
+            desc:i.desc,
+            desc_short:i.desc_short,
+            link:i.link,
+            external_links:i.external_links,
+            lang:i.lang,
+            episodes_nb:await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true}),
+            c_timestamp:Date.parse(i.c_timestamp)
+          });
       };
-      artists_data.push(artist)
-    };
-  };
   
-  const artist_response={code:200,type:"Success",log:artists_data}
+  const artist_response={code:200,type:"Success",log:artists_sets}
 
   return res.status(artist_response.code).json(artist_response);
 });
@@ -346,39 +340,6 @@ app.get("/api/v1/radio/artists", async (req, res) => {
 //GET - Derniers sets publiés | GET à Azuracast
 app.get("/api/v1/radio/sets/latests", async (req, res) => {
   try{
-
-    //Récupération des podcasts
-    
-    /*const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcasts`, req);
-
-    if (response.code!=200){return res.status(response.code).json(response)};
-
-    let artists_sets=[];
-    for (let i of response.log){
-      if (i.is_published){
-        const artist_sets_response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcast/${i.id}/episodes`, req);
-        if (artist_sets_response.log.length>0){
-          let published_podcasts=[]
-
-          for (let j of artist_sets_response.log){
-            if (j.is_published && j.has_media){
-              published_podcasts.push(j)
-            }
-          }
-
-          for (let j of published_podcasts){
-            artists_sets.push({
-              artist:i.title,
-              title:j.title,
-              duration:j.media.length,
-              cover:`${front_api_link}/radio/artists/${i.id}/${j.id}/cover`,
-              media:`${j.links.download}?refresh=0`,
-              release_date:j.publish_at
-            });
-          };
-        };
-      };
-    };*/
     const episodes_list = await Episode.find({published:true,has_media:true});
     let artists_sets=[];
     for (let i of episodes_list){
@@ -391,7 +352,6 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
         release_date:Date.parse(i.p_timestamp)
       });
     };
-    console.log(artists_sets)
 
     //Décroissant puis 10 premiers
     let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
