@@ -427,6 +427,37 @@ app.get("/api/v1/radio/artists/:artist_id/cover", async (req, res) => {
   }
 });
 
+//GET - Sets des artistes | Query à MongoDB
+app.get("/api/v1/radio/artists/:artist_id/sets", async (req, res) => {
+  try {
+    const { artist_id } = req.params;
+
+    const episodes_list= await Episode.find({artist_id_azuracast:artist_id,published:true})
+
+    let artists_sets=[];
+    for (let i of episodes_list){
+      artists_sets.push({
+        artist:i.artist_name,
+        title:i.episode_name,
+        desc:i.desc,
+        duration:i.length,
+        cover:i.cover,
+        banner:i.banner,
+        media:i.media,
+        release_date:Date.parse(i.p_timestamp)
+      });
+    };
+
+    artists_sets.sort((a, b) => b.release_date - a.release_date)
+
+    return res.status(200).json({code:200,type:"Success",log:artists_sets});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+  }
+});
+
+
 //GET - Images des sets | GET à Azuracast
 app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) => {
   try {
