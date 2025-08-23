@@ -161,14 +161,14 @@ async function updateArtistFromAzuracast(){
         artist_name: i.author,
         artiste_unique_name: URLize(i.title),
         artist_id_azuracast:i.id,
-        cover: `${front_api_link}/radio/artists/${i.id}/cover`,
+        cover: `${front_api_link}/radio/artists/${URLize(i.title)}/cover`,
         banner: "",
         desc: i.description,
         desc_short: i.description_short,
         link: `${frontend_domain}/sets/${URLize(i.title)}`,
         external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
         lang: i.language,
-        dj_sets:`${front_api_link}/radio/artists/${i.id}/sets`,
+        dj_sets:`${front_api_link}/radio/artists/${URLize(i.title)}/sets`,
         //c_timestamp:oldest_set_timestamp,
         enabled:i.is_enabled, 
         published:i.is_published,
@@ -200,7 +200,7 @@ async function updateEpisodesFromAzuracast() {
                 episode_name: j.title, // Nom d'affichage
                 episode_unique_name: URLize(j.title),
                 episode_id_azuracast:j.id,
-                cover: `${front_api_link}/radio/artists/${i.id}/${j.id}/cover`,
+                cover: `${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}/cover`,
                 banner: "", //lien de l'image de la bannière de l'artiste
                 desc: j.description, //description
                 desc_short: j.description_short,//description raccourcie azuracast
@@ -209,7 +209,7 @@ async function updateEpisodesFromAzuracast() {
                 p_timestamp: new Date(j.publish_at * 1000),
                 owned_by:"", //Userid auquel l'artiste est relié 
                 has_media:j.has_media,
-                media:`${front_api_link}/radio/artists/${i.id}/${j.id}.mp3`,
+                media:`${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}.mp3`,
                 length:j.media.length,
                 published:j.is_published,
               },
@@ -409,9 +409,12 @@ app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
 });
 
 //GET - Images des artistes | GET à Azuracast
-app.get("/api/v1/radio/artists/:artist_id/cover", async (req, res) => {
+app.get("/api/v1/radio/artists/:artist_name/cover", async (req, res) => {
   try {
-    const { artist_id } = req.params;
+    const { artist_name } = req.params;
+
+    const artist=await Artist.findOne({artiste_unique_name:artist_name});
+    const artist_id=artist.artist_id_azuracast;
 
     const response = await get_request(
       `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}`,
@@ -431,9 +434,12 @@ app.get("/api/v1/radio/artists/:artist_id/cover", async (req, res) => {
 });
 
 //GET - Sets des artistes | Query à MongoDB
-app.get("/api/v1/radio/artists/:artist_id/sets", async (req, res) => {
+app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
   try {
-    const { artist_id } = req.params;
+    const { artist_name } = req.params;
+
+    const artist=await Artist.findOne({artiste_unique_name:artist_name});
+    const artist_id=artist.artist_id_azuracast;
 
     const episodes_list= await Episode.find({artist_id_azuracast:artist_id,published:true})
 
@@ -461,9 +467,15 @@ app.get("/api/v1/radio/artists/:artist_id/sets", async (req, res) => {
 });
 
 //GET - Images des sets | GET à Azuracast
-app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) => {
+app.get("/api/v1/radio/artists/:artist_name/:episode_name/cover", async (req, res) => {
   try {
-    const { artist_id,episode_id } = req.params;
+    const { artist_name,episode_name } = req.params;
+
+    const artist=await Artist.findOne({artiste_unique_name:artist_name});
+    const artist_id=artist.artist_id_azuracast;
+
+    const episode=await Episode.findOne({episode_unique_name:episode_name});
+    const episode_id=episode.episode_id_azuracast;
 
     const response = await get_request(
       `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}/episode/${episode_id}`,
@@ -483,9 +495,15 @@ app.get("/api/v1/radio/artists/:artist_id/:episode_id/cover", async (req, res) =
 });
 
 //GET - Images des sets | GET à Azuracast
-app.get("/api/v1/radio/artists/:artist_id/:episode_id.mp3", async (req, res) => {
+app.get("/api/v1/radio/artists/:artist_name/:episode_name.mp3", async (req, res) => {
   try {
-    const { artist_id,episode_id } = req.params;
+    const { artist_name,episode_name } = req.params;
+
+    const artist=await Artist.findOne({artiste_unique_name:artist_name});
+    const artist_id=artist.artist_id_azuracast;
+
+    const episode=await Episode.findOne({episode_unique_name:episode_name});
+    const episode_id=episode.episode_id_azuracast;
 
     await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res);
 

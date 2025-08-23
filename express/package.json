@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"cd ../nextjs/ && npm run dev\" \"nodemon server.js\""
+    "dev": "concurrently \"cd ../nextjs/ && npm run dev\" \"nodemon server.js\" \"cd ../discordjs/ && npm run dev\""
   },
   "keywords": [],
   "author": "",

@@ -49,3 +49,9 @@
 
 /express/node_modules
 /express/.env
+
+## DISCORDSJS
+
+/discordjs/
+/discordjs/config.json
+/discordjs/node_modules
