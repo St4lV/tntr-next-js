@@ -276,6 +276,8 @@ const userSelfModifyPasswordSchema = Joi.object({
 
 /////////////////////// ENDPOINTS API ///////////////////////
 
+/// AZURACAST UTILS ///
+
 //GET - Actuellement joué | GET à Azuracast
 app.get("/api/v1/radio/now_playing", async (req, res) => {
   const response = await get_request(`${azuracast_server}/api/nowplaying_static/${station_shortcode}.json`,req);
@@ -307,12 +309,30 @@ app.get("/api/v1/radio/schedule", async (req, res) => {
   return res.status(response.code).json(response);
 });
 
+//GET - Flux audios | GET à Azuracast
+app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
+  try {
+    const { mount } = req.params;
+
+    await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+  }
+});
+
+/**************/
+/// ARTISTES ///
+/**************/
+
 //GET - Artistes | Query à MongoDB
 app.get("/api/v1/radio/artists", async (req, res) => {
 
   const artists_list = await Artist.find({published:true,enabled:true});
     let artists_sets=[];
     for (let i of artists_list){
+          const ep_nb = await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true})
           artists_sets.push({
             title:i.artist_name,
             title_min:i.artiste_unique_name,
@@ -323,7 +343,7 @@ app.get("/api/v1/radio/artists", async (req, res) => {
             external_links:i.external_links,
             lang:i.lang,
             episodes:i.dj_sets,
-            episodes_nb:await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true}).length,
+            episodes_nb:ep_nb.length,
             c_timestamp:Date.parse(i.c_timestamp)
           });
       };
@@ -331,33 +351,6 @@ app.get("/api/v1/radio/artists", async (req, res) => {
   const artist_response={code:200,type:"Success",log:artists_sets}
 
   return res.status(artist_response.code).json(artist_response);
-});
-
-//GET - Derniers sets publiés | Query à MongoDB
-app.get("/api/v1/radio/sets/latests", async (req, res) => {
-  try{
-    const episodes_list = await Episode.find({published:true,has_media:true});
-    let artists_sets=[];
-    for (let i of episodes_list){
-      artists_sets.push({
-        artist:i.artist_name,
-        title:i.episode_name,
-        duration:i.length,
-        cover:i.cover,
-        media:i.media,
-        release_date:Date.parse(i.p_timestamp)
-      });
-    };
-
-    //Décroissant puis 10 premiers
-    let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
-    
-    
-    return res.status(200).json({code:200,type:"Success",log:latest_10_podcasts});
-
-    } catch (error) {
-      return { code: 500, type: "Internal Server Error", log: error.message };
-    }
 });
 
 //GET - Derniers artistes publiés | Query à MongoDB
@@ -386,19 +379,6 @@ app.get("/api/v1/radio/artists/latests", async (req, res) => {
     } catch (error) {
       return { code: 500, type: "Internal Server Error", log: error.message };
     }
-});
-
-//GET - Flux audios | GET à Azuracast
-app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
-  try {
-    const { mount } = req.params;
-
-    await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
-  }
 });
 
 //GET - Images des artistes | GET à Azuracast
@@ -457,6 +437,37 @@ app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
     console.error(error);
     res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
+});
+
+/**********/
+/// SETS ///
+/**********/
+
+//GET - Derniers sets publiés | Query à MongoDB
+app.get("/api/v1/radio/sets/latests", async (req, res) => {
+  try{
+    const episodes_list = await Episode.find({published:true,has_media:true});
+    let artists_sets=[];
+    for (let i of episodes_list){
+      artists_sets.push({
+        artist:i.artist_name,
+        title:i.episode_name,
+        duration:i.length,
+        cover:i.cover,
+        media:i.media,
+        release_date:Date.parse(i.p_timestamp)
+      });
+    };
+
+    //Décroissant puis 10 premiers
+    let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
+    
+    
+    return res.status(200).json({code:200,type:"Success",log:latest_10_podcasts});
+
+    } catch (error) {
+      return { code: 500, type: "Internal Server Error", log: error.message };
+    }
 });
 
 //GET - Images des sets | GET à Azuracast
