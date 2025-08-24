@@ -302,15 +302,8 @@ app.get("/api/v1/radio/now_playing", async (req, res) => {
 });
 
 //POST - Planning | GET à Azuracast
-app.post("/api/v1/radio/schedule", async (req, res) => {
+app.get("/api/v1/radio/schedule", async (req, res) => {
   const response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/schedule?now=now&rows=48`, req);
-  const {entries} = req.body
-  let max_entries = entries
-  if (response.log.length<=entries){
-    max_entries=response.log.length
-  }
-  const slicedArray = response.log.slice(0, entries);
-  response.log=slicedArray
   return res.status(response.code).json(response);
 });
 
