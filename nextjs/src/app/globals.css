@@ -87,7 +87,7 @@ main{
 
 #t-holder{
     overflow: hidden;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     transition: max-height 0.5s ease;
 }
 
@@ -108,18 +108,10 @@ main{
     text-align: center;
 }
 
-/*#schedule-table tbody{
-    justify-self: center;
+#schedule-tooltip{
     text-align: center;
+    padding-bottom: 20px;
 }
-
-#schedule-table tbody tr {
-  padding: 0 100%;
-  text-align: center;
-  padding: 4px;
-}*/
-
-
 
 /*MAIN / HOME / LAST RELEASES*/
 

@@ -14,10 +14,11 @@ export default function Home() {
   function updateScheduleRows(){
     
     if (table_open) {
-      setScheduleEntries(9)
+      setScheduleEntries(0)
       setTableOpen(false)
+
     } else {
-      setScheduleEntries(48)
+      setScheduleEntries(1)
       setTableOpen(true)
     }
   }
@@ -111,6 +112,7 @@ export default function Home() {
         </tbody>
       </table>
     </div>
+    <p id="schedule-tooltip">{table_open ? "Cliquez sur le tableau pour afficher moins d'entrées ":"Cliquez sur le tableau pour afficher plus d'entrées"}</p>
     <h2>Derniers sets ajoutés</h2>
     <ul id="last-dj-sets"></ul>
     <h2>Derniers djs ajoutés</h2>

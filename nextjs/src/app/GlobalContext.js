@@ -9,7 +9,7 @@ export default function Context({children}){
     const [schedule, setSchedule]= useState({})
     const [schedule_entries, setScheduleEntries]= useState(9)
 
-    async function getSchedule(entries = 9) {
+    async function getSchedule() {
         let result;
         const url = "/ap1/v1/radio/schedule";
         try {
@@ -128,7 +128,7 @@ export default function Context({children}){
     //Hooks d'update
 
     useEffect(() => {
-        getSchedule(schedule_entries)
+        getSchedule()
     }, [schedule_entries]);
 
     return (
