@@ -52,5 +52,5 @@
 
 ## DISCORDSJS
 
-/discordjs/config.json
+/discordjs/.env
 /discordjs/node_modules
