@@ -95,20 +95,22 @@ export default function Home() {
 
   return (
   <main>
-    <table onClick={updateScheduleRows} id="schedule-table" data-opened={table_open}>
-      <caption>
-          <h2>Planning de diffusion</h2>
-          <h4>(Effectif jusqu'au lendemain, minuit.)</h4>
-        </caption>
-      <thead>
-        <tr>
-          <th>Playlist</th>
-          <th>Heure de diffusion</th>
-        </tr>
-      </thead>
-      <tbody id="planning-list">
-      </tbody>
-    </table>
+    <div id="t-holder" onClick={updateScheduleRows} data-opened={table_open}>
+      <table id="schedule-table" >
+        <caption>
+            <h2>Planning de diffusion</h2>
+            <h4>(Effectif jusqu'au lendemain, minuit.)</h4>
+          </caption>
+        <thead>
+          <tr>
+            <th>Playlist</th>
+            <th>Heure de diffusion</th>
+          </tr>
+        </thead>
+        <tbody id="planning-list">
+        </tbody>
+      </table>
+    </div>
     <h2>Derniers sets ajoutés</h2>
     <ul id="last-dj-sets"></ul>
     <h2>Derniers djs ajoutés</h2>

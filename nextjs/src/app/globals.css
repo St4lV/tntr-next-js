@@ -85,10 +85,41 @@ main{
 
 /*MAIN / HOME / SCHEDULE*/
 
+#t-holder{
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: max-height 0.5s ease;
+}
+
+#t-holder[data-opened=false]{
+    max-height: 200px;
+}
+
+#t-holder[data-opened=true]{
+    max-height: 1000px;
+}
+
+#schedule-table{
+    width: 100%;
+}
+
 #schedule-table, #schedule-table *{
     background-color: black;
     text-align: center;
 }
+
+/*#schedule-table tbody{
+    justify-self: center;
+    text-align: center;
+}
+
+#schedule-table tbody tr {
+  padding: 0 100%;
+  text-align: center;
+  padding: 4px;
+}*/
+
+
 
 /*MAIN / HOME / LAST RELEASES*/
 

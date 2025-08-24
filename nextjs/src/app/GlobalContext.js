@@ -14,9 +14,8 @@ export default function Context({children}){
         const url = "/ap1/v1/radio/schedule";
         try {
         const response = await fetch(url, {
-            method: "POST", 
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "entries":entries }),
+            method: "GET", 
+            headers: { "Content-Type": "application/json" }
         });
         result = await response.json();
         } finally {
