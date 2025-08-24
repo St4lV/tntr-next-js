@@ -212,4 +212,10 @@ main{
 
 .episodes-text{
     margin-left:20px ;
+    width: 100%;
+}
+.episodes-desc{
+    max-height: 150px ;
+    overflow-y: scroll;
+    white-space: pre-line;
 }

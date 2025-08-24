@@ -45,7 +45,7 @@ export default function BlogPostPage({ params }) {
       const artist_sets_div=document.getElementById("artist-sets-holder")
       let result =""
       for (let i of artist_sets){
-        result+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><h3>${i.title}</h3><hr><p>${i.desc}</p></div></div><hr></article>`
+        result+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><h3>${i.title}</h3><hr><br><p class="episodes-desc">${i.desc}</p></div></div><hr></article>`
       }
       artist_sets_div.innerHTML=result
     }
