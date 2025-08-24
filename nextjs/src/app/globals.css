@@ -193,3 +193,23 @@ main{
     margin: 5px;
 }
 
+/* ARTISTS SETS*/
+
+.episodes-comp-internal{
+    display: flex;
+    padding: 10px 0px;
+}
+
+.episodes-comp{
+    margin: 20px 0px;
+    background-color: #010101ee;
+}
+
+.episodes-img{
+    width: 200px;
+    height: 200px;
+}
+
+.episodes-text{
+    margin-left:20px ;
+}
