@@ -6,8 +6,8 @@ import { useGlobalContext } from "@/app/GlobalContext";
 export default function BlogPostPage({ params }) {
   const router = useRouter();
 
-  const { artist } = use(params)
-  const {artists_list} = useGlobalContext();
+  const { artist} = use(params)
+  const {artists_list,setMediaPlayed,setRadioPlaying,setImgFromPlaying} = useGlobalContext();
   let act_artist_obj
   const [artist_sets, setArtistSets]= useState([])
 
@@ -43,11 +43,22 @@ export default function BlogPostPage({ params }) {
   function displayArtistSets(){
     if (artist_sets.length>0){
       const artist_sets_div=document.getElementById("artist-sets-holder")
-      let result =""
+      artist_sets_div.innerHTML=""
+      let element_list=[]
       for (let i of artist_sets){
-        result+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><h3>${i.title}</h3><hr><br><p class="episodes-desc">${i.desc}</p></div></div><hr></article>`
+        let el_id=i.artist_unique_name+"-"+i.title_unique_name
+        artist_sets_div.innerHTML+=`<article class="episodes-comp" id="${el_id}"><hr><div class="episodes-comp-internal"><img class="episodes-img" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><h3>${i.title}</h3><hr><br><p class="episodes-desc">${i.desc}</p></div></div><hr></article>`
+        element_list.push({id:el_id,media:i.media,cover:i.cover})
       }
-      artist_sets_div.innerHTML=result
+      for (let i of element_list){
+        const element = document.getElementById(`${i.id}`)
+        element.addEventListener("click",function(){
+          setRadioPlaying(false)
+          setMediaPlayed(i.media);
+          setImgFromPlaying(i.cover)
+          console.log("click")
+        })
+      }
     }
     
   }
