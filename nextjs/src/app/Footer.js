@@ -35,19 +35,26 @@ export default function Footer() {
             
             
         }
-    }, [radio_data, media_played, setMediaPlayed]);
+    }, [radio_data]);
+
+    function returnToDirect(){
+        setMediaPlayed(bitrateOptions[0].value)
+        setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
+    }
 
     useEffect(() => {
-        if (!is_radio_playing){playMedia()};
+        if (!is_radio_playing){playMedia(media_played)};
     }, [media_played]);
 
     const handleBitrateChange = (event) => {
         setRadioPlaying(true)
         setMediaPlayed(event.target.value)
-        playMedia();
+        setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
+        playMedia(event.target.value);
+
     };
 
-    function playMedia() {
+    function playMedia(media_played) {
         if (audioRef.current && media_played) {
             const audio = audioRef.current;
             audio.pause();
@@ -61,7 +68,6 @@ export default function Footer() {
                 console.warn("Impossible de lire le flux :", err);
             });
         }
-        updateSongImg()
     }
 
     useEffect(() => {
@@ -83,17 +89,23 @@ export default function Footer() {
                 <source src={media_played} type="audio/mpeg" />
                 Votre navigateur ne supporte pas l'audio HTML5.
             </audio>
-            <select
-                name="bitrate"
-                id="src-bitrate-list"
-                value={media_played || ""}
-                onChange={handleBitrateChange}>
-                {bitrateOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
-                ))}
-            </select>
+            {is_radio_playing ? (
+                <select
+                    name="bitrate"
+                    id="src-bitrate-list"
+                    value={media_played || ""}
+                    onChange={handleBitrateChange}>
+                    {bitrateOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                    ))}
+                </select>
+            ) : (
+                <button id="return-to-direct-btn" onClick={returnToDirect}>
+                    Retour au direct
+                </button>
+            )}
         </footer>
     );
 }
