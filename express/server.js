@@ -453,9 +453,13 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
     for (let i of episodes_list){
       artists_sets.push({
         artist:i.artist_name,
+        artist_unique_name:i.artiste_unique_name,
         title:i.episode_name,
+        title_unique_name:i.episode_unique_name,
+        desc:i.desc,
         duration:i.length,
         cover:i.cover,
+        banner:i.banner,
         media:i.media,
         release_date:Date.parse(i.p_timestamp)
       });
