@@ -43,8 +43,8 @@ export default function Footer() {
         }
     }, [radio_data]);
 
-    function returnToDirect(){
-        setMediaPlayed(bitrateOptions[0].value)
+    async function returnToDirect(){
+        await setMediaPlayed(bitrateOptions[0].value)
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
         setRadioPlaying(true)
     }
