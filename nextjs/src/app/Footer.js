@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused } = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused } = useGlobalContext();
 
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const audioRef = useRef(null);
@@ -31,8 +31,14 @@ export default function Footer() {
             if (is_radio_playing){
                 setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
             }
-
             
+            const audio_player=document.getElementById("audio-player")
+            audio_player.onpause = function(){
+                setMediaPaused(true)
+            }
+            audio_player.onplay = function(){
+                setMediaPaused(false)
+            }
             
         }
     }, [radio_data]);
@@ -40,6 +46,7 @@ export default function Footer() {
     function returnToDirect(){
         setMediaPlayed(bitrateOptions[0].value)
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
+        setRadioPlaying(true)
     }
 
     useEffect(() => {
@@ -94,7 +101,7 @@ export default function Footer() {
                 <img id="song-cover" src="/DefaultIMG.png" alt="Cover" />
                 <p id="song-title"></p>
             </div>
-            <audio controls ref={audioRef}>
+            <audio id="audio-player" controls ref={audioRef}>
                 <source src={media_played} type="audio/mpeg" />
                 Votre navigateur ne supporte pas l'audio HTML5.
             </audio>
