@@ -7,7 +7,7 @@ import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Home() {
 
-  const {schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
+  const {schedule, setScheduleEntries, last_djs, last_sets, setRadioPlaying, setMediaPlayed, setImgFromPlaying} = useGlobalContext();
   const router = useRouter();
   const [table_open, setTableOpen] = useState(false);
   
@@ -43,6 +43,7 @@ export default function Home() {
     if (!last_sets){
       return
     }
+    let element_list=[]
     for (let i of last_sets) {
       const released_at = new Date(i.release_date*1000);
       const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
@@ -56,9 +57,18 @@ export default function Home() {
         ? `${durationHours}h${totalMinutes}`
         : `${durationMinutes}min`;
 
-      to_return += `<br/><li class=" home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
+      element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover});
+      to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
       last_sets_list.innerHTML=to_return
     };
+    for (let i of element_list){
+      let element = document.getElementById(`${i.id}`)
+      element.addEventListener("click",function(){
+        setRadioPlaying(false)
+        setMediaPlayed(i.media);
+        setImgFromPlaying(i.cover)
+      });
+    }
   };
 
   function updateLastDJs(){
