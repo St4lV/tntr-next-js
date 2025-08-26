@@ -14,7 +14,7 @@ export default function Home() {
     let result=""
 
     for (let i of artists_list){
-      result+=`<br/><li data-artist="${i.title_min}" class="artist-comp">${i.title}<br><img src=${i.cover} class="available-djs-img"/><br/>${i.episodes_nb} sets<br/>${i.desc_short}</li><br/>`;
+      result+=`<br/><li data-artist="${i.title_min}" class="artist-comp"><h3 class="artist-comp-title">${i.title}</h3><br><img src=${i.cover} class="available-djs-img"/><br/>${i.episodes_nb} sets<br/><p class="artist-comp-desc">${i.desc_short}<p></li><br/>`;
     }
     document.querySelector("#available-djs").innerHTML=result
     const artist_elements_list=document.querySelectorAll(".artist-comp")
