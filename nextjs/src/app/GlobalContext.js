@@ -106,7 +106,7 @@ export default function Context({children}){
     const [media_played, setMediaPlayed]=useState("/ap1/v1/radio/mountpoints/tntr128.mp3")
     const [is_radio_playing, setRadioPlaying]=useState(true)
     const [img_from_playing, setImgFromPlaying]=useState("/DefaultIMG.png")
-
+    const [is_media_paused, setMediaPaused]=useState(true)
     useEffect(() => {
         getRadioData();
         getLastSets();
@@ -135,7 +135,7 @@ export default function Context({children}){
     }, [schedule_entries]);
 
     return (
-        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying}}>
+        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused}}>
             {children}
         </GlobalContext.Provider>
         );

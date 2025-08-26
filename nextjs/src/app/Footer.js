@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying } = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused } = useGlobalContext();
 
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const audioRef = useRef(null);
@@ -73,6 +73,15 @@ export default function Footer() {
     useEffect(() => {
         updateSongImg();
     }, [img_from_playing])
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if(is_media_paused){
+            audio.pause();
+        } else {
+            audio.play();
+        }
+    }, [is_media_paused])
 
     function updateSongImg(){
         const song_img = document.querySelector("#song-cover");

@@ -219,3 +219,19 @@ main{
     overflow-y: scroll;
     white-space: pre-line;
 }
+
+#episode-title-header{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+#episode-title{
+    margin-left: 10px;
+}
+
+.play_btn *{
+    height: 40px;
+    width: 40px;
+}
+
