@@ -40,6 +40,28 @@ header{
     top:0px
 }
 
+#header-side-menu{
+    overflow:hidden;
+    transition: width 0.5s ease;
+    position: fixed;
+    top: 150px;
+    height: 100%;
+    background-color: #010101ee;
+}
+
+#header-side-menu[data-opened=false]{
+    width: 0px;
+}
+
+#header-side-menu[data-opened=true]{
+    width: 180px;
+}
+
+.header-side-menu-element{
+    text-wrap-mode:nowrap;
+    margin: 5px 10px;
+}
+
 .header-bar{
     font-size: 2em;
     margin-top:10px;
@@ -160,10 +182,6 @@ main{
     overflow-x: hidden;
  }
 /*MAIN / ARTISTES / DJs*/
-
-/*.available-djs{
-
-}*/
 
 .available-djs-img{
     height: 150px;
