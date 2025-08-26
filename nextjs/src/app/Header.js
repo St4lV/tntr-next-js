@@ -7,13 +7,11 @@ export default function Header(){
 
     const [menu_opened, setMenuOpened] = useState(false);
     function burgerMenu(){
-        setMenuOpened(!menu_opened)
-        console.log(menu_opened)
-        console.log(document.getElementById("header-side-menu").dataset.opened)
+        setMenuOpened(!menu_opened);
     }
     
     function closeMenu(){
-        setMenuOpened(false)
+        setMenuOpened(false);
     }
 
     return(

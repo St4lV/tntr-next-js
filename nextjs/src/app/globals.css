@@ -66,14 +66,15 @@ header{
     font-size: 2em;
     margin-top:10px;
 }
+
 .burger-menu{
     position: fixed;
-    left:5px;
-    top: 50px;
+    left:10px;
+    top: 30px;
 }
 
 #burger-menu-icon{
-    width: 50px;
+    width: 80px;
     height: auto;
     cursor: pointer;
 }
@@ -89,6 +90,7 @@ footer{
 #song-cover{
   height: 125px;
 }
+
 #src-bitrate-list{
   background-color: black;
 }
@@ -188,6 +190,7 @@ main{
     border-radius: 50%;
 
 }
+
 #available-djs{
     display: flex;
     flex-wrap: wrap;
@@ -229,6 +232,69 @@ main{
 
 /* ARTISTS SETS*/
 
+#copy-notif{
+    position: fixed;
+    top: 150px;
+    background-color: #010101cc;
+    width: 100%;
+}
+
+#artist-page-artist-header{
+    display: flex;
+}
+
+#artist-page-artist-name{
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+#artist-page-artist-header-share-btn{
+    padding-left: 10px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+#artist-page-artist-header-share-btn *{
+    width: 70%;
+    height: 70%;
+}
+
+#artist-page-artist-cover{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+#artist-page-internal-comp{
+    display: flex;
+    padding: 20px 10px;
+    background-color: #010101aa;
+}
+
+#artist-page-artist-desc{
+    white-space: pre-line;
+    margin: 10px 10px;
+    margin-right:0px ;
+    max-height: 300px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+#artist-page-artist-links{
+    display: flex;
+    margin-top: 20px;
+}
+
+#artist-page-artist-links li{
+    margin :0 10px
+}
+
+#artist-page-artist-links li *{
+    height: 30px;
+    width: 30px;
+}
+
 .episodes-comp-internal{
     display: flex;
     padding: 10px 0px;
@@ -237,6 +303,7 @@ main{
 .episodes-comp{
     margin: 20px 0px;
     background-color: #010101ee;
+    cursor: pointer;
 }
 
 .episodes-img{
@@ -266,6 +333,7 @@ main{
 }
 
 .play_btn *{
+    cursor: pointer;
     height: 40px;
     width: 40px;
 }
