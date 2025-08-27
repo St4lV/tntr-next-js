@@ -360,7 +360,6 @@ main{
 .episode-page-img{
     width: 200px;
     height: 200px;
-    cursor: pointer;
 }
 
 .episode-page-text{
@@ -368,10 +367,13 @@ main{
     width: 100%;
 }
 
+#episode-page-title{
+    margin-left: 10px;
+}
+
 .episode-page-desc{
     min-height: 170px;
     max-height: 170px ;
     overflow-y: scroll;
     white-space: pre-line;
-    cursor: pointer;
 }
