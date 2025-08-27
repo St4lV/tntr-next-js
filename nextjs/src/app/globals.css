@@ -320,7 +320,8 @@ main{
 }
 
 .episodes-desc{
-    max-height: 150px ;
+    min-height: 135px;
+    max-height: 135px ;
     overflow-y: scroll;
     white-space: pre-line;
     cursor: pointer;
@@ -343,3 +344,34 @@ main{
     width: 40px;
 }
 
+
+/* EPISODES / SETS PAGE*/
+
+.episode-page-comp-internal{
+    display: flex;
+    padding: 10px 0px;
+}
+
+.episode-page-comp{
+    margin: 20px 0px;
+    background-color: #010101ee;
+}
+
+.episode-page-img{
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.episode-page-text{
+    margin-left:20px ;
+    width: 100%;
+}
+
+.episode-page-desc{
+    min-height: 170px;
+    max-height: 170px ;
+    overflow-y: scroll;
+    white-space: pre-line;
+    cursor: pointer;
+}

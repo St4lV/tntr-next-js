@@ -4,25 +4,31 @@ import { useParams, useRouter } from 'next/navigation'
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function ArtistPage({ params }) {
+  
   const router = useRouter();
-
   const {artist} = use(params)
+
   const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused} = useGlobalContext();
+ 
+  const [page_loaded , setPageLoaded] = useState(false)
   const [act_artist_obj , setActArtistObj] = useState({})
   const [artist_sets, setArtistSets]= useState([])
   const [notification_showed, showNotification]= useState(false)
 
   async function isArtistExist(){
+
     if (artists_list.length ===0){return}
     var found = artists_list.find(artist_obj=>{
       setActArtistObj(artist_obj);
       return artist_obj.title_min === decodeURIComponent(artist)
     })
-    if (!found){router.push("/sets");return}
-    
-    document.querySelector("#artist-page-artist-name").innerText=act_artist_obj.title
-    await fetchArtistSets();
+
+    if (!found){router.push("/sets");return} else {
+      setPageLoaded(true)
+      await fetchArtistSets();
+    }
   }
+    
 
   useEffect(() => {
     isArtistExist();
@@ -167,12 +173,13 @@ export default function ArtistPage({ params }) {
 
    useEffect(() => {
     displayArtistLinks();
-  }, [act_artist_obj]);
+  }, [page_loaded]);
 
 
   return (
     <main>
-      <div id="show-notification">
+      { page_loaded && act_artist_obj ?
+      (<><div id="show-notification">
         {notification_showed ? <p id="copy-notif">Lien copié dans le presse-papier !</p> : ''}
       </div>
       <div>
@@ -189,6 +196,8 @@ export default function ArtistPage({ params }) {
         <ul id="artist-page-artist-links"></ul>
       </div>
       <div id="artist-sets-holder"></div>
+      </>) : ""
+      }
     </main>
   )
 }
