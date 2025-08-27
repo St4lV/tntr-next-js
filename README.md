@@ -5,6 +5,8 @@
 
 This projet is composed of :
 
+- **Azuracast** : Webradio docker suite integrating icecast, shoutcast and many other things, learn more [here](https://github.com/AzuraCast/AzuraCast);
+
 - **NextJS** : React based frontend, proxy backend to express via [next.config.mjs](https://github.com/St4lV/tntr-next-js/blob/main/nextjs/next.config.mjs);
 
 - **ExpressJS** : HTTP server, used here as an API in order to proxy all elements of Azuracast needed in this project, handle both MongoDB and MariaDB database to upgrade data transmission speed to frontend.
