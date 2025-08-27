@@ -88,7 +88,10 @@ footer{
 }
 
 #song-cover{
-  height: 125px;
+  min-height: 125px;
+  min-width: 125px;
+  max-height: 125px;
+  max-width: 125px;
 }
 
 #src-bitrate-list{
@@ -116,11 +119,11 @@ main{
 }
 
 #t-holder[data-opened=false]{
-    max-height: 200px;
+    max-height: 300px;
 }
 
 #t-holder[data-opened=true]{
-    max-height: 1000px;
+    max-height: 900px;
 }
 
 #schedule-table{
@@ -303,12 +306,12 @@ main{
 .episodes-comp{
     margin: 20px 0px;
     background-color: #010101ee;
-    cursor: pointer;
 }
 
 .episodes-img{
     width: 200px;
     height: 200px;
+    cursor: pointer;
 }
 
 .episodes-text{
@@ -320,6 +323,7 @@ main{
     max-height: 150px ;
     overflow-y: scroll;
     white-space: pre-line;
+    cursor: pointer;
 }
 
 #episode-title-header{
@@ -330,6 +334,7 @@ main{
 
 #episode-title{
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .play_btn *{

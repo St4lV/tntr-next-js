@@ -1,9 +1,9 @@
 'use client'
-import { act, use, useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useGlobalContext } from "@/app/GlobalContext";
 
-export default function BlogPostPage({ params }) {
+export default function ArtistPage({ params }) {
   const router = useRouter();
 
   const {artist} = use(params)
@@ -23,6 +23,11 @@ export default function BlogPostPage({ params }) {
     document.querySelector("#artist-page-artist-name").innerText=act_artist_obj.title
     await fetchArtistSets();
   }
+
+  useEffect(() => {
+    isArtistExist();
+  }, [artists_list]);
+
 
   // All svg come from https://icons.getbootstrap.com/ except soundcloud and deezer ones that come from https://www.svgrepo.com/
 
@@ -94,15 +99,18 @@ export default function BlogPostPage({ params }) {
       const artist_sets_div=document.getElementById("artist-sets-holder")
       artist_sets_div.innerHTML=""
 
-      let element_list=[]
+      let play_btn_list=[]
+      let ep_article_list=[]
 
       for (let i of artist_sets){
-        let el_id=i.artist_unique_name+"-"+i.title_unique_name
-        artist_sets_div.innerHTML+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><div id="episode-title-header"><button id="${el_id}" class="play_btn" data-playing="false">${play_btn}</button><h3 id="episode-title">${i.title}</h3></div><hr><br><p class="episodes-desc">${i.desc}</p></div></div><hr></article>`
-        element_list.push({id:el_id,media:i.media,cover:i.cover})
+        let btn_id=i.artist_unique_name+"-"+i.title_unique_name
+        let ep_class="episode-"+i.title_unique_name
+        artist_sets_div.innerHTML+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img ${ep_class}" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><div id="episode-title-header"><button id="${btn_id}" class="play_btn" data-playing="false">${play_btn}</button><h3 id="episode-title" class="${ep_class}">${i.title}</h3></div><hr><br><p class="episodes-desc ${ep_class}">${i.desc}</p></div></div><hr></article>`
+        play_btn_list.push({id:btn_id,media:i.media,cover:i.cover})
+        ep_article_list.push({id:ep_class,artist:i.artist_unique_name,title:i.title_unique_name})
       }
 
-      for (let i of element_list){
+      for (let i of play_btn_list){
         const element = document.getElementById(`${i.id}`)
         if (media_played==i.media && !is_media_paused){
             element.dataset.playing="true"
@@ -131,13 +139,17 @@ export default function BlogPostPage({ params }) {
           
         });
       };
+
+      for (let i of ep_article_list){
+        const el_list = document.querySelectorAll(`.${i.id}`)
+        for (let j of el_list){
+          j.addEventListener("click",function(){
+            router.push(`/sets/${i.artist}/${i.title}`)
+          });
+        };
+      };
     };
   };
-
-
-  useEffect(() => {
-    isArtistExist();
-  }, [artists_list]);
 
   useEffect(() => {
     displayArtistSets();
