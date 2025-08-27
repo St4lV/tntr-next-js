@@ -42,42 +42,42 @@ const station_shortcode = process.env.AZURACAST_STATION_SHORTCODE
 // Template requête GET à Azuracast
 async function get_request(address, req , method="GET") {
   try {
-    const response = await fetch(address, {
-      method: method,
-      headers: { Authorization: `Bearer ${api_key}` },
-    });
+	const response = await fetch(address, {
+	  method: method,
+	  headers: { Authorization: `Bearer ${api_key}` },
+	});
 
-    const isJson = response.headers
-      .get("content-type")
-      ?.includes("application/json");
+	const isJson = response.headers
+	  .get("content-type")
+	  ?.includes("application/json");
 
-    if (!response.ok) {
-      const errorBody = isJson ? await response.json() : await response.text();
-      return { code: response.status, type: "Error", log: errorBody };
-    }
+	if (!response.ok) {
+	  const errorBody = isJson ? await response.json() : await response.text();
+	  return { code: response.status, type: "Error", log: errorBody };
+	}
 
-    const data = isJson ? await response.json() : await response.text();
-    return { code: 200, type: "Success", log: data };
+	const data = isJson ? await response.json() : await response.text();
+	return { code: 200, type: "Success", log: data };
 
   } catch (error) {
-    return { code: 500, type: "Internal Server Error", log: error.message };
+	return { code: 500, type: "Internal Server Error", log: error.message };
   }
 }
 
 // Template requête GET Media à Azuracast
 async function getMediaRequest(media_url,res){
   const actual = await fetch(media_url, {
-      headers: {
-        "Authorization": `Bearer ${api_key}`
-      }
-    });
+	  headers: {
+		"Authorization": `Bearer ${api_key}`
+	  }
+	});
 
-    actual.headers.forEach((value, name) => res.setHeader(name, value));
-    if (typeof actual.body.pipe === 'function') {
-      actual.body.pipe(res);
-    } else {
-      Readable.fromWeb(actual.body).pipe(res);
-    }
+	actual.headers.forEach((value, name) => res.setHeader(name, value));
+	if (typeof actual.body.pipe === 'function') {
+	  actual.body.pipe(res);
+	} else {
+	  Readable.fromWeb(actual.body).pipe(res);
+	}
   
 }
 
@@ -145,36 +145,36 @@ async function updateArtistFromAzuracast(){
   const artists_raw_data=response.log
 
   for (i of artists_raw_data){
-    /*const artist_episodes=await Episode.find({artist_id_azuracast:i.id});
-    let oldest_set_timestamp;
-    if(artist_episodes){
-      let oldest_sets_timestamps=[];
-      for (j of artist_episodes){
-        oldest_sets_timestamps.push(j.c_timestamp)
-      }
-      oldest_sets_timestamps.sort()
-      oldest_set_timestamp=oldest_sets_timestamps[0]
-    }*/
-    await Artist.findOneAndUpdate(
-      { artist_id_azuracast: i.id },
-      {
-        artist_name: i.author,
-        artiste_unique_name: URLize(i.title),
-        artist_id_azuracast:i.id,
-        cover: `${front_api_link}/radio/artists/${URLize(i.title)}/cover`,
-        banner: "",
-        desc: i.description,
-        desc_short: i.description_short,
-        link: `${frontend_domain}/sets/${URLize(i.title)}`,
-        external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
-        lang: i.language,
-        dj_sets:`${front_api_link}/radio/artists/${URLize(i.title)}/sets`,
-        //c_timestamp:oldest_set_timestamp,
-        enabled:i.is_enabled, 
-        published:i.is_published,
-      },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
-    );
+	/*const artist_episodes=await Episode.find({artist_id_azuracast:i.id});
+	let oldest_set_timestamp;
+	if(artist_episodes){
+	  let oldest_sets_timestamps=[];
+	  for (j of artist_episodes){
+		oldest_sets_timestamps.push(j.c_timestamp)
+	  }
+	  oldest_sets_timestamps.sort()
+	  oldest_set_timestamp=oldest_sets_timestamps[0]
+	}*/
+	await Artist.findOneAndUpdate(
+	  { artist_id_azuracast: i.id },
+	  {
+		artist_name: i.author,
+		artiste_unique_name: URLize(i.title),
+		artist_id_azuracast:i.id,
+		cover: `${front_api_link}/radio/artists/${URLize(i.title)}/cover`,
+		banner: "",
+		desc: i.description,
+		desc_short: i.description_short,
+		link: `${frontend_domain}/sets/${URLize(i.title)}`,
+		external_links:(i.branding_config.public_custom_html ?? "").split("\n"),
+		lang: i.language,
+		dj_sets:`${front_api_link}/radio/artists/${URLize(i.title)}/sets`,
+		//c_timestamp:oldest_set_timestamp,
+		enabled:i.is_enabled, 
+		published:i.is_published,
+	  },
+	  { upsert: true, new: true, setDefaultsOnInsert: true }
+	);
   };
 };
 
@@ -185,40 +185,40 @@ async function updateEpisodesFromAzuracast() {
   if (response.code!=200){return};
 
   for (let i of response.log){
-    if (i.is_published){
-      const artist_sets_response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcast/${i.id}/episodes`);
-      if (artist_sets_response.log.length>0){
-        
-        for (let j of artist_sets_response.log){
-          if(j.has_media){
-            await Episode.findOneAndUpdate(
-              { episode_id_azuracast: j.id },
-              {
-                artist_name:i.author,
-                artiste_unique_name: URLize(i.title),
-                artist_id_azuracast:i.id,
-                episode_name: j.title, // Nom d'affichage
-                episode_unique_name: URLize(j.title),
-                episode_id_azuracast:j.id,
-                cover: `${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}/cover`,
-                banner: "", //lien de l'image de la bannière de l'artiste
-                desc: j.description, //description
-                desc_short: j.description_short,//description raccourcie azuracast
-                length:j.media?.length ? j.media : "",
-                c_timestamp: new Date(j.created_at * 1000), //timestamp de création
-                p_timestamp: new Date(j.publish_at * 1000),
-                owned_by:"", //Userid auquel l'artiste est relié 
-                has_media:j.has_media,
-                media:`${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}.mp3`,
-                length:j.media.length,
-                published:j.is_published,
-              },
-              { upsert: true, new: true, setDefaultsOnInsert: true }
-            );
-          };
-        };
-      };
-    };
+	if (i.is_published){
+	  const artist_sets_response = await get_request(`${azuracast_server}/api/station/${station_shortcode}/podcast/${i.id}/episodes`);
+	  if (artist_sets_response.log.length>0){
+		
+		for (let j of artist_sets_response.log){
+		  if(j.has_media){
+			await Episode.findOneAndUpdate(
+			  { episode_id_azuracast: j.id },
+			  {
+				artist_name:i.author,
+				artiste_unique_name: URLize(i.title),
+				artist_id_azuracast:i.id,
+				episode_name: j.title, // Nom d'affichage
+				episode_unique_name: URLize(j.title),
+				episode_id_azuracast:j.id,
+				cover: `${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}/cover`,
+				banner: "", //lien de l'image de la bannière de l'artiste
+				desc: j.description, //description
+				desc_short: j.description_short,//description raccourcie azuracast
+				length:j.media?.length ? j.media : "",
+				c_timestamp: new Date(j.created_at * 1000), //timestamp de création
+				p_timestamp: new Date(j.publish_at * 1000),
+				owned_by:"", //Userid auquel l'artiste est relié 
+				has_media:j.has_media,
+				media:`${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}.mp3`,
+				length:j.media.length,
+				published:j.is_published,
+			  },
+			  { upsert: true, new: true, setDefaultsOnInsert: true }
+			);
+		  };
+		};
+	  };
+	};
   };
 };
 
@@ -237,10 +237,10 @@ const Authtoken = mongoose.model("Authtoken", new mongoose.Schema({
 const AuthLog = mongoose.model("AuthLog", new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   log: [{
-    timestamp: { type: Date, default: Date.now },
-    action: { type: String, enum: ["LOGIN_SUCCESS", "LOGIN_FAILED"], required: true },
-    ip: { type: String, required: true },
-    useragent: { type: String },
+	timestamp: { type: Date, default: Date.now },
+	action: { type: String, enum: ["LOGIN_SUCCESS", "LOGIN_FAILED"], required: true },
+	ip: { type: String, required: true },
+	useragent: { type: String },
   }]
 }));*/
 
@@ -284,20 +284,20 @@ app.get("/api/v1/radio/now_playing", async (req, res) => {
   if (response.code!=200){return res.status(response.code).json(response)};
   const response_log=response.log
   let result={
-    station:{
-      name:response_log.station.name,
-      description:response_log.station.description,
-      mounts:[],
-      listen_url:`${front_api_link}/radio/mountpoints/tntr128.mp3`,
-    },
-    listeners:response_log.listeners,
-    live:response_log.live,
-    now_playing:response_log.now_playing,
-    playing_next:response_log.playing_next,
-    song_history:response_log.song_history
+	station:{
+	  name:response_log.station.name,
+	  description:response_log.station.description,
+	  mounts:[],
+	  listen_url:`${front_api_link}/radio/mountpoints/tntr128.mp3`,
+	},
+	listeners:response_log.listeners,
+	live:response_log.live,
+	now_playing:response_log.now_playing,
+	playing_next:response_log.playing_next,
+	song_history:response_log.song_history
   }
   for (let i of response_log.station.mounts){
-    result.station.mounts.push({name:i.name,url:`${front_api_link}/radio/mountpoints/${(i.path).split("/")[1]}`,bitrate:i.bitrate})
+	result.station.mounts.push({name:i.name,url:`${front_api_link}/radio/mountpoints/${(i.path).split("/")[1]}`,bitrate:i.bitrate})
   }
 
   res.status(response.code).json({code:response.code,type:response.type,log:result});
@@ -312,13 +312,13 @@ app.get("/api/v1/radio/schedule", async (req, res) => {
 //GET - Flux audios | GET à Azuracast
 app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
   try {
-    const { mount } = req.params;
+	const { mount } = req.params;
 
-    await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res);
+	await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+	console.error(error);
+	res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
 
@@ -329,28 +329,28 @@ app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
 async function artist_template(i){
   const ep_nb = await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true})
   return {
-            title:i.artist_name,
-            title_min:i.artiste_unique_name,
-            cover:i.cover,
-            desc:i.desc,
-            desc_short:i.desc_short,
-            link:i.link,
-            external_links:i.external_links,
-            lang:i.lang,
-            episodes:i.dj_sets,
-            episodes_nb:ep_nb.length,
-            c_timestamp:Date.parse(i.c_timestamp)
-          }
+			title:i.artist_name,
+			title_min:i.artiste_unique_name,
+			cover:i.cover,
+			desc:i.desc,
+			desc_short:i.desc_short,
+			link:i.link,
+			external_links:i.external_links,
+			lang:i.lang,
+			episodes:i.dj_sets,
+			episodes_nb:ep_nb.length,
+			c_timestamp:Date.parse(i.c_timestamp)
+		  }
 }
 
 //GET - Artistes | Query à MongoDB
 app.get("/api/v1/radio/artists", async (req, res) => {
 
   const artists_list = await Artist.find({published:true,enabled:true});
-    let artists_sets=[];
-    for (let i of artists_list){
-          artists_sets.push(await artist_template(i));
-      };
+	let artists_sets=[];
+	for (let i of artists_list){
+		  artists_sets.push(await artist_template(i));
+	  };
   
   const artist_response={code:200,type:"Success",log:artists_sets}
 
@@ -361,69 +361,69 @@ app.get("/api/v1/radio/artists", async (req, res) => {
 app.get("/api/v1/radio/artists/latests", async (req, res) => {
   try{
 
-    const artists_list = await Artist.find({published:true,enabled:true});
-    let artists_sets=[];
-    for (let i of artists_list){
-          artists_sets.push(await artist_template(i));
-      };
-    
-    //Décroissant puis 10 premiers
-    let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
-    
+	const artists_list = await Artist.find({published:true,enabled:true});
+	let artists_sets=[];
+	for (let i of artists_list){
+		  artists_sets.push(await artist_template(i));
+	  };
+	
+	//Décroissant puis 10 premiers
+	let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
+	
 
-    return res.status(200).json({code:200,type:"Success",log:latest_10_artists});
+	return res.status(200).json({code:200,type:"Success",log:latest_10_artists});
 
-    } catch (error) {
-      return { code: 500, type: "Internal Server Error", log: error.message };
-    }
+	} catch (error) {
+	  return { code: 500, type: "Internal Server Error", log: error.message };
+	}
 });
 
 //GET - Images des artistes | GET à Azuracast
 app.get("/api/v1/radio/artists/:artist_name/cover", async (req, res) => {
   try {
-    const { artist_name } = req.params;
+	const { artist_name } = req.params;
 
-    const artist=await Artist.findOne({artiste_unique_name:artist_name});
-    const artist_id=artist.artist_id_azuracast;
+	const artist=await Artist.findOne({artiste_unique_name:artist_name});
+	const artist_id=artist.artist_id_azuracast;
 
-    const response = await get_request(
-      `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}`,
-      req
-    );
+	const response = await get_request(
+	  `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}`,
+	  req
+	);
 
-    if (response.code !== 200) {
-      return res.status(response.code).json(response);
-    }
+	if (response.code !== 200) {
+	  return res.status(response.code).json(response);
+	}
 
-    await getMediaRequest(response.log.art,res);
+	await getMediaRequest(response.log.art,res);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+	console.error(error);
+	res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
 
 //GET - Sets des artistes | Query à MongoDB
 app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
   try {
-    const { artist_name } = req.params;
+	const { artist_name } = req.params;
 
-    const artist=await Artist.findOne({artiste_unique_name:artist_name});
-    const artist_id=artist.artist_id_azuracast;
+	const artist=await Artist.findOne({artiste_unique_name:artist_name});
+	const artist_id=artist.artist_id_azuracast;
 
-    const episodes_list= await Episode.find({artist_id_azuracast:artist_id,published:true})
+	const episodes_list= await Episode.find({artist_id_azuracast:artist_id,published:true})
 
-    let artists_sets=[];
-    for (let i of episodes_list){
-      artists_sets.push(episode_template(i));
-    };
+	let artists_sets=[];
+	for (let i of episodes_list){
+	  artists_sets.push(episode_template(i));
+	};
 
-    artists_sets.sort((a, b) => b.release_date - a.release_date)
+	artists_sets.sort((a, b) => b.release_date - a.release_date)
 
-    return res.status(200).json({code:200,type:"Success",log:artists_sets});
+	return res.status(200).json({code:200,type:"Success",log:artists_sets});
   } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+	console.error(error);
+	res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
 
@@ -433,82 +433,82 @@ app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
 
 function episode_template(i){
   return {
-        artist:i.artist_name,
-        artist_unique_name:i.artiste_unique_name,
-        title:i.episode_name,
-        title_unique_name:i.episode_unique_name,
-        desc:i.desc,
-        duration:i.length,
-        cover:i.cover,
-        banner:i.banner,
-        media:i.media,
-        release_date:Date.parse(i.p_timestamp)
-      }
+		artist:i.artist_name,
+		artist_unique_name:i.artiste_unique_name,
+		title:i.episode_name,
+		title_unique_name:i.episode_unique_name,
+		desc:i.desc,
+		duration:i.length,
+		cover:i.cover,
+		banner:i.banner,
+		media:i.media,
+		release_date:Date.parse(i.p_timestamp)
+	  }
 }
 
 //GET - Derniers sets publiés | Query à MongoDB
 app.get("/api/v1/radio/sets/latests", async (req, res) => {
   try{
-    const episodes_list = await Episode.find({published:true,has_media:true});
-    let artists_sets=[];
-    for (let i of episodes_list){
-      artists_sets.push(episode_template(i));
-    };
+	const episodes_list = await Episode.find({published:true,has_media:true});
+	let artists_sets=[];
+	for (let i of episodes_list){
+	  artists_sets.push(episode_template(i));
+	};
 
-    //Décroissant puis 10 premiers
-    let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
-    
-    
-    return res.status(200).json({code:200,type:"Success",log:latest_10_podcasts});
+	//Décroissant puis 10 premiers
+	let latest_10_podcasts= artists_sets.sort((a, b) => b.release_date - a.release_date).slice(0,10);
+	
+	
+	return res.status(200).json({code:200,type:"Success",log:latest_10_podcasts});
 
-    } catch (error) {
-      return { code: 500, type: "Internal Server Error", log: error.message };
-    }
+	} catch (error) {
+	  return { code: 500, type: "Internal Server Error", log: error.message };
+	}
 });
 
 //GET - Images des sets | GET à Azuracast
 app.get("/api/v1/radio/artists/:artist_name/:episode_name/cover", async (req, res) => {
   try {
-    const { artist_name,episode_name } = req.params;
+	const { artist_name,episode_name } = req.params;
 
-    const artist=await Artist.findOne({artiste_unique_name:artist_name});
-    const artist_id=artist.artist_id_azuracast;
+	const artist=await Artist.findOne({artiste_unique_name:artist_name});
+	const artist_id=artist.artist_id_azuracast;
 
-    const episode=await Episode.findOne({episode_unique_name:episode_name});
-    const episode_id=episode.episode_id_azuracast;
+	const episode=await Episode.findOne({episode_unique_name:episode_name});
+	const episode_id=episode.episode_id_azuracast;
 
-    const response = await get_request(
-      `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}/episode/${episode_id}`,
-      req
-    );
+	const response = await get_request(
+	  `${azuracast_server}/api/station/${station_shortcode}/podcast/${artist_id}/episode/${episode_id}`,
+	  req
+	);
 
-    if (response.code !== 200) {
-      return res.status(response.code).json(response);
-    }
+	if (response.code !== 200) {
+	  return res.status(response.code).json(response);
+	}
 
-    await getMediaRequest(response.log.art,res);
+	await getMediaRequest(response.log.art,res);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+	console.error(error);
+	res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
 
 //GET - Images des sets | GET à Azuracast
 app.get("/api/v1/radio/artists/:artist_name/:episode_name.mp3", async (req, res) => {
   try {
-    const { artist_name,episode_name } = req.params;
+	const { artist_name,episode_name } = req.params;
 
-    const artist=await Artist.findOne({artiste_unique_name:artist_name});
-    const artist_id=artist.artist_id_azuracast;
+	const artist=await Artist.findOne({artiste_unique_name:artist_name});
+	const artist_id=artist.artist_id_azuracast;
 
-    const episode=await Episode.findOne({episode_unique_name:episode_name});
-    const episode_id=episode.episode_id_azuracast;
+	const episode=await Episode.findOne({episode_unique_name:episode_name});
+	const episode_id=episode.episode_id_azuracast;
 
-    await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res);
+	await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
+	console.error(error);
+	res.status(500).json({code: 500,type: "Internal Server Error",log: error.message});
   }
 });
