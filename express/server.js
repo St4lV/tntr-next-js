@@ -326,14 +326,9 @@ app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
 /// ARTISTES ///
 /**************/
 
-//GET - Artistes | Query à MongoDB
-app.get("/api/v1/radio/artists", async (req, res) => {
-
-  const artists_list = await Artist.find({published:true,enabled:true});
-    let artists_sets=[];
-    for (let i of artists_list){
-          const ep_nb = await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true})
-          artists_sets.push({
+async function artist_template(i){
+  const ep_nb = await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true})
+  return {
             title:i.artist_name,
             title_min:i.artiste_unique_name,
             cover:i.cover,
@@ -345,7 +340,16 @@ app.get("/api/v1/radio/artists", async (req, res) => {
             episodes:i.dj_sets,
             episodes_nb:ep_nb.length,
             c_timestamp:Date.parse(i.c_timestamp)
-          });
+          }
+}
+
+//GET - Artistes | Query à MongoDB
+app.get("/api/v1/radio/artists", async (req, res) => {
+
+  const artists_list = await Artist.find({published:true,enabled:true});
+    let artists_sets=[];
+    for (let i of artists_list){
+          artists_sets.push(await artist_template(i));
       };
   
   const artist_response={code:200,type:"Success",log:artists_sets}
@@ -360,16 +364,9 @@ app.get("/api/v1/radio/artists/latests", async (req, res) => {
     const artists_list = await Artist.find({published:true,enabled:true});
     let artists_sets=[];
     for (let i of artists_list){
-          artists_sets.push({
-            title:i.artist_name,
-            title_min:i.artiste_unique_name,
-            desc:i.desc,
-            desc_short:i.desc_short,
-            cover:i.cover,
-            c_timestamp:Date.parse(i.c_timestamp)
-          });
+          artists_sets.push(await artist_template(i));
       };
-
+    
     //Décroissant puis 10 premiers
     let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
     
@@ -418,18 +415,7 @@ app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
 
     let artists_sets=[];
     for (let i of episodes_list){
-      artists_sets.push({
-        artist:i.artist_name,
-        artist_unique_name:i.artiste_unique_name,
-        title:i.episode_name,
-        title_unique_name:i.episode_unique_name,
-        desc:i.desc,
-        duration:i.length,
-        cover:i.cover,
-        banner:i.banner,
-        media:i.media,
-        release_date:Date.parse(i.p_timestamp)
-      });
+      artists_sets.push(episode_template(i));
     };
 
     artists_sets.sort((a, b) => b.release_date - a.release_date)
@@ -445,13 +431,8 @@ app.get("/api/v1/radio/artists/:artist_name/sets", async (req, res) => {
 /// SETS ///
 /**********/
 
-//GET - Derniers sets publiés | Query à MongoDB
-app.get("/api/v1/radio/sets/latests", async (req, res) => {
-  try{
-    const episodes_list = await Episode.find({published:true,has_media:true});
-    let artists_sets=[];
-    for (let i of episodes_list){
-      artists_sets.push({
+function episode_template(i){
+  return {
         artist:i.artist_name,
         artist_unique_name:i.artiste_unique_name,
         title:i.episode_name,
@@ -462,7 +443,16 @@ app.get("/api/v1/radio/sets/latests", async (req, res) => {
         banner:i.banner,
         media:i.media,
         release_date:Date.parse(i.p_timestamp)
-      });
+      }
+}
+
+//GET - Derniers sets publiés | Query à MongoDB
+app.get("/api/v1/radio/sets/latests", async (req, res) => {
+  try{
+    const episodes_list = await Episode.find({published:true,has_media:true});
+    let artists_sets=[];
+    for (let i of episodes_list){
+      artists_sets.push(episode_template(i));
     };
 
     //Décroissant puis 10 premiers
