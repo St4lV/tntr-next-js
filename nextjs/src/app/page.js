@@ -79,7 +79,7 @@ export default function Home() {
 		for (let i of last_djs){
 		result+=`<br/><li data-artist="${i.title_min}" class="last-dj-released home-last-release-comp"><h2 class="home-last-release-artist-title">${i.title}</h2><br><img src=${i.cover} class="last-djs-img"/><br><p class="home-last-release-artist-desc">${i.desc_short}</p></li><br/>`;
 		}
-		document.querySelector("#last-dj-list").innerHTML=result
+		last_djs_list.innerHTML=result
 		const artist_elements_list=document.querySelectorAll(".last-dj-released")
 		for (let i of artist_elements_list){
 		i.addEventListener("click",function(){

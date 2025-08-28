@@ -111,6 +111,7 @@ const Artist = mongoose.model("Artist", new mongoose.Schema({
   c_timestamp: {type: Date, required: false}, //timestamp de création
   owned_by:{type: String}, //Userid auquel l'artiste est relié 
   dj_sets:{type:String},
+  published_episodes:{type:Number},
   enabled:{type: Boolean}, 
   published:{type: Boolean},
 }));
@@ -145,16 +146,8 @@ async function updateArtistFromAzuracast(){
   const artists_raw_data=response.log
 
   for (i of artists_raw_data){
-	/*const artist_episodes=await Episode.find({artist_id_azuracast:i.id});
-	let oldest_set_timestamp;
-	if(artist_episodes){
-	  let oldest_sets_timestamps=[];
-	  for (j of artist_episodes){
-		oldest_sets_timestamps.push(j.c_timestamp)
-	  }
-	  oldest_sets_timestamps.sort()
-	  oldest_set_timestamp=oldest_sets_timestamps[0]
-	}*/
+
+	const ep_nb = await Episode.find({artist_id_azuracast:i.id,published:true})
 	await Artist.findOneAndUpdate(
 	  { artist_id_azuracast: i.id },
 	  {
@@ -170,6 +163,7 @@ async function updateArtistFromAzuracast(){
 		lang: i.language,
 		dj_sets:`${front_api_link}/radio/artists/${URLize(i.title)}/sets`,
 		//c_timestamp:oldest_set_timestamp,
+		published_episodes:ep_nb.length,
 		enabled:i.is_enabled, 
 		published:i.is_published,
 	  },
@@ -276,6 +270,14 @@ const userSelfModifyPasswordSchema = Joi.object({
 
 /////////////////////// ENDPOINTS API ///////////////////////
 
+app.get("/update", async (req, res) => {
+	
+	updateArtistFromAzuracast();
+	updateEpisodesFromAzuracast();
+
+	return res.status(200).json({code:200,type:"Success",log:"Updated"});
+});
+
 /// AZURACAST UTILS ///
 
 //GET - Actuellement joué | GET à Azuracast
@@ -326,21 +328,20 @@ app.get("/api/v1/radio/mountpoints/:mount", async (req, res) => {
 /// ARTISTES ///
 /**************/
 
-async function artist_template(i){
-  const ep_nb = await Episode.find({artist_id_azuracast:i.artist_id_azuracast,published:true})
-  return {
-			title:i.artist_name,
-			title_min:i.artiste_unique_name,
-			cover:i.cover,
-			desc:i.desc,
-			desc_short:i.desc_short,
-			link:i.link,
-			external_links:i.external_links,
-			lang:i.lang,
-			episodes:i.dj_sets,
-			episodes_nb:ep_nb.length,
-			c_timestamp:Date.parse(i.c_timestamp)
-		  }
+function artist_template(i,ep_nb){
+  	return {
+		title:i.artist_name,
+		title_min:i.artiste_unique_name,
+		cover:i.cover,
+		desc:i.desc,
+		desc_short:i.desc_short,
+		link:i.link,
+		external_links:i.external_links,
+		lang:i.lang,
+		episodes:i.dj_sets,
+		episodes_nb:i.published_episodes,
+		c_timestamp:Date.parse(i.c_timestamp)
+	}
 }
 
 //GET - Artistes | Query à MongoDB
@@ -349,8 +350,8 @@ app.get("/api/v1/radio/artists", async (req, res) => {
   const artists_list = await Artist.find({published:true,enabled:true});
 	let artists_sets=[];
 	for (let i of artists_list){
-		  artists_sets.push(await artist_template(i));
-	  };
+		artists_sets.push(artist_template(i));
+	};
   
   const artist_response={code:200,type:"Success",log:artists_sets}
 
@@ -359,20 +360,21 @@ app.get("/api/v1/radio/artists", async (req, res) => {
 
 //GET - Derniers artistes publiés | Query à MongoDB
 app.get("/api/v1/radio/artists/latests", async (req, res) => {
-  try{
-
-	const artists_list = await Artist.find({published:true,enabled:true});
-	let artists_sets=[];
-	for (let i of artists_list){
-		  artists_sets.push(await artist_template(i));
-	  };
 	
-	//Décroissant puis 10 premiers
-	let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
-	
+	try{
 
-	return res.status(200).json({code:200,type:"Success",log:latest_10_artists});
-
+		const artists_list = await Artist.find({published:true,enabled:true});
+		let artists_sets=[];
+		for (let i of artists_list){
+			
+			artists_sets.push(artist_template(i));
+		};
+		
+		//Décroissant puis 10 premiers
+		let latest_10_artists= artists_sets.sort((a, b) => b.c_timestamp - a.c_timestamp).slice(0,10);
+		
+		return res.status(200).json({code:200,type:"Success",log:latest_10_artists});
+	  
 	} catch (error) {
 	  return { code: 500, type: "Internal Server Error", log: error.message };
 	}
