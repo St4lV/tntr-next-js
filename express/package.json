@@ -1,13 +1,13 @@
 {
-  "name": "express",
+  "name": "tntr-express-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "concurrently \"cd ../nextjs/ && npm run dev\" \"nodemon server.js\" \"cd ../discordjs/ && npm run dev\""
   },
   "keywords": [],
-  "author": "",
+  "author": "St4lV",
   "license": "ISC",
   "description": "",
   "dependencies": {
