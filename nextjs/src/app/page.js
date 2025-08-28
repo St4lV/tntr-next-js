@@ -41,34 +41,41 @@ export default function Home() {
 		const last_sets_list = document.querySelector("#last-dj-sets");
 		let to_return="";
 		if (!last_sets){
-		return
+			return
 		}
 		let element_list=[]
 		for (let i of last_sets) {
-		const released_at = new Date(i.release_date*1000);
-		const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
+			const released_at = new Date(i.release_date*1000);
+			const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
 
-		let durationMinutes = Math.floor(i.duration / 60);
-		let durationHours = Math.floor(durationMinutes / 60);
-		let totalMinutes = durationMinutes % 60;
-		totalMinutes = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+			let durationSecondes = Math.floor(i.duration);
+				let durationMinutes = Math.floor(durationSecondes / 60);
+				let durationHours   = Math.floor(durationMinutes / 60);
 
-		let durationFormatted = durationHours > 0
-			? `${durationHours}h${totalMinutes}`
-			: `${durationMinutes}min`;
+				let totalMinutes  = durationMinutes % 60;
+				let totalSecondes = durationSecondes % 60;
 
-		element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover});
-		to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
-		last_sets_list.innerHTML=to_return
+				totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+				totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
+
+				let durationFormatted = durationHours > 0
+				? `${durationHours}h${totalMinutes}min`
+				: durationSecondes > 0
+					? `${durationMinutes}min${totalSecondes}s`
+					: `${durationMinutes}min`;
+
+			element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover});
+			to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
+			last_sets_list.innerHTML=to_return
 		};
 		for (let i of element_list){
-		let element = document.getElementById(`${i.id}`)
-		element.addEventListener("click",function(){
-			setRadioPlaying(false)
-			setMediaPlayed(i.media);
-			setImgFromPlaying(i.cover)
-		});
-		}
+			let element = document.getElementById(`${i.id}`)
+			element.addEventListener("click",function(){
+				setRadioPlaying(false)
+				setMediaPlayed(i.media);
+				setImgFromPlaying(i.cover)
+			});
+		};
 	};
 
 	function updateLastDJs(){

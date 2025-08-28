@@ -54,6 +54,25 @@ export default function ArtistSetsPage({ params }) {
 		}
 	}
 
+	const released_at = new Date(act_set_obj.release_date*1000);
+	const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
+
+	let durationSecondes = Math.floor(act_set_obj.duration);
+		let durationMinutes = Math.floor(durationSecondes / 60);
+		let durationHours   = Math.floor(durationMinutes / 60);
+
+		let totalMinutes  = durationMinutes % 60;
+		let totalSecondes = durationSecondes % 60;
+
+		totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+		totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
+
+		let durationFormatted = durationHours > 0
+		? `${durationHours}h${totalMinutes}min`
+		: durationSecondes > 0
+			? `${durationMinutes}min${totalSecondes}s`
+			: `${durationMinutes}min`;
+
 	async function isSetExist() {
 		if (artist_sets.length === 0){return}
 		const found = artist_sets.find(sets_obj=>{
@@ -116,12 +135,14 @@ export default function ArtistSetsPage({ params }) {
 						<div id="episode-title-header">
 							<button className="play_btn" data-playing={act_set_playing} onClick={playMedia}>{act_set_playing ? pause_btn : play_btn }</button>
 							<h3 id="episode-page-title">{act_set_obj.title}</h3>
+							<p>{durationFormatted}</p>
 						</div>
 						<hr/>
 						<br/>
 						<p className="episode-page-desc">{act_set_obj.desc}</p>
 					</div>
 				</div>
+				<p>Publié le {releasedAtFormatted}</p>
 				<hr/>
 			</article>
 			</>) : ""

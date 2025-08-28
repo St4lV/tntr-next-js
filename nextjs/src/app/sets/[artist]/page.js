@@ -111,7 +111,27 @@ export default function ArtistPage({ params }) {
 		for (let i of artist_sets){
 			let btn_id=i.artist_unique_name+"-"+i.title_unique_name
 			let ep_class="episode-"+i.title_unique_name
-			artist_sets_div.innerHTML+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img ${ep_class}" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><div id="episode-title-header"><button id="${btn_id}" class="play_btn" data-playing="false">${play_btn}</button><h3 id="episode-title" class="${ep_class}">${i.title}</h3></div><hr><br><p class="episodes-desc ${ep_class}">${i.desc}</p></div></div><hr></article>`
+
+			const released_at = new Date(i.release_date/* *1000*/);
+			const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
+
+			let durationSecondes = Math.floor(i.duration);
+			let durationMinutes = Math.floor(durationSecondes / 60);
+			let durationHours   = Math.floor(durationMinutes / 60);
+
+			let totalMinutes  = durationMinutes % 60;
+			let totalSecondes = durationSecondes % 60;
+
+			totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+			totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
+
+			let durationFormatted = durationHours > 0
+			? `${durationHours}h${totalMinutes}m${totalSecondes}s`
+			: durationMinutes > 0
+				? `${durationMinutes}m${totalSecondes}s`
+				: `${totalSecondes}s`;
+
+			artist_sets_div.innerHTML+=`<article class="episodes-comp"><hr><div class="episodes-comp-internal"><img class="episodes-img ${ep_class}" src='${i.cover}' alt='${i.title} cover'/><div class="episodes-text"><div id="episode-title-header"><button id="${btn_id}" class="play_btn" data-playing="false">${play_btn}</button><h3 id="episode-title" class="${ep_class}">${i.title}</h3><p>${durationFormatted}</p></div><hr><br><p class="episodes-desc ${ep_class}">${i.desc}</p></div></div><p>Publié le ${releasedAtFormatted}/<p><hr></article>`
 			play_btn_list.push({id:btn_id,media:i.media,cover:i.cover})
 			ep_article_list.push({id:ep_class,artist:i.artist_unique_name,title:i.title_unique_name})
 		}
