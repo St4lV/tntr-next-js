@@ -1,137 +1,139 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Link from "next/link";
 import { useGlobalContext } from "@/app/GlobalContext";
 
-
 export default function Home() {
+	const {schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
 
-	const {schedule, setScheduleEntries, last_djs, last_sets, setRadioPlaying, setMediaPlayed, setImgFromPlaying} = useGlobalContext();
-	const router = useRouter();
 	const [table_open, setTableOpen] = useState(false);
-	
-	function updateScheduleRows(){
-		
+
+	function updateScheduleRows() {
 		if (table_open) {
-		setScheduleEntries(0)
-		setTableOpen(false)
-
+			setScheduleEntries(0);
+			setTableOpen(false);
 		} else {
-		setScheduleEntries(1)
-		setTableOpen(true)
-		}
-	}
+			setScheduleEntries(1);
+			setTableOpen(true);
+		};
+	};
 
-	function updateSchedule(){
+	function renderSchedule() {
+		if (!schedule?.log) return null;
 
-		const planning_list = document.querySelector("#planning-list");
-		let to_return="";
-		if (!schedule.log){
-		return
-		}
-		for (let i of schedule.log){
+		return schedule.log.map((i, idx) => {
 			const date = new Date(i.start);
-			to_return+=`<tr><td>${i.is_now ? "> " : ""} ${i.name}</td><td>${date.toLocaleTimeString('fr-FR', { hour12: false, hour: '2-digit', minute: '2-digit' })}</td></tr>`;
-		}
-		planning_list.innerHTML=to_return
+			return (
+				<tr key={idx}>
+					<td>{i.is_now ? "> " : ""} {i.name}</td>
+					<td>
+						{date.toLocaleTimeString("fr-FR", {
+						hour12: false,
+						hour: "2-digit",
+						minute: "2-digit",
+						})}
+					</td>
+				</tr>
+			);
+		});
 	}
 
-	function updateLastSets(){
-		const last_sets_list = document.querySelector("#last-dj-sets");
-		let to_return="";
-		if (!last_sets){
-			return
-		}
-		let element_list=[]
-		for (let i of last_sets) {
+	function renderLastSets() {
+		if (!last_sets) return null;
+
+		return last_sets.map((i) => {
 			const released_at = new Date(i.release_date);
-			const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
+			const releasedAtFormatted = released_at.toLocaleDateString("fr-FR");
 
 			let durationSecondes = Math.floor(i.duration);
 			let durationMinutes = Math.floor(durationSecondes / 60);
-			let durationHours   = Math.floor(durationMinutes / 60);
+			let durationHours = Math.floor(durationMinutes / 60);
 
-			let totalMinutes  = durationMinutes % 60;
+			let totalMinutes = durationMinutes % 60;
 			let totalSecondes = durationSecondes % 60;
 
-			totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+			totalMinutes = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
 			totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
 
-			let durationFormatted = durationHours > 0
-			? `${durationHours}h${totalMinutes}min` : durationSecondes > 0 ? `${durationMinutes}min${totalSecondes}s` : `${durationMinutes}min`;
+			let durationFormatted =
+				durationHours > 0
+				? `${durationHours}h${totalMinutes}min`
+				: durationSecondes > 0
+				? `${durationMinutes}min${totalSecondes}s`
+				: `${durationMinutes}min`;
 
-			element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover,artist:i.artist_unique_name,episode:i.title_unique_name});
-			to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><h2 class="home-last-release-title">${i.title}</h2><img src=${i.cover} class="last-sets-img"/><br/><h3 class="home-last-release-title">${i.artist}</h3><br/><p class="home-last-release-date-duration">${releasedAtFormatted} - ${durationFormatted}</p></li><br/>`;
-			last_sets_list.innerHTML=to_return
-		};
-		for (let i of element_list){
-			let element = document.getElementById(`${i.id}`)
-			element.addEventListener("click",function(){
-				episodePage(i.artist,i.episode)
-			});
-		};
+			return (
+				<div key={`${i.artist_unique_name}-${i.title_unique_name}`}>
+					<br/>
+					<li
+						key={i.artist_unique_name + "-" + i.title_unique_name}
+						id={i.artist_unique_name + "-" + i.title_unique_name}
+						className="home-last-release-comp"
+					>
+						<Link href={`/sets/${i.artist_unique_name}/${i.title_unique_name}`}>
+						<h2 className="home-last-release-title">{i.title}</h2>
+						<img src={i.cover} className="last-sets-img" alt={i.title} />
+						<br />
+						<h3 className="home-last-release-title">{i.artist}</h3>
+						<br />
+						<p className="home-last-release-date-duration">
+							{releasedAtFormatted} - {durationFormatted}
+						</p>
+						<br/>
+						</Link>
+					</li>
+				</div>
+			);
+		});
+	}
 
-		function episodePage(artist_name,episode_name){
-			router.push(`/sets/${artist_name}/${episode_name}`);
-		}
-	};
+	function renderLastDJs() {
+		if (!last_djs) return null;
 
-	function updateLastDJs(){
-		const last_djs_list = document.querySelector("#last-dj-list");
-		if (!last_djs){return}
-		let result=""
+		return last_djs.map((i) => (
+			<div key={i.title_min}>
+				<li data-artist={i.title_min} className="last-dj-released home-last-release-comp">
+					<Link href={`/sets/${i.title_min}`}>
+					<h2 className="home-last-release-artist-title">{i.title}</h2>
+					<br/>
+					<img src={i.cover} className="last-djs-img" alt={i.title} />
+					<br/>
+					<p className="home-last-release-artist-desc">{i.desc_short}</p>
+					</Link>
+				</li>
+			</div>
+		));
+	}
 
-		for (let i of last_djs){
-		result+=`<br/><li data-artist="${i.title_min}" class="last-dj-released home-last-release-comp"><h2 class="home-last-release-artist-title">${i.title}</h2><br><img src=${i.cover} class="last-djs-img"/><br><p class="home-last-release-artist-desc">${i.desc_short}</p></li><br/>`;
-		}
-		last_djs_list.innerHTML=result
-		const artist_elements_list=document.querySelectorAll(".last-dj-released")
-		for (let i of artist_elements_list){
-		i.addEventListener("click",function(){
-			artistPage(i.dataset.artist)
-		})
-		}
 
-		function artistPage(artist_name){
-		router.push(`/sets/${artist_name}`)
-		}
-	};
+  	return (
+    	<main>
+			<div id="t-holder" onClick={updateScheduleRows} data-opened={table_open}>
+				<table id="schedule-table">
+				<caption>
+					<h2>Planning de diffusion</h2>
+					<h4>(Effectif jusqu'au lendemain, minuit.)</h4>
+				</caption>
+				<thead>
+					<tr>
+					<th>Playlist</th>
+					<th>Heure de diffusion</th>
+					</tr>
+				</thead>
+				<tbody id="planning-list">{renderSchedule()}</tbody>
+				</table>
+			</div>
 
-	useEffect(() => {
-		updateSchedule();
-	}, [schedule]);
+			<p id="schedule-tooltip">
+				{table_open ? "Cliquez sur le tableau pour afficher moins d'entrées " : "Cliquez sur le tableau pour afficher plus d'entrées"}
+			</p>
 
-	useEffect(() => {
-		updateLastSets();
-	}, [last_sets]);
+			<h2>Derniers sets ajoutés</h2>
+			<ul id="last-dj-sets">{renderLastSets()}</ul>
 
-	useEffect(() => {
-		updateLastDJs();
-	}, [last_djs]);
-
-	return (
-	<main>
-		<div id="t-holder" onClick={updateScheduleRows} data-opened={table_open}>
-		<table id="schedule-table" >
-			<caption>
-				<h2>Planning de diffusion</h2>
-				<h4>(Effectif jusqu'au lendemain, minuit.)</h4>
-			</caption>
-			<thead>
-			<tr>
-				<th>Playlist</th>
-				<th>Heure de diffusion</th>
-			</tr>
-			</thead>
-			<tbody id="planning-list">
-			</tbody>
-		</table>
-		</div>
-		<p id="schedule-tooltip">{table_open ? "Cliquez sur le tableau pour afficher moins d'entrées ":"Cliquez sur le tableau pour afficher plus d'entrées"}</p>
-		<h2>Derniers sets ajoutés</h2>
-		<ul id="last-dj-sets"></ul>
-		<h2>Derniers djs ajoutés</h2>
-		<ul id="last-dj-list"></ul>
-	</main>);
+			<h2>Derniers djs ajoutés</h2>
+			<ul id="last-dj-list">{renderLastDJs()}</ul>
+		</main>
+	);
 }
