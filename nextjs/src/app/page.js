@@ -45,7 +45,7 @@ export default function Home() {
 		}
 		let element_list=[]
 		for (let i of last_sets) {
-			const released_at = new Date(i.release_date*1000);
+			const released_at = new Date(i.release_date);
 			const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
 
 			let durationSecondes = Math.floor(i.duration);
@@ -65,7 +65,7 @@ export default function Home() {
 					: `${durationMinutes}min`;
 
 			element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover});
-			to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><img src=${i.cover} class="last-sets-img"/><br/>${i.artist} - ${i.title}<br/>${durationFormatted} - ${releasedAtFormatted}</li><br/>`;
+			to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><h2 class="home-last-release-title">${i.title}</h2><img src=${i.cover} class="last-sets-img"/><br/><h3 class="home-last-release-title">${i.artist}</h3><br/><p class="home-last-release-date-duration">${releasedAtFormatted} - ${durationFormatted}</p></li><br/>`;
 			last_sets_list.innerHTML=to_return
 		};
 		for (let i of element_list){

@@ -158,7 +158,7 @@ main{
     border-radius: 50%;
 }
 
- .home-last-release-comp{
+.home-last-release-comp{
     cursor:pointer;
     background-color: black;
     min-width: 200px;
@@ -175,14 +175,21 @@ main{
     margin: 10px 5px;
  }
 
- .home-last-release-artist-title{
+.home-last-release-title{
+    overflow-x: hidden;
+    text-wrap-mode: nowrap;
+    text-align: left;
+    margin: 10px 0px;
+    max-width: 171px;
+}
+
+.home-last-release-artist-title{
     margin: 10px 0px;
     text-wrap-mode:nowrap;
     text-align: left;
-    padding: 5px 0px;
  }
 
- .home-last-release-artist-desc{
+.home-last-release-artist-desc{
     padding: 5px 0px;
     overflow-y: hidden;
     overflow-x: hidden;
