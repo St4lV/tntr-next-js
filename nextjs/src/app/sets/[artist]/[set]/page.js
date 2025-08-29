@@ -13,7 +13,6 @@ export default function ArtistSetsPage({ params }) {
 	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused} = useGlobalContext();
 	
 	const [page_loaded , setPageLoaded] = useState(false)
-	const [act_artist_obj , setActArtistObj] = useState({})
 	const [act_set_obj , setActSetObj] = useState({})
 	const [artist_sets, setArtistSets]= useState([])
 	const [act_set_playing, setActSetPlaying]=useState(false)
@@ -21,7 +20,6 @@ export default function ArtistSetsPage({ params }) {
 	async function isArtistExist(){
 		if (artists_list.length ===0){return}
 		const found = artists_list.find(artist_obj=>{
-			setActArtistObj(artist_obj);
 			return artist_obj.title_min === decodeURIComponent(artist)
 		})
 		if (!found){router.push("/sets");return}
@@ -54,7 +52,7 @@ export default function ArtistSetsPage({ params }) {
 		}
 	}
 
-	const released_at = new Date(act_set_obj.release_date*1000);
+	const released_at = new Date(act_set_obj.release_date);
 	const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
 
 	let durationSecondes = Math.floor(act_set_obj.duration);
@@ -94,19 +92,6 @@ export default function ArtistSetsPage({ params }) {
 		isSetExist();
 	}, [artist_sets]);
 
-	function playMedia(){
-		setRadioPlaying(false)
-		setMediaPlayed(act_set_obj.media);
-		setImgFromPlaying(act_set_obj.cover)
-		if (act_set_playing){
-			setMediaPaused(true)
-			setActSetPlaying(false)
-		} else {
-			setMediaPaused(false)
-			setActSetPlaying(true)
-		}
-	}
-
 	useEffect(() => {
 		if (media_played == act_set_obj.media){
 			if (act_set_playing){
@@ -121,31 +106,45 @@ export default function ArtistSetsPage({ params }) {
 	const play_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/></svg>
 	const pause_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/></svg>
   
+	
+	const isPlaying = media_played === act_set_obj.media && !is_media_paused;
+	const togglePlay = () => {
+		if (isPlaying) {
+			setMediaPaused(true);
+		} else {
+			setMediaPaused(false);
+			setRadioPlaying(false);
+			setMediaPlayed(act_set_obj.media);
+			setImgFromPlaying(act_set_obj.cover);
+		}
+	};
 
 	return (
 		<main>
 			{act_set_obj && page_loaded ? (
 			<>
 			<h2><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
-			<article className="episode-page-comp">
+			<article key={act_set_obj.title_unique_name} className="episodes-comp">
 				<hr/>
-				<div className="episode-page-comp-internal">
-					<img className="episode-page-img" src={act_set_obj.cover} alt={act_set_obj.title+' cover'}/>
-					<div className="episode-page-text">
-						<div id="episode-title-header">
-							<button className="play_btn" data-playing={act_set_playing} onClick={playMedia}>{act_set_playing ? pause_btn : play_btn }</button>
-							<h3 id="episode-page-title">{act_set_obj.title}</h3>
-							<p>{durationFormatted}</p>
+				<div className="episodes-comp-internal">
+					<img className={`episodes-img episode-${act_set_obj.title_unique_name}`} src={act_set_obj.cover} alt={`${act_set_obj.title} cover`}/>
+					<div className="episodes-text">
+						<div className="episode-title-header">
+							<div className="episode-title-header-comp">
+								<button className="play_btn" data-playing={isPlaying} onClick={togglePlay}>{isPlaying ? pause_btn : play_btn}</button>	
+								<h3 className={`episode-${act_set_obj.title_unique_name} episode-title`}>{act_set_obj.title}</h3>
+								<p className="episode-duration">{durationFormatted}</p>
+							</div>
+							<p className="episode-published-at">Publié le {releasedAtFormatted}</p>
 						</div>
 						<hr/>
 						<br/>
-						<p className="episode-page-desc">{act_set_obj.desc}</p>
+						<p className={`episodes-desc episode-${act_set_obj.title_unique_name}`}>{act_set_obj.desc}</p>
 					</div>
 				</div>
-				<p>Publié le {releasedAtFormatted}</p>
 				<hr/>
 			</article>
-			</>) : ""
+			</>) : ("")
 			}
 		</main>
 	)
