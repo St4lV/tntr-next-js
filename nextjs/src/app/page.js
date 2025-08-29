@@ -49,33 +49,32 @@ export default function Home() {
 			const releasedAtFormatted = released_at.toLocaleDateString('fr-FR');
 
 			let durationSecondes = Math.floor(i.duration);
-				let durationMinutes = Math.floor(durationSecondes / 60);
-				let durationHours   = Math.floor(durationMinutes / 60);
+			let durationMinutes = Math.floor(durationSecondes / 60);
+			let durationHours   = Math.floor(durationMinutes / 60);
 
-				let totalMinutes  = durationMinutes % 60;
-				let totalSecondes = durationSecondes % 60;
+			let totalMinutes  = durationMinutes % 60;
+			let totalSecondes = durationSecondes % 60;
 
-				totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
-				totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
+			totalMinutes  = totalMinutes <= 9 ? "0" + totalMinutes : totalMinutes;
+			totalSecondes = totalSecondes <= 9 ? "0" + totalSecondes : totalSecondes;
 
-				let durationFormatted = durationHours > 0
-				? `${durationHours}h${totalMinutes}min`
-				: durationSecondes > 0
-					? `${durationMinutes}min${totalSecondes}s`
-					: `${durationMinutes}min`;
+			let durationFormatted = durationHours > 0
+			? `${durationHours}h${totalMinutes}min` : durationSecondes > 0 ? `${durationMinutes}min${totalSecondes}s` : `${durationMinutes}min`;
 
-			element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover});
+			element_list.push({id:i.artist_unique_name+"-"+i.title_unique_name,media:i.media,cover:i.cover,artist:i.artist_unique_name,episode:i.title_unique_name});
 			to_return += `<br/><li id="${i.artist_unique_name}-${i.title_unique_name}" class="home-last-release-comp"><h2 class="home-last-release-title">${i.title}</h2><img src=${i.cover} class="last-sets-img"/><br/><h3 class="home-last-release-title">${i.artist}</h3><br/><p class="home-last-release-date-duration">${releasedAtFormatted} - ${durationFormatted}</p></li><br/>`;
 			last_sets_list.innerHTML=to_return
 		};
 		for (let i of element_list){
 			let element = document.getElementById(`${i.id}`)
 			element.addEventListener("click",function(){
-				setRadioPlaying(false)
-				setMediaPlayed(i.media);
-				setImgFromPlaying(i.cover)
+				episodePage(i.artist,i.episode)
 			});
 		};
+
+		function episodePage(artist_name,episode_name){
+			router.push(`/sets/${artist_name}/${episode_name}`);
+		}
 	};
 
 	function updateLastDJs(){
@@ -90,11 +89,11 @@ export default function Home() {
 		const artist_elements_list=document.querySelectorAll(".last-dj-released")
 		for (let i of artist_elements_list){
 		i.addEventListener("click",function(){
-			ArtistPage(i.dataset.artist)
+			artistPage(i.dataset.artist)
 		})
 		}
 
-		function ArtistPage(artist_name){
+		function artistPage(artist_name){
 		router.push(`/sets/${artist_name}`)
 		}
 	};
