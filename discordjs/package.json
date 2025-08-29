@@ -8,8 +8,8 @@
     "dev": "concurrently \"nodemon deploy-commands.js\" \"nodemon index.js\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "St4lV",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "discord.js": "^14.22.1",

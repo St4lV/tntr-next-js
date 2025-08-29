@@ -1,7 +1,10 @@
 {
-  "name": "nextjs",
+  "name": "tntr-nextjs-frontend",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "author": "St4lV",
+  "license": "MIT",
+  "description": "",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
