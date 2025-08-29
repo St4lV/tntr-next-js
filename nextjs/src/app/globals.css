@@ -334,16 +334,30 @@ main{
     white-space: pre-line;
     cursor: pointer;
 }
-
-#episode-title-header{
+.episode-title-header{
     display: flex;
     align-items: center;
     margin-left: 10px;
+    justify-content: space-between;
 }
 
-#episode-title{
+.episode-title-header-comp{
+    display: flex;
+    align-items: center;
+}
+
+.episode-title{
     margin-left: 10px;
     cursor: pointer;
+}
+
+.episode-duration{
+    margin-left: 15px;
+    font-size: 0.8em;
+}
+
+.episode-published-at{
+    margin-right: 20px;
 }
 
 .play_btn *{
