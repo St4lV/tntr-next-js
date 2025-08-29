@@ -62,8 +62,12 @@ header{
     margin: 5px 10px;
 }
 
-.header-bar{
+h1{
     font-size: 2em;
+}
+
+.header-bar{
+    text-align: center;
     margin-top:10px;
 }
 

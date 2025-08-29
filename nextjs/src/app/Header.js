@@ -1,11 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Header(){
 
+    
     const [menu_opened, setMenuOpened] = useState(false);
+    const [act_time, updateTime] = useState(0);
+
+    const { radio_data } = useGlobalContext();
+
     function burgerMenu(){
         setMenuOpened(!menu_opened);
     }
@@ -14,11 +20,36 @@ export default function Header(){
         setMenuOpened(false);
     }
 
+    function FormatTime(time) {
+        const date = new Date(time);
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+
+    useEffect(() => {
+        updateTime(Date.now())
+        const act_time_fetch = setInterval(() => {
+            updateTime(Date.now());
+        }, 1_000);
+         return () => {clearInterval(act_time_fetch);}
+    },[])
+
+    useEffect(() => {
+        
+    },[act_time])
+    //Window.onload(setLoaded(true))
     return(
         <header>
             <div className="header-bar">
-            <h1>Tirnatek Radio</h1>
+            <Link href="/"><h1>Tirnatek Radio</h1></Link>
+            <p>Playlist : {radio_data.now_playing ? radio_data.now_playing.playlist : ""}</p>
+            <p>{FormatTime(act_time)}</p>
             </div>
+            
             <nav className="burger-menu">
                 <svg onClick={burgerMenu} id="burger-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
