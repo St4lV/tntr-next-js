@@ -10,14 +10,16 @@ export default function Header(){
     const [menu_opened, setMenuOpened] = useState(false);
     const [act_time, updateTime] = useState(0);
 
-    const { radio_data, one_second_time_signal, setOneSecondTimeSignal } = useGlobalContext();
+    const { radio_data, one_second_time_signal, setOneSecondTimeSignal, setHeaderMenuOpened } = useGlobalContext();
 
     function burgerMenu(){
         setMenuOpened(!menu_opened);
+        setHeaderMenuOpened(!menu_opened)
     }
     
     function closeMenu(){
         setMenuOpened(false);
+        setHeaderMenuOpened(false)
     }
 
     function FormatTime(time) {

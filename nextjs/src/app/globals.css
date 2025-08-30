@@ -7,542 +7,1128 @@
 }
 
 body {
-    font-family: Orbitron, sans-serif;
-    font-weight: bold;
-    color: aliceblue;
-    background-image: url("/tntr-bg.jpg") ;
-    background-size: 1920px 1080px;
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        font-family: Orbitron, sans-serif;
+        font-weight: bold;
+        color: aliceblue;
+        background-image: url("/tntr-bg.jpg") ;
+        background-size: 1920px 1080px;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-h2{
-  font-size: 1.5em;
-}
+@media (min-width: 958px) {
 
-/*HEADER & FOOTER*/
+    h1{
+        font-size: 2em;
+    }
 
-header,footer{
-    position: fixed;
-    width: 100%;
-    height: 150px;
-    min-height: fit-content;
+    h2{
+        font-size: 1.5em;
+    }
+
+    /*HEADER & FOOTER*/
+
+    header,footer{
+        position: fixed;
+        width: 100%;
+        min-height: fit-content;
+        background-color: black;
+        display: flex;
+    }
+
+    /*HEADER*/
+
+    header{
+        justify-content: center;
+        top:0px;
+        height: 110px;
+    }
+
+    #header-side-menu{
+        overflow:hidden;
+        transition: width 0.5s ease;
+        position: fixed;
+        top: 110px;
+        height: 100%;
+        background-color: #010101ee;
+    }
+
+    #header-side-menu[data-opened=false]{
+        width: 0px;
+    }
+
+    #header-side-menu[data-opened=true]{
+        width: 180px;
+    }
+
+    .header-side-menu-element{
+        text-wrap-mode:nowrap;
+        margin: 5px 10px;
+    }
+
+    .header-bar{
+        text-align: center;
+        margin-top:10px;
+    }
+
+    .burger-menu{
+        position: fixed;
+        left:10px;
+        top: 15px;
+    }
+
+    #burger-menu-icon{
+        width: 80px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    /*FOOTER*/
+
+    footer{
+        bottom: 0px;
+        display: block;
+        height: 150px;
+    }
+
+    #footer-progress-bar{
+        width: 100%;
+        height: 5px;
+        position: fixed;
+        bottom: 150px;
+        background-color: aliceblue;
+    }
+
+    #footer-progress-bar-internal{
+        height: 5px;
+        background-color: #00bcd4;
+        transition: width 1s linear;
+    }
+
+
+    #footer-data-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #footer-play-button *{
+        height: 70px;
+        width: 70px;
+    }
+
+    #footer-song-data-container{
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    #footer-song-data{
+        margin-left: 20px ;
+    }
+
+    #audio-player{
+        display: none;
+    }
+
+    #footer-btn-select{
+        height: 130px;
+        width: 300px;
+        text-align: center;
+        margin-right: 20px ;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    #song-cover{
+    min-height: 120px;
+    min-width: 120px;
+    max-height: 120px;
+    max-width: 120px;
+    margin-top: 15px ;
+    }
+
+    #src-bitrate-list{
     background-color: black;
-    display: flex;
-}
-
-/*HEADER*/
-
-header{
-    justify-content: center;
-    top:0px
-}
-
-#header-side-menu{
-    overflow:hidden;
-    transition: width 0.5s ease;
-    position: fixed;
-    top: 150px;
-    height: 100%;
-    background-color: #010101ee;
-}
-
-#header-side-menu[data-opened=false]{
-    width: 0px;
-}
-
-#header-side-menu[data-opened=true]{
-    width: 180px;
-}
-
-.header-side-menu-element{
-    text-wrap-mode:nowrap;
-    margin: 5px 10px;
-}
-
-h1{
-    font-size: 2em;
-}
-
-.header-bar{
-    text-align: center;
-    margin-top:10px;
-}
-
-.burger-menu{
-    position: fixed;
-    left:10px;
-    top: 30px;
-}
-
-#burger-menu-icon{
-    width: 80px;
-    height: auto;
-    cursor: pointer;
-}
-
-/*FOOTER*/
-
-footer{
-    bottom: 0px;
-    display: block;
-}
-
-#footer-progress-bar{
-    width: 100%;
-    height: 5px;
-    position: fixed;
-    bottom: 150px;
-    background-color: aliceblue;
-}
-
-#footer-progress-bar-internal{
-    height: 5px;
-    background-color: #00bcd4;
-    transition: width 1s linear;
-}
-
-
-#footer-data-container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#footer-play-button *{
-    height: 70px;
-    width: 70px;
-}
-
-#footer-song-data-container{
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-}
-
-#footer-song-data{
-    margin-left: 20px ;
-}
-
-#audio-player{
-    display: none;
-}
-
-#footer-btn-select{
-    height: 130px;
-    width: 300px;
-    text-align: center;
-    margin-right: 20px ;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-#song-cover{
-  min-height: 120px;
-  min-width: 120px;
-  max-height: 120px;
-  max-width: 120px;
-}
-
-#src-bitrate-list{
-  background-color: black;
-}
-
-#return-to-direct-btn, #src-bitrate-list{
-    margin: 20px 0px ;
-}
-
-#footer-volume-container{
-    margin: 15px 0px;
-    display: flex;
-}
-
-#footer-volume-icon{
-    min-width: 80px;
-    max-width: 80px;
-    min-height: 60px;
-}
-
-#footer-volume-icon * {
-    height: 50px;
-    width : 50px;
-    margin-left: 10px ;
-}
-
-#footer-volume-range{
-    width: 100%;
-    margin-right: 10px 
-}
-
-/*MAIN*/
-
-main{
-    margin-top: 150px;
-    margin-bottom: 156px;
-    padding: 0px 5px;
-    width: 100%;
-    display: flex;
-    justify-self: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#main-comp{
-    background-color: #010101aa;
-    width: 90%;
-    min-height: 85vh;
-    margin: 0px 5%;
-    display: flex;
-    flex-direction: column;
-}
-
-/*ENDPAGE COMP*/
-
-#endpage{
-    margin-top: auto;
-    background-color: #010101cc;
-    bottom: 0px;
-}
-
-#endpage-comp{
-    align-self: flex-end;
-    display: flex;
-}
-
-#endpage-tirnatek{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px 30px ;
-}
-
-#endpage-tirnatek-img{
-    min-height: 100px;
-    max-height: 100px;
-    min-width:  100px;
-    max-width:  100px;
-    margin-bottom: 14px ;
-}
-
-#endpage-comp-qsn{
-    padding: 5px 10px;
-    max-width: 60%;
-    max-height: 150px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-#endpage-comp-contact{
-    margin: 5px 20px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
-
-#endpage-contact-links{
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 200px;
-}
-
-.endpage-brand-icon{
-    height: 40px;
-    width: 40px;
-}
-
-/*MAIN / HOME / SCHEDULE*/
-
-#t-holder{
-    overflow: hidden;
-    margin-bottom: 10px;
-    transition: max-height 0.5s ease;
-    margin: 0px 10%;
-    margin-bottom: 15px;
-}
-
-#t-holder[data-opened=false]{
-    max-height: 300px;
-}
-
-#t-holder[data-opened=true]{
-    max-height: 900px;
-}
-
-#schedule-table{
-    width: 100%;
-}
-
-#schedule-table, #schedule-table *{
-    background-color:#01010155;
-    text-align: center;
-}
-
-#schedule-tooltip{
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-/*MAIN / HOME / LAST RELEASES*/
-
-#last-dj-sets,#last-dj-list{
-    display: flex;
-    overflow-x: scroll;
-    width: 96%;
-    margin: 0 2%;
-    background-color: black;
-    border-radius: 5%;
-    padding: 20px 10px;
-    height: 369px;
-}
-
-.last-djs-img,.last-sets-img{
-    height: 150px;
-    border-radius: 50%;
-}
-
-.last-releases-holder{
-    margin : 20px 10%
-}
-
-.home-last-release-comp{
-    cursor:pointer;
-    background-color: black;
-    min-width: 200px;
-    max-width: 200px;
-    height: 292px;
-    overflow-y: hidden;
-    overflow-y: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.65em ;
-    padding: 5px 10px;
-    border: solid 5px aliceblue;
-    border-radius: 5%;
-    margin: 10px 5px;
- }
-
-.home-last-release-title{
-    overflow-x: hidden;
-    text-wrap-mode: nowrap;
-    text-align: left;
-    margin: 10px 0px;
-    max-width: 171px;
-}
-
-.home-last-release-artist-title{
-    margin: 10px 0px;
-    text-wrap-mode:nowrap;
-    text-align: left;
- }
-
-.home-last-release-artist-desc{
-    padding: 5px 0px;
-    overflow-y: hidden;
-    overflow-x: hidden;
- }
-/*MAIN / ARTISTES / DJs*/
-
-.available-djs-img{
-    height: 150px;
-    border-radius: 50%;
-}
-
-#available-djs{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.artist-comp{
-    cursor:pointer;
-    background-color: black;
-    min-width: 200px;
-    max-width: 200px;
-    height: 292px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 0.9em ;
-    padding: 5px 10px;
-    border: solid 1px gray;
-    border-radius: 5%;
-    margin: 5px;
-}
-
-.artist-comp-title{
-    font-size: 1.1em;
-    text-wrap-mode: nowrap;
-    text-align: justify;
-    overflow-x: hidden;
-    max-width: 175px;
-}
-
-.artist-comp-desc{
-    font-size: 0.8em;
-    overflow-y: hidden;
-    max-height: 84px;
-    white-space: pre-line;
-}
-
-/* ARTISTS SETS*/
-
-#copy-notif{
-    position: fixed;
-    top: 150px;
-    background-color: #010101cc;
-    width: 100%;
-}
-
-#artist-page-artist-header{
-    display: flex;
-}
-
-#artist-page-artist-name{
-    font-size: 2em;
-    margin-bottom: 10px;
-}
-
-#artist-page-artist-header-share-btn{
-    padding-left: 10px;
-    height: 50px;
-    width: 50px;
-}
-
-#artist-page-artist-header-share-btn *{
-    width: 70%;
-    height: 70%;
-}
-
-#artist-page-artist-cover{
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-}
-
-#artist-page-internal-comp{
-    display: flex;
-    padding: 20px 10px;
-    background-color: #010101aa;
-}
-
-#artist-page-artist-desc{
-    white-space: pre-line;
-    margin: 10px 10px;
-    margin-right:0px ;
-    max-height: 300px;
-    overflow-y: scroll;
-    width: 100%;
-}
-
-#artist-page-artist-links{
-    display: flex;
-    margin-top: 20px;
-}
-
-#artist-page-artist-links li{
-    margin :0 10px
-}
-
-#artist-page-artist-links li *{
-    height: 30px;
-    width: 30px;
-}
-
-.episodes-comp-internal{
-    display: flex;
-    padding: 10px 0px;
-}
-
-.episodes-comp{
-    margin: 20px 0px;
-    background-color: #010101ee;
-}
-
-.episodes-img{
-    width: 200px;
-    height: 200px;
-}
-
-.episodes-text{
-    margin-left:20px ;
-    width: 100%;
-}
-
-.episodes-desc{
-    min-height: 135px;
-    max-height: 135px ;
-    overflow-y: scroll;
-    white-space: pre-line;
-}
-.episode-title-header{
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-    justify-content: space-between;
-}
-
-.episode-title-header-comp{
-    display: flex;
-    align-items: center;
-}
-
-.episode-title{
-    margin-left: 10px;
-}
-
-.episode-duration{
-    margin-left: 15px;
-    font-size: 0.8em;
-}
-
-.episode-published-at{
-    margin-right: 20px;
-}
-
-.play_btn *{
-    cursor: pointer;
-    height: 40px;
-    width: 40px;
-}
-
-
-/* EPISODES / SETS PAGE*/
-
-.episode-page-comp-internal{
-    display: flex;
-    padding: 10px 0px;
-}
-
-.episode-page-comp{
-    margin: 20px 0px;
-    background-color: #010101ee;
-}
-
-.episode-page-img{
-    width: 200px;
-    height: 200px;
-}
-
-.episode-page-text{
-    margin-left:20px ;
-    width: 100%;
-}
-
-#episode-page-title{
-    margin-left: 10px;
-}
-
-.episode-page-desc{
-    min-height: 170px;
-    max-height: 170px ;
-    overflow-y: scroll;
-    white-space: pre-line;
+    }
+
+    #return-to-direct-btn, #src-bitrate-list{
+        margin: 20px 0px ;
+    }
+
+    #footer-volume-container{
+        margin: 15px 0px;
+        display: flex;
+    }
+
+    #footer-volume-icon{
+        min-width: 80px;
+        max-width: 80px;
+        min-height: 60px;
+    }
+
+    #footer-volume-icon * {
+        height: 50px;
+        width : 50px;
+        margin-left: 10px ;
+    }
+
+    #footer-volume-range{
+        width: 100%;
+        margin-right: 10px 
+    }
+
+    /*MAIN*/
+
+    main{
+        margin-top: 110px;
+        margin-bottom: 156px;
+        padding: 0px 5px;
+        width: 100%;
+        display: flex;
+        justify-self: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #main-comp{
+        background-color: #010101aa;
+        width: 90%;
+        min-height: 85vh;
+        margin: 0px 5%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /*ENDPAGE COMP*/
+
+    #endpage{
+        margin-top: auto;
+        background-color: #010101cc;
+        bottom: 0px;
+    }
+
+    #endpage-comp{
+        align-self: flex-end;
+        display: flex;
+    }
+
+    #endpage-tirnatek{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0px 30px ;
+    }
+
+    #endpage-tirnatek-img{
+        min-height: 100px;
+        max-height: 100px;
+        min-width:  100px;
+        max-width:  100px;
+        margin-bottom: 14px ;
+    }
+
+    #endpage-comp-qsn{
+        padding: 5px 10px;
+        max-width: 60%;
+    }
+
+    #endpage-comp-qsn-text{
+        max-height: 150px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+    }
+
+    #endpage-comp-contact{
+        margin: 5px 20px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    #endpage-contact-links{
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 200px;
+    }
+
+    .endpage-brand-icon{
+        height: 40px;
+        width: 40px;
+    }
+
+    /*MAIN / HOME / SCHEDULE*/
+
+    #t-holder{
+        overflow: hidden;
+        margin-bottom: 10px;
+        transition: max-height 0.5s ease;
+        margin: 0px 10%;
+        margin-bottom: 15px;
+    }
+
+    #t-holder[data-opened=false]{
+        max-height: 300px;
+    }
+
+    #t-holder[data-opened=true]{
+        max-height: 900px;
+    }
+
+    #schedule-table{
+        width: 100%;
+    }
+
+    #schedule-table, #schedule-table *{
+        background-color:#01010155;
+        text-align: center;
+    }
+
+    #schedule-tooltip{
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    /*MAIN / HOME / LAST RELEASES*/
+
+    #last-dj-sets,#last-dj-list{
+        display: flex;
+        overflow-x: scroll;
+        width: 96%;
+        margin: 0 2%;
+        background-color: black;
+        border-radius: 5%;
+        padding: 20px 10px;
+        height: 369px;
+    }
+
+    .last-djs-img,.last-sets-img{
+        height: 150px;
+        border-radius: 50%;
+    }
+
+    .last-releases-holder{
+        margin : 20px 10%
+    }
+
+    .home-last-release-comp{
+        cursor:pointer;
+        background-color: black;
+        min-width: 200px;
+        max-width: 200px;
+        height: 292px;
+        overflow-y: hidden;
+        overflow-y: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.65em ;
+        padding: 5px 10px;
+        border: solid 5px aliceblue;
+        border-radius: 5%;
+        margin: 10px 5px;
+    }
+
+    .home-last-release-title{
+        overflow-x: hidden;
+        text-wrap-mode: nowrap;
+        text-align: left;
+        margin: 10px 0px;
+        max-width: 171px;
+    }
+
+    .home-last-release-artist-title{
+        margin: 10px 0px;
+        text-wrap-mode:nowrap;
+        text-align: left;
+    }
+
+    .home-last-release-artist-desc{
+        padding: 5px 0px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    /*MAIN / ARTISTES / DJs*/
+
+    .available-djs-img{
+        height: 150px;
+        border-radius: 50%;
+    }
+
+    #available-djs{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .artist-comp{
+        cursor:pointer;
+        background-color: black;
+        min-width: 200px;
+        max-width: 200px;
+        height: 292px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 0.9em ;
+        padding: 5px 10px;
+        border: solid 1px gray;
+        border-radius: 5%;
+        margin: 5px;
+    }
+
+    .artist-comp-title{
+        font-size: 1.1em;
+        text-wrap-mode: nowrap;
+        text-align: justify;
+        overflow-x: hidden;
+        max-width: 175px;
+    }
+
+    .artist-comp-desc{
+        font-size: 0.8em;
+        overflow-y: hidden;
+        max-height: 84px;
+        white-space: pre-line;
+    }
+
+    /* ARTISTS SETS*/
+
+    #copy-notif{
+        position: fixed;
+        top: 150px;
+        background-color: #010101cc;
+        width: 100%;
+    }
+
+    #artist-page-artist-header{
+        display: flex;
+    }
+
+    #artist-page-artist-name{
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    #artist-page-artist-header-share-btn{
+        padding-left: 10px;
+        height: 50px;
+        width: 50px;
+    }
+
+    #artist-page-artist-header-share-btn *{
+        width: 70%;
+        height: 70%;
+    }
+
+    #artist-page-artist-cover{
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+    }
+
+    #artist-page-internal-comp{
+        display: flex;
+        padding: 20px 10px;
+        background-color: #010101aa;
+    }
+
+    #artist-page-artist-desc{
+        white-space: pre-line;
+        margin: 10px 10px;
+        margin-right:0px ;
+        max-height: 300px;
+        overflow-y: scroll;
+        width: 100%;
+    }
+
+    #artist-page-artist-links{
+        display: flex;
+        margin-top: 20px;
+    }
+
+    #artist-page-artist-links li{
+        margin :0 10px
+    }
+
+    #artist-page-artist-links li *{
+        height: 30px;
+        width: 30px;
+    }
+
+    .episodes-comp-internal{
+        display: flex;
+        padding: 10px 0px;
+    }
+
+    .episodes-comp{
+        margin: 20px 0px;
+        background-color: #010101ee;
+    }
+
+    .episodes-img{
+        width: 200px;
+        height: 200px;
+    }
+
+    .episodes-text{
+        margin-left:20px ;
+        width: 100%;
+    }
+
+    .episodes-desc{
+        min-height: 135px;
+        max-height: 135px ;
+        overflow-y: scroll;
+        white-space: pre-line;
+    }
+    .episode-title-header{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        justify-content: space-between;
+    }
+
+    .episode-title-header-comp{
+        display: flex;
+        align-items: center;
+    }
+
+    .episode-title{
+        margin-left: 10px;
+    }
+
+    .episode-duration{
+        margin-left: 15px;
+        font-size: 0.8em;
+    }
+
+    .episode-published-at{
+        margin-right: 20px;
+    }
+
+    .play_btn *{
+        cursor: pointer;
+        height: 40px;
+        width: 40px;
+    }
+
+
+    /* EPISODES / SETS PAGE*/
+
+    .episode-page-comp-internal{
+        display: flex;
+        padding: 10px 0px;
+    }
+
+    .episode-page-comp{
+        margin: 20px 0px;
+        background-color: #010101ee;
+    }
+
+    .episode-page-img{
+        width: 200px;
+        height: 200px;
+    }
+
+    .episode-page-text{
+        margin-left:20px ;
+        width: 100%;
+    }
+
+    #episode-page-title{
+        margin-left: 10px;
+    }
+
+    .episode-page-desc{
+        min-height: 170px;
+        max-height: 170px ;
+        overflow-y: scroll;
+        white-space: pre-line;
+    }
+}
+
+@media (max-width: 957px) {
+    
+    body{
+        font-size: 12px;
+    }
+
+    h1{
+        font-size: 2em;
+    }
+    
+    h2{
+        font-size: 1.5em;
+    }
+
+    header,footer{
+        position: fixed;
+        width: 100%;
+        min-height: fit-content;
+        background-color: black;
+        display: flex;
+    }
+
+    /*///HEADER///*/
+
+    header{
+        justify-content: center;
+        top:0px;
+        height: 90px;
+    }
+
+    #header-side-menu{
+        overflow:hidden;
+        position: fixed;
+        top: 90px;
+        left: 0px;
+        width: 100%;
+        background-color: #010101ee;
+        font-size: 1.5em;
+    }
+
+    #header-side-menu[data-opened=false]{
+        height: 0px;
+        transition: height 0.12s linear 0.12s;
+    }
+
+    #header-side-menu[data-opened=true]{
+        height: 117px;
+        transition: height 0.12s linear;
+    }
+
+    .header-side-menu-element{
+        display: inline-block;
+        text-wrap-mode:nowrap;
+        padding: 15px 10px;
+        height: 100%;
+        width: 100%;
+    }
+
+    .header-bar{
+        text-align: center;
+        margin-top:10px;
+    }
+
+    .burger-menu{
+        position: fixed;
+        left:10px;
+        top: 20px;
+    }
+
+    #burger-menu-icon{
+        width: 60px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    /*///FOOTER///*/
+
+    footer{
+        bottom: 0px;
+        display: block;
+        height: 100px;
+    }
+
+    #footer-progress-bar{
+        width: 100%;
+        height: 5px;
+        position: fixed;
+        bottom: 100px;
+        background-color: aliceblue;
+    }
+
+    #footer-progress-bar-internal{
+        height: 5px;
+        background-color: #00bcd4;
+        transition: width 1s linear;
+    }
+
+    #footer-data-container{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+        align-items: center;
+    }
+
+    #footer-play-button{
+        padding: 10px;
+        margin-left: 10px;
+        min-width: 75px;
+    }
+
+    #footer-play-button *{
+        height: 50px;
+        width: auto;
+    }
+
+    #footer-song-data-container{
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 100%;
+        max-width: 270px;
+
+    }
+
+    #footer-song-data{
+        height: 75px;
+        font-size: 1em;
+        margin-right: 10px;
+        font-weight: 500;
+        text-wrap-mode: nowrap ;
+        overflow: scroll;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    #audio-player{
+        display: none;
+    }
+
+    #footer-btn-select {
+        width: 100%;
+        text-align: center;
+        flex-direction: column;
+        justify-content: space-around;
+        position: fixed;
+        display: flex;
+        overflow: hidden;
+        background-color: black;
+        top: 206px;
+        height: 0;
+    }
+
+    #footer-btn-select[data-opened="false"] {
+        height: 0;
+        transition: height 0.12s linear;
+    }
+    #footer-btn-select[data-opened="true"] {
+        height: 96px;
+        transition: height 0.12s linear 0.12s;
+    }
+
+    #song-cover{
+        min-height: 90px;
+        min-width:  90px;
+        max-height: 90px;
+        max-width:  90px;
+        margin-top: 5px;
+        margin-right: 5px;
+        border-radius: 5%;
+    }
+
+    #src-bitrate-list{
+        background-color: #010101ee;
+    }
+
+    #return-to-direct-btn, #src-bitrate-list{
+        font-size: 18px;
+        min-height: 25px;
+        max-height: 25px;
+        margin: 12px 10px;
+    }
+
+    #footer-volume-container{
+        display: flex;
+        margin: 0 10px;
+        margin-right: 10px ;
+
+    }
+
+    #footer-volume-icon{
+        min-width:  60px;
+        max-width:  60px;
+        min-height: 50px;
+    }
+
+    #footer-volume-icon * {
+        height: 45px;
+        width : 45px;
+    }
+
+    #footer-volume-range{
+        width: 100%;
+    }
+
+    /*/// MAIN ///*/
+
+    main{
+        margin-top: 90px;
+        margin-bottom: 106px;
+        padding: 0px 5px;
+        width: 100%;
+        background-color: #010101aa;
+        display: flex;
+        justify-self: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #main-comp{
+        width: 96%;
+        min-height: 85vh;
+        margin: 0px 2%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /*ENDPAGE COMP*/
+
+    #endpage{
+        margin-top: auto;
+        background-color: #010101cc;
+        bottom: 0px;
+    }
+
+    #endpage-comp{
+        align-self: flex-end;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #endpage-tirnatek{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px 30px ;
+    }
+
+    #endpage-tirnatek-img{
+        min-height: 50px;
+        max-height: 50px;
+        min-width:  50px;
+        max-width:  50px;
+    }
+
+    #endpage-comp-qsn{
+        padding: 5px 10px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 155px;
+    }
+
+    #endpage-comp-qsn-text{
+        font-size: 10px;
+    }
+
+    #endpage-comp-contact{
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    #endpage-contact-links{
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 200px;
+    }
+
+    .endpage-brand-icon{
+        height: 40px;
+        width: 40px;
+    }
+
+    /*/// MAIN / HOME / SCHEDULE ///*/
+
+    #t-holder{
+        overflow: hidden;
+        margin-bottom: 10px;
+        transition: max-height 0.3s ease;
+        margin: 0px 10%;
+        margin-bottom: 15px;
+    }
+
+    #t-holder[data-opened=false]{
+        max-height: 170px;
+    }
+
+    #t-holder[data-opened=true]{
+        max-height: 900px;
+    }
+
+    #schedule-table{
+        width: 100%;
+    }
+
+    #schedule-table, #schedule-table *{
+        background-color:#01010155;
+        text-align: center;
+    }
+
+    #schedule-tooltip{
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    /*/// MAIN / HOME / LAST RELEASES ///*/
+
+    #last-dj-sets,#last-dj-list{
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        background-color: black;
+        height: 210px;
+    }
+
+    .last-djs-img,.last-sets-img{
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .last-releases-holder{
+        padding : 10px 5px
+    }
+
+    .home-last-release-comp{
+        cursor:pointer;
+        background-color: black;
+        min-width: 130px;
+        max-width: 130px;
+        height: 200px;
+        overflow-y: hidden;
+        overflow-y: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.65em ;
+        padding: 5px 10px;
+        border: solid 5px aliceblue;
+        border-radius: 5%;
+        margin: 0px 5px;
+    }
+
+    .home-last-release-title{
+        overflow-x: hidden;
+        text-wrap-mode: nowrap;
+        text-align: left;
+        margin: 2px 0px;
+        max-width: 100px;
+    }
+
+    .home-last-release-artist-title{
+        margin: 2px 0px;
+        text-wrap-mode:nowrap;
+        text-align: left;
+        max-width: 100px;
+    }
+
+    .home-last-release-artist-desc{
+        padding: 5px 0px;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+
+    /*MAIN / ARTISTES / DJs*/
+
+    .available-djs-img{
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        margin: 5px 0px;
+    }
+
+    #available-djs{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .artist-comp{
+        cursor:pointer;
+        background-color: black;
+        min-width: 100px;
+        max-width: 100px;
+        height: 170px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 0.9em ;
+        padding: 5px 5px;
+        border: solid 1px gray;
+        border-radius: 5%;
+        margin: 5px;
+    }
+
+    .artist-comp-title{
+        font-size: 1em;
+        text-wrap-mode: nowrap;
+        text-align: justify;
+        overflow-x: hidden;
+        max-width: 90px;
+    }
+
+    .artist-comp-desc{
+        font-size: 0.7em;
+        overflow: hidden;
+        max-height: 35px;
+        max-width: 80px;
+        white-space: pre-line;
+    }
+
+    /* ARTISTS SETS*/
+
+    #copy-notif{
+        position: fixed;
+        top: 90px;
+        background-color: #010101cc;
+        width: 100%;
+    }
+
+    #artist-page-artist-header{
+        display: flex;
+    }
+
+    #artist-page-artist-name{
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    #artist-page-artist-header-share-btn{
+        padding-left: 10px;
+        height: 50px;
+        width: 50px;
+    }
+
+    #artist-page-artist-header-share-btn *{
+        width:  70%;
+        height: 70%;
+    }
+
+    #artist-page-artist-cover{
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    #artist-page-internal-comp{
+        display: flex;
+        padding: 10px 0px;
+        background-color: #010101aa;
+    }
+
+    #artist-page-artist-desc{
+        white-space: pre-line;
+        margin: 5px 10px;
+        margin-right:0px ;
+        max-height: 102px;
+        overflow-y: scroll;
+        width: 100%;
+        font-size: 10px;
+    }
+
+    #artist-page-artist-links{
+        display: flex;
+        margin-top: 20px;
+    }
+
+    #artist-page-artist-links li{
+        margin :0 10px
+    }
+
+    #artist-page-artist-links li *{
+        height: 20px;
+        width: auto;
+    }
+
+    .episodes-comp-internal{
+        display: flex;
+        
+        padding: 10px 0px;
+    }
+
+    .episodes-comp{
+        margin: 20px 0px;
+        background-color: #010101ee;
+    }
+
+    .episodes-img{
+        min-width:  90px;
+        min-height: 90px;
+        max-width:  90px;
+        max-height: 90px;
+        border-radius: 5%;
+    }
+
+    .episodes-text{
+        margin-left:5px ;
+        width: 100%;
+    }
+
+    .episodes-desc{
+        min-height: 135px;
+        max-height: 135px ;
+        overflow-y: scroll;
+        white-space: pre-line;
+        margin-left: -93px;
+    }
+    .episode-title-header{
+        display: flex;
+        flex-direction: column;
+        height: 80px;
+        margin-bottom: 10px;
+        justify-content: space-between;
+        width: 230px;
+        margin-left: 0px;
+    }
+
+    .episode-title-header-comp{
+        display: flex;
+        align-items: center;
+        align-content: space-between;
+    }
+
+    .episode-title{
+        margin-left: 10px;
+        max-height: 50px;
+        overflow: scroll;
+        font-size: 0.85em;
+    }
+
+    .episode-duration{
+        margin-left: 15px;
+        font-size: 0.8em;
+    }
+
+    .episode-published-at{
+        margin-right: 20px;
+    }
+
+    .play_btn *{
+        cursor: pointer;
+        height: 40px;
+        width: 40px;
+    }
+
+    #episodes-page-title{
+        font-size: 16px;
+        max-width: 100%;
+        text-wrap-mode: nowrap;
+        overflow: scroll;
+        display: flex;
+        align-items: center;
+        padding: 10px 0px;
+        margin: -10px 0;
+    }
 }

@@ -127,7 +127,7 @@ export default function ArtistSetsPage({ params }) {
 			<div id="main-comp">
 				{act_set_obj && page_loaded ? (
 				<>
-				<h2><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
+				<h2 id="episodes-page-title"><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
 				<article key={act_set_obj.title_unique_name} className="episodes-comp">
 					<hr/>
 					<div className="episodes-comp-internal">

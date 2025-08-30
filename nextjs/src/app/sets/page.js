@@ -25,10 +25,8 @@ export default function Home() {
           >
             <Link href={`/sets/${i.title_min}`}>
               <h3 className="artist-comp-title">{i.title}</h3>
-			  <hr/>
-              <br/>
+			        <hr/>
               <img src={i.cover} className="available-djs-img" alt={i.title}/>
-              <br/>
               {i.episodes_nb} sets
               <hr/>
               <p className="artist-comp-desc">{i.desc_short}</p>

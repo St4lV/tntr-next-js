@@ -19,10 +19,12 @@ export default function endPage(){
                         <img src="/DefaultIMG.png" alt="Tirnatek Logo" id="endpage-tirnatek-img"/>
                         <p>TirnatekRadio@Beta3.0</p>
                     </div>
+                    <hr/>
                     <div id="endpage-comp-qsn">
                     <h2>Qui sommes-nous :</h2>
-                    <p>Tirnatek est une webradio issue du millieu de la free party, créé par des passionnés du millieu cherchant à associer leur passion pour l'informatique et la fête libre. Nous recensons {artists_list.length} artistes, comprenant des DJs, des producteurs venant de toute la france pour partager leur sets et leur passion. Envoyez nous une candidature pour rejoindre l'aventure !</p>
+                    <p id="endpage-comp-qsn-text">Tirnatek est une webradio issue du millieu de la free party, créé par des passionnés du millieu cherchant à associer leur passion pour l'informatique et la fête libre. Nous recensons {artists_list.length} artistes, comprenant des DJs, des producteurs venant de toute la france pour partager leur sets et leur passion. Envoyez nous une candidature pour rejoindre l'aventure !</p>
                     </div>
+                    <hr/>
                     <div id="endpage-comp-contact">
                     <h2>Contact :</h2>
                     <div id="endpage-contact-links">

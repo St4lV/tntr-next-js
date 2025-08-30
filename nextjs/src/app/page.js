@@ -66,7 +66,6 @@ export default function Home() {
 
 			return (
 				<div key={`${i.artist_unique_name}-${i.title_unique_name}`}>
-					<br/>
 					<li
 						key={i.artist_unique_name + "-" + i.title_unique_name}
 						id={i.artist_unique_name + "-" + i.title_unique_name}

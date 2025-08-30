@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal} = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened} = useGlobalContext();
 
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
@@ -175,7 +175,7 @@ export default function Footer() {
                     
                 </div>
                 <button id="footer-play-button" onClick={togglePlay}>{is_media_paused ? play_btn : pause_btn}</button>
-                <div id="footer-btn-select">
+                <div id="footer-btn-select" data-opened={header_menu_opened}>
                         {is_radio_playing ? (
                             <select
                                 name="bitrate"
