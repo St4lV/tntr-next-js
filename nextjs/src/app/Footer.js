@@ -10,6 +10,7 @@ export default function Footer() {
     const [act_volume,setVolume] = useState(50);
     const [muted_volume,muteVolume] = useState(false);
     const [audio_player_current_time,setAudioPlayerCurrentTime] = useState(0);
+    const [radio_current_time,setRadioCurrentTime] = useState(0);
 
     const audioRef = useRef(null);
 
@@ -145,20 +146,31 @@ export default function Footer() {
 
     useEffect(() => {
         setAudioPlayerCurrentTime(document.getElementById("audio-player").currentTime)
+        setRadioCurrentTime(radio_current_time+1)
     }, [one_second_time_signal])
+
+    useEffect(() => {
+        if (radio_data?.now_playing?.elapsed !== undefined) {
+            setRadioCurrentTime(radio_data.now_playing.elapsed);
+        }
+    }, [radio_data]);
+
+    const progress_bar_value = (!is_radio_playing ? Math.min(1000, Number(((audio_player_current_time * 1000) / act_set_metadata.duration).toFixed(0))) : Math.min(1000,Number(((radio_current_time * 1000) / (radio_data?.now_playing?.duration ?? 1)).toFixed(0))));
 
     return (
         <footer>
+            <div id="footer-progress-bar">
+                <div id="footer-progress-bar-internal" style={{ width: `${progress_bar_value * 0.1}%`}}
+            ></div>
+            </div>
             <div id="footer-data-container">
                 <div id="footer-song-data-container">
                     <img id="song-cover" src="/DefaultIMG.png" alt="Cover" />
                     <div id="footer-song-data">
-                        <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing ? radio_data.now_playing.song.title : "Chargement .."}</p>
-                        <p id="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing ? radio_data.now_playing.song.artist : "Chargement .."}</p>
+                        <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
+                        <p id="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
                         <p id="song-title">{
-                            !is_radio_playing ?  `${FormatTime(audio_player_current_time)} / ${FormatTime(act_set_metadata.duration)}` : 
-                            radio_data.now_playing ? `${FormatTime(radio_data.now_playing.elapsed)} / ${FormatTime(radio_data.now_playing.duration)}` : "Chargement .."
-                        }</p>
+                            !is_radio_playing ? `${FormatTime(audio_player_current_time)} / ${FormatTime(act_set_metadata.duration)}` : radio_data.now_playing ? `${FormatTime(radio_current_time)} / ${FormatTime(radio_data.now_playing.duration)}`: "Chargement .."}</p>
                     </div>
                     
                 </div>
