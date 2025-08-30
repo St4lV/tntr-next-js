@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused } = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal} = useGlobalContext();
 
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
     const [muted_volume,muteVolume] = useState(false);
+    const [audio_player_current_time,setAudioPlayerCurrentTime] = useState(0);
 
     const audioRef = useRef(null);
 
@@ -50,6 +51,7 @@ export default function Footer() {
         await setMediaPlayed(bitrateOptions[0].value)
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
         setRadioPlaying(true)
+        setActSetMetadata({artist:"",title:"",duration:""})
     }
 
     useEffect(() => {
@@ -59,6 +61,7 @@ export default function Footer() {
     const handleBitrateChange = (event) => {
         setRadioPlaying(true)
         setMediaPlayed(event.target.value)
+        setActSetMetadata({artist:"",title:"",duration:""})
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
         playMedia(event.target.value);
 
@@ -105,7 +108,7 @@ export default function Footer() {
 
         const hh = String(hours).padStart(2, "0");
         const mm = String(minutes).padStart(2, "0");
-        const ss = String(seconds).padStart(2, "0");
+        const ss = String(seconds.toFixed(0)).padStart(2, "0");
 
         return (hours > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`);
     }
@@ -133,11 +136,16 @@ export default function Footer() {
         setVolume(value)
         muteVolume(false)
         audio_player.volume=value*0.02
+        console.log(audio_player.currentTime)
     }
 
     useEffect(() => {
         document.getElementById("audio-player").muted=muted_volume;
     }, [muted_volume])
+
+    useEffect(() => {
+        setAudioPlayerCurrentTime(document.getElementById("audio-player").currentTime)
+    }, [one_second_time_signal])
 
     return (
         <footer>
@@ -145,9 +153,12 @@ export default function Footer() {
                 <div id="footer-song-data-container">
                     <img id="song-cover" src="/DefaultIMG.png" alt="Cover" />
                     <div id="footer-song-data">
-                        <p id="song-title">{radio_data.now_playing ? radio_data.now_playing.song.title : "Chargement .."}</p>
-                        <p id="song-title">{radio_data.now_playing ? radio_data.now_playing.song.artist : "Chargement .."}</p>
-                        <p id="song-title">{radio_data.now_playing ? `${FormatTime(radio_data.now_playing.elapsed)}/${FormatTime(radio_data.now_playing.duration)}` : "Chargement .."}</p>
+                        <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing ? radio_data.now_playing.song.title : "Chargement .."}</p>
+                        <p id="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing ? radio_data.now_playing.song.artist : "Chargement .."}</p>
+                        <p id="song-title">{
+                            !is_radio_playing ?  `${FormatTime(audio_player_current_time)} / ${FormatTime(act_set_metadata.duration)}` : 
+                            radio_data.now_playing ? `${FormatTime(radio_data.now_playing.elapsed)} / ${FormatTime(radio_data.now_playing.duration)}` : "Chargement .."
+                        }</p>
                     </div>
                     
                 </div>

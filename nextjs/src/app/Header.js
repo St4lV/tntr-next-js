@@ -10,7 +10,7 @@ export default function Header(){
     const [menu_opened, setMenuOpened] = useState(false);
     const [act_time, updateTime] = useState(0);
 
-    const { radio_data } = useGlobalContext();
+    const { radio_data, one_second_time_signal, setOneSecondTimeSignal } = useGlobalContext();
 
     function burgerMenu(){
         setMenuOpened(!menu_opened);
@@ -39,9 +39,8 @@ export default function Header(){
     },[])
 
     useEffect(() => {
-        
+        setOneSecondTimeSignal(!one_second_time_signal)
     },[act_time])
-    //Window.onload(setLoaded(true))
     return(
         <header>
             <div className="header-bar">

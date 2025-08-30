@@ -10,7 +10,7 @@ export default function ArtistSetsPage({ params }) {
 	const { artist, set } = React.use(params)
 	const router = useRouter();
 
-	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused} = useGlobalContext();
+	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata} = useGlobalContext();
 	
 	const [page_loaded , setPageLoaded] = useState(false)
 	const [act_set_obj , setActSetObj] = useState({})
@@ -116,6 +116,7 @@ export default function ArtistSetsPage({ params }) {
 			setRadioPlaying(false);
 			setMediaPlayed(act_set_obj.media);
 			setImgFromPlaying(act_set_obj.cover);
+        	setActSetMetadata({artist:act_set_obj.artist,title:act_set_obj.title,duration:act_set_obj.duration});
 		}
 	};
 

@@ -9,7 +9,7 @@ export default function ArtistPage({ params }) {
   	const router = useRouter();
 	const {artist} = use(params)
 
-	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused} = useGlobalContext();
+	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata} = useGlobalContext();
 	
 	const [page_loaded , setPageLoaded] = useState(false)
 	const [act_artist_obj , setActArtistObj] = useState({})
@@ -128,6 +128,7 @@ export default function ArtistPage({ params }) {
 					setRadioPlaying(false);
 					setMediaPlayed(set.media);
 					setImgFromPlaying(set.cover);
+        			setActSetMetadata({artist:set.artist,title:set.title,duration:set.duration});
 				}
 			};
 
