@@ -95,7 +95,7 @@ footer{
     height: 5px;
     position: fixed;
     bottom: 150px;
-    background-color: white;
+    background-color: aliceblue;
 }
 
 #footer-progress-bar-internal{
@@ -181,12 +181,67 @@ footer{
 
 main{
     margin-top: 150px;
-    margin-bottom: 160px;
+    margin-bottom: 156px;
     padding: 0px 5px;
-    width: 95%;
+    width: 100%;
     justify-self: center;
+    justify-content: center;
     display: flex;
     flex-direction: column;
+}
+
+/*ENDPAGE COMP*/
+
+#endpage{
+    margin-top: 50px;
+    background-color: #010101cc;
+}
+
+#endpage-comp{
+    display: flex;
+}
+
+#endpage-tirnatek{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 30px ;
+}
+
+#endpage-tirnatek-img{
+    min-height: 100px;
+    max-height: 100px;
+    min-width:  100px;
+    max-width:  100px;
+    margin-bottom: 14px ;
+}
+
+#endpage-comp-qsn{
+    padding: 5px 10px;
+    max-width: 60%;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#endpage-comp-contact{
+    margin: 5px 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#endpage-contact-links{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 200px;
+}
+
+.endpage-brand-icon{
+    height: 40px;
+    width: 40px;
 }
 
 /*MAIN / HOME / SCHEDULE*/
@@ -195,6 +250,7 @@ main{
     overflow: hidden;
     margin-bottom: 10px;
     transition: max-height 0.5s ease;
+    margin: 0px 15%;
 }
 
 #t-holder[data-opened=false]{
@@ -250,7 +306,7 @@ main{
     align-items: center;
     font-size: 0.65em ;
     padding: 5px 10px;
-    border: solid 5px white;
+    border: solid 5px aliceblue;
     border-radius: 5%;
     margin: 10px 5px;
  }

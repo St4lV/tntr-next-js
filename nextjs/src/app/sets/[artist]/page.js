@@ -1,8 +1,10 @@
 'use client'
 import { use, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useGlobalContext } from "@/app/GlobalContext";
 import Link from "next/link";
+
+import { useGlobalContext } from "@/app/GlobalContext";
+import Endpage from "@/app/Endpage";
 
 export default function ArtistPage({ params }) {
   
@@ -190,6 +192,7 @@ export default function ArtistPage({ params }) {
 			<div id="artist-sets-holder">{renderArtistSets()}</div>
 			</>
 		) : ("")}
+		<Endpage/>
 		</main>
 	);
 }

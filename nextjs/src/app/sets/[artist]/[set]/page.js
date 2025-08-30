@@ -4,7 +4,9 @@ import React from "react"
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+
 import { useGlobalContext } from "@/app/GlobalContext";
+import Endpage from "@/app/Endpage";
 
 export default function ArtistSetsPage({ params }) {
 	const { artist, set } = React.use(params)
@@ -147,6 +149,7 @@ export default function ArtistSetsPage({ params }) {
 			</article>
 			</>) : ("")
 			}
+			<Endpage/>
 		</main>
 	)
 }

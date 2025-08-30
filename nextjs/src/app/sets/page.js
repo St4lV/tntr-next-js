@@ -1,8 +1,10 @@
 "use client"
 
 import { useState } from "react";
-import { useGlobalContext } from "@/app/GlobalContext";
 import Link from "next/link";
+
+import { useGlobalContext } from "@/app/GlobalContext";
+import Endpage from "@/app/Endpage";
 
 export default function Home() {
   const { artists_list } = useGlobalContext();
@@ -43,6 +45,7 @@ export default function Home() {
         <input type="search" placeholder="Artiste, Soundsystem .. " value={search} onChange={(e) => setSearch(e.target.value)}/>
       </div>
       <ul id="available-djs">{renderDJsList()}</ul>
+      <Endpage/>
     </main>
   );
 }

@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useGlobalContext } from "@/app/GlobalContext";
+import Endpage from "@/app/Endpage";
 
 export default function Home() {
-	const {schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
+	const {EndPage, schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
 
 	const [table_open, setTableOpen] = useState(false);
 
@@ -134,6 +135,7 @@ export default function Home() {
 
 			<h2>Derniers djs ajoutés</h2>
 			<ul id="last-dj-list">{renderLastDJs()}</ul>
+			<Endpage/>
 		</main>
 	);
 }
