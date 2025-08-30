@@ -184,8 +184,17 @@ main{
     margin-bottom: 156px;
     padding: 0px 5px;
     width: 100%;
+    display: flex;
     justify-self: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+#main-comp{
+    background-color: #010101aa;
+    width: 90%;
+    min-height: 85vh;
+    margin: 0px 5%;
     display: flex;
     flex-direction: column;
 }
@@ -193,11 +202,13 @@ main{
 /*ENDPAGE COMP*/
 
 #endpage{
-    margin-top: 50px;
+    margin-top: auto;
     background-color: #010101cc;
+    bottom: 0px;
 }
 
 #endpage-comp{
+    align-self: flex-end;
     display: flex;
 }
 
@@ -250,7 +261,8 @@ main{
     overflow: hidden;
     margin-bottom: 10px;
     transition: max-height 0.5s ease;
-    margin: 0px 15%;
+    margin: 0px 10%;
+    margin-bottom: 15px;
 }
 
 #t-holder[data-opened=false]{
@@ -266,7 +278,7 @@ main{
 }
 
 #schedule-table, #schedule-table *{
-    background-color: black;
+    background-color:#01010155;
     text-align: center;
 }
 
@@ -291,6 +303,10 @@ main{
 .last-djs-img,.last-sets-img{
     height: 150px;
     border-radius: 50%;
+}
+
+.last-releases-holder{
+    margin : 20px 10%
 }
 
 .home-last-release-comp{
@@ -335,7 +351,6 @@ main{
 .available-djs-img{
     height: 150px;
     border-radius: 50%;
-
 }
 
 #available-djs{

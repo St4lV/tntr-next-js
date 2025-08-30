@@ -124,32 +124,34 @@ export default function ArtistSetsPage({ params }) {
 
 	return (
 		<main>
-			{act_set_obj && page_loaded ? (
-			<>
-			<h2><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
-			<article key={act_set_obj.title_unique_name} className="episodes-comp">
-				<hr/>
-				<div className="episodes-comp-internal">
-					<img className={`episodes-img episode-${act_set_obj.title_unique_name}`} src={act_set_obj.cover} alt={`${act_set_obj.title} cover`}/>
-					<div className="episodes-text">
-						<div className="episode-title-header">
-							<div className="episode-title-header-comp">
-								<button className="play_btn" data-playing={isPlaying} onClick={togglePlay}>{isPlaying ? pause_btn : play_btn}</button>	
-								<h3 className={`episode-${act_set_obj.title_unique_name} episode-title`}>{act_set_obj.title}</h3>
-								<p className="episode-duration">{durationFormatted}</p>
+			<div id="main-comp">
+				{act_set_obj && page_loaded ? (
+				<>
+				<h2><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
+				<article key={act_set_obj.title_unique_name} className="episodes-comp">
+					<hr/>
+					<div className="episodes-comp-internal">
+						<img className={`episodes-img episode-${act_set_obj.title_unique_name}`} src={act_set_obj.cover} alt={`${act_set_obj.title} cover`}/>
+						<div className="episodes-text">
+							<div className="episode-title-header">
+								<div className="episode-title-header-comp">
+									<button className="play_btn" data-playing={isPlaying} onClick={togglePlay}>{isPlaying ? pause_btn : play_btn}</button>	
+									<h3 className={`episode-${act_set_obj.title_unique_name} episode-title`}>{act_set_obj.title}</h3>
+									<p className="episode-duration">{durationFormatted}</p>
+								</div>
+								<p className="episode-published-at">Publié le {releasedAtFormatted}</p>
 							</div>
-							<p className="episode-published-at">Publié le {releasedAtFormatted}</p>
+							<hr/>
+							<br/>
+							<p className={`episodes-desc episode-${act_set_obj.title_unique_name}`}>{act_set_obj.desc}</p>
 						</div>
-						<hr/>
-						<br/>
-						<p className={`episodes-desc episode-${act_set_obj.title_unique_name}`}>{act_set_obj.desc}</p>
 					</div>
-				</div>
-				<hr/>
-			</article>
-			</>) : ("")
-			}
-			<Endpage/>
+					<hr/>
+				</article>
+				</>) : ("")
+				}
+				<Endpage/>
+			</div>
 		</main>
 	)
 }

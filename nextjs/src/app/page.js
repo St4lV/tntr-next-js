@@ -6,7 +6,7 @@ import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
 
 export default function Home() {
-	const {EndPage, schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
+	const { schedule, setScheduleEntries, last_djs, last_sets} = useGlobalContext();
 
 	const [table_open, setTableOpen] = useState(false);
 
@@ -110,32 +110,41 @@ export default function Home() {
 
   	return (
     	<main>
-			<div id="t-holder" onClick={updateScheduleRows} data-opened={table_open}>
-				<table id="schedule-table">
-				<caption>
-					<h2>Planning de diffusion</h2>
-					<h4>(Effectif jusqu'au lendemain, minuit.)</h4>
-				</caption>
-				<thead>
-					<tr>
-					<th>Playlist</th>
-					<th>Heure de diffusion</th>
-					</tr>
-				</thead>
-				<tbody id="planning-list">{renderSchedule()}</tbody>
-				</table>
+			<div id="main-comp">
+				<div id="t-holder" onClick={updateScheduleRows} data-opened={table_open}>
+					<table id="schedule-table">
+					<caption>
+						<h2>Planning de diffusion</h2>
+						<h4>(Effectif jusqu'au lendemain, minuit.)</h4>
+					</caption>
+					<thead>
+						<tr>
+						<th>Playlist</th>
+						<th>Heure de diffusion</th>
+						</tr>
+					</thead>
+					<tbody id="planning-list">{renderSchedule()}</tbody>
+					</table>
+				</div>
+
+				<p id="schedule-tooltip">
+					{table_open ? "Cliquez sur le tableau pour afficher moins d'entrées " : "Cliquez sur le tableau pour afficher plus d'entrées"}
+				</p>
+				<div className="last-releases-holder">
+					<h2>Derniers sets ajoutés</h2>
+					<hr/>
+					<br/>
+					<ul id="last-dj-sets">{renderLastSets()}</ul>
+				</div>
+				<div className="last-releases-holder">
+
+					<h2>Derniers djs ajoutés</h2>
+					<hr/>
+					<br/>
+					<ul id="last-dj-list">{renderLastDJs()}</ul>
+				</div>
+				<Endpage/>
 			</div>
-
-			<p id="schedule-tooltip">
-				{table_open ? "Cliquez sur le tableau pour afficher moins d'entrées " : "Cliquez sur le tableau pour afficher plus d'entrées"}
-			</p>
-
-			<h2>Derniers sets ajoutés</h2>
-			<ul id="last-dj-sets">{renderLastSets()}</ul>
-
-			<h2>Derniers djs ajoutés</h2>
-			<ul id="last-dj-list">{renderLastDJs()}</ul>
-			<Endpage/>
 		</main>
 	);
 }

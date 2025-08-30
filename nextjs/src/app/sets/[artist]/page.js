@@ -173,26 +173,29 @@ export default function ArtistPage({ params }) {
 	}
 
 	return (
-		<main> {page_loaded && act_artist_obj ? (
-			<>
-			<div id="show-notification">{notification_showed && (<p id="copy-notif">Lien copié dans le presse-papier !</p>)}</div>
-			<div>
-				<div id="artist-page-artist-header">
-					<h2 id="artist-page-artist-name">{act_artist_obj.title}</h2>
-					<button onClick={copyLinkToClipboard} id="artist-page-artist-header-share-btn">{share_btn}</button>
+		<main>
+			<div id="main-comp">
+				{page_loaded && act_artist_obj ? (
+				<>
+				<div id="show-notification">{notification_showed && (<p id="copy-notif">Lien copié dans le presse-papier !</p>)}</div>
+				<div>
+					<div id="artist-page-artist-header">
+						<h2 id="artist-page-artist-name">{act_artist_obj.title}</h2>
+						<button onClick={copyLinkToClipboard} id="artist-page-artist-header-share-btn">{share_btn}</button>
+					</div>
+					<hr/>
+					<div id="artist-page-internal-comp">
+						<img id="artist-page-artist-cover" src={act_artist_obj.cover || "/DefaultIMG.png"} alt={act_artist_obj.title}/>
+						<p id="artist-page-artist-desc"> {act_artist_obj.desc || ""}</p>
+					</div>
+					<hr/>
+					<ul id="artist-page-artist-links">{renderArtistLinks()}</ul>
 				</div>
-				<hr/>
-				<div id="artist-page-internal-comp">
-					<img id="artist-page-artist-cover" src={act_artist_obj.cover || "/DefaultIMG.png"} alt={act_artist_obj.title}/>
-					<p id="artist-page-artist-desc"> {act_artist_obj.desc || ""}</p>
-				</div>
-				<hr/>
-				<ul id="artist-page-artist-links">{renderArtistLinks()}</ul>
+				<div id="artist-sets-holder">{renderArtistSets()}</div>
+				</>
+				) : ("")}
+				<Endpage/>
 			</div>
-			<div id="artist-sets-holder">{renderArtistSets()}</div>
-			</>
-		) : ("")}
-		<Endpage/>
 		</main>
 	);
 }
