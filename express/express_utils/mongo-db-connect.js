@@ -7,7 +7,6 @@ const database= mongo_db_values.database;
 
 // CONNECT
 const connectDB = async () => {
-	console.log(server,':',port)
 	try {
 		await connect(`mongodb://${server+':'+port}/${database}`);
 		console.log("MongoDB connected!");
