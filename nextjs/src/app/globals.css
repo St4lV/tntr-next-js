@@ -28,6 +28,27 @@ body {
         font-size: 1.5em;
     }
 
+    /*/// 404 ///*/
+
+    .page-404 *{
+        text-align: center;
+    }
+
+    #title-404{
+        font-size: 500%;
+        margin-top: 5%;
+    }
+
+    .text-404{
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    #link-404{
+        text-decoration: underline;
+        color: #5476ff;
+    }
+
     /*HEADER & FOOTER*/
 
     header,footer{
@@ -569,6 +590,32 @@ body {
     
     h2{
         font-size: 1.5em;
+    }
+
+    /*/// 404 ///*/
+
+    .page-404{
+        margin-bottom: 25vh;
+    }
+
+    .page-404 *{
+        text-align: center;
+    }
+
+    #title-404{
+        font-size: 300%;
+        margin-top: 10%;
+    }
+
+    .text-404{
+        margin-top: 5%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    #link-404{
+        text-decoration: underline;
+        color: #5476ff;
     }
 
     header,footer{
