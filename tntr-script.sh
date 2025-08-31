@@ -95,11 +95,11 @@ EOF
     docker container prune -f
     docker image prune -f
     cd express
-    docker build -t tntr_back . --no-cache
+    docker build -t tntr_back . # --no-cache
     cd ../nextjs
-    docker build -t tntr_front . --no-cache
+    docker build -t tntr_front . # --no-cache
     cd ../discordjs
-    docker build -t tntr_bot . --no-cache
+    docker build -t tntr_bot . # --no-cache
     cd ../
     echo "Updated successfully"
     ./tntr-script.sh start
@@ -116,11 +116,11 @@ EOF
     echo "Installing Tirnatek App.."
     ./tntr-script.sh config express
     cd express
-    docker build -t tntr_back . --no-cache
+    docker build -t tntr_back .
     cd ../nextjs
-    docker build -t tntr_front . --no-cache
+    docker build -t tntr_front .
     cd ../discordjs
-    docker build -t tntr_bot . --no-cache
+    docker build -t tntr_bot .
     cd ../
     ./tntr-script.sh start
     ;;
