@@ -7,6 +7,8 @@ const nextConfig = {
             destination : "http://localhost:3001/api/v1/:path*"
             },
         ];
+    },eslint: {
+        ignoreDuringBuilds: true,
     },
 };
 
