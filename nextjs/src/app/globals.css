@@ -51,6 +51,7 @@ body {
         transition: width 0.5s ease;
         position: fixed;
         top: 110px;
+        left: 0px;
         height: 100%;
         background-color: #010101ee;
     }

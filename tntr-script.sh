@@ -82,12 +82,14 @@ EOF
     echo "Updating..."
     mv discordjs/.env discordjs/.env.bak
     mv express/.env express/.env.bak
+    mv nextjs/.env nextjs/.env.bak
     find . -type f ! -name "*.bak" -delete
     curl -L -o tntr_app.zip https://github.com/St4lV/tntr-next-js/archive/refs/heads/main.zip
     unzip tntr_app.zip -d ../
     rm tntr_app.zip
     mv discordjs/.env.bak discordjs/.env
     mv express/.env.bak express/.env
+    mv nextjs/.env.bak nextjs/.env
     chmod +x tntr-script.sh
     docker compose down
     docker container prune -f
