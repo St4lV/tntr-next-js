@@ -14,7 +14,9 @@ export default function Footer() {
     const audioRef = useRef(null);
 
     useEffect(() => {
-        updateVolume(JSON.parse(localStorage.getItem("audioplayer-volume") !== null ? localStorage.getItem("audioplayer-volume") : act_volume));
+        const cached_volume=JSON.parse(localStorage.getItem("audioplayer-volume") !== null ? localStorage.getItem("audioplayer-volume") : act_volume)
+        updateVolume(cached_volume);
+        document.getElementById("footer-volume-range").value=cached_volume
         muteVolume(JSON.parse(localStorage.getItem("audioplayer-muted") !== null ? localStorage.getItem("audioplayer-muted") : false));
     }, [])
 
