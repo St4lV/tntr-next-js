@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
   nextjs:
-    image: tntr_back
+    image: tntr_front
     container_name: tirnatek_app_frontend
     networks:
       - app_network
