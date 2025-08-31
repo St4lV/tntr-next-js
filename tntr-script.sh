@@ -84,7 +84,7 @@ EOF
     mv express/.env express/.env.bak
     find . -type f ! -name "*.bak" -delete
     curl -L -o tntr_app.zip https://github.com/St4lV/tntr-next-js/archive/refs/heads/main.zip
-    unzip tntr_app.zip -d .
+    unzip tntr_app.zip -d ../
     rm tntr_app.zip
     mv discordjs/.env.bak discordjs/.env
     mv express/.env.bak express/.env
