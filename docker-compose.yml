@@ -1,0 +1,33 @@
+services:
+  express:
+    image: tntr_back
+    container_name: tirnatek_app_backend
+    networks:
+      - app_network
+    expose:
+      - "3001"
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  nextjs:
+    image: tntr_back
+    container_name: tirnatek_app_frontend
+    networks:
+      - app_network
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  discordjs:
+    image: tntr_bot
+    container_name: tirnatek_app_bot
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
