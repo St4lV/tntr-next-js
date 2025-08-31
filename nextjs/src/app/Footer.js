@@ -145,7 +145,6 @@ export default function Footer() {
         muteVolume(false)
         audio_player.volume=volume
         localStorage.setItem("audioplayer-volume",value)
-        console.log(audio_player.currentTime)
     }
 
     useEffect(() => {
