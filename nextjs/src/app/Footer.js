@@ -5,7 +5,6 @@ import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
     const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened} = useGlobalContext();
-
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
     const [muted_volume,muteVolume] = useState(false);
@@ -13,6 +12,11 @@ export default function Footer() {
     const [radio_current_time,setRadioCurrentTime] = useState(0);
 
     const audioRef = useRef(null);
+
+    useEffect(() => {
+        updateVolume(JSON.parse(localStorage.getItem("audioplayer-volume") !== null ? localStorage.getItem("audioplayer-volume") : act_volume));
+        muteVolume(JSON.parse(localStorage.getItem("audioplayer-muted") !== null ? localStorage.getItem("audioplayer-muted") : false));
+    }, [])
 
     useEffect(() => {
         if (radio_data?.station?.mounts) {
@@ -133,15 +137,18 @@ export default function Footer() {
 			};
 
     function updateVolume(value){
+        const volume = (value * 0.02).toFixed(2)
         const audio_player = document.getElementById("audio-player");
         setVolume(value)
         muteVolume(false)
-        audio_player.volume=value*0.02
+        audio_player.volume=volume
+        localStorage.setItem("audioplayer-volume",value)
         console.log(audio_player.currentTime)
     }
 
     useEffect(() => {
         document.getElementById("audio-player").muted=muted_volume;
+        localStorage.setItem("audioplayer-muted",muted_volume)
     }, [muted_volume])
 
     useEffect(() => {
@@ -196,7 +203,7 @@ export default function Footer() {
                         <hr/>
                         <div id="footer-volume-container">
                             <button id="footer-volume-icon" onClick={(()=>{muteVolume(!muted_volume)})}>{muted_volume ? volume_icon.muted : act_volume >= 30 ? volume_icon.max : act_volume < 30 && act_volume >= 10 ? volume_icon.mid : volume_icon.off}</button>
-                            <input id="footer-volume-range" type="range" min="0" max="50" defaultValue={50} onChange={((e)=>{updateVolume(e.target.value)})}/>
+                            <input id="footer-volume-range" type="range" min="0" max="50" defaultValue={act_volume} onChange={((e)=>{updateVolume(e.target.value)})}/>
                         </div>
                     </div>
             </div>
