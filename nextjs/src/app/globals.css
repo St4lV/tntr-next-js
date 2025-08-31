@@ -9,7 +9,7 @@
 body {
         font-family: Orbitron, sans-serif;
         font-weight: bold;
-        color: aliceblue;
+        color: white;
         background-image: url("/tntr-bg.jpg") ;
         background-size: 1920px 1080px;
         background-attachment: fixed;
@@ -99,7 +99,7 @@ body {
         height: 5px;
         position: fixed;
         bottom: 150px;
-        background-color: aliceblue;
+        background-color: white;
     }
 
     #footer-progress-bar-internal{
@@ -331,7 +331,7 @@ body {
         align-items: center;
         font-size: 0.65em ;
         padding: 5px 10px;
-        border: solid 5px aliceblue;
+        border: solid 5px white;
         border-radius: 5%;
         margin: 10px 5px;
     }
@@ -645,7 +645,7 @@ body {
         height: 5px;
         position: fixed;
         bottom: 100px;
-        background-color: aliceblue;
+        background-color: white;
     }
 
     #footer-progress-bar-internal{
@@ -913,7 +913,7 @@ body {
         align-items: center;
         font-size: 0.65em ;
         padding: 5px 10px;
-        border: solid 5px aliceblue;
+        border: solid 5px white;
         border-radius: 5%;
         margin: 0px 5px;
     }
