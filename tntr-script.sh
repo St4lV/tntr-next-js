@@ -106,7 +106,7 @@ EOF
     ;;
   start)
     echo "Starting..."
-    docker compose up
+    docker compose up --detach
     ;;
   stop)
     echo "Stopping..."
