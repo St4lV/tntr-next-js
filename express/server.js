@@ -8,6 +8,7 @@ const { express_values } = require("./express_utils/env-values-dictionnary");
 const app = express();
 const port = express_values.port
 app.use(express.json());
+app.set('trust proxy', true);
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}.`);

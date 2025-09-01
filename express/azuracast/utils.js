@@ -122,21 +122,28 @@ async function getApiRequest(address) {
 };
 
 // Template requête GET Media à Azuracast
-async function getMediaRequest(media_url,res){
-  const actual = await fetch(media_url, {
-	  headers: {
-		"Authorization": `Bearer ${api_key}`
-	  }
+async function getMediaRequest(media_url, res, req) {
+	const forwardedHeaders = { ...req.headers };
+	forwardedHeaders['x-forwarded-for'] = forwardedHeaders['x-forwarded-for']?.replace(/::ffff:/g, "");
+	console.log("Forwarding headers:", forwardedHeaders);
+	delete forwardedHeaders['host'];
+	delete forwardedHeaders['connection'];
+	delete forwardedHeaders['content-length'];
+
+	forwardedHeaders['authorization'] = `Bearer ${api_key}`;
+
+	const actual = await fetch(media_url, {
+		headers: forwardedHeaders,
 	});
 
 	actual.headers.forEach((value, name) => res.setHeader(name, value));
-	if (typeof actual.body.pipe === 'function') {
-	  actual.body.pipe(res);
+
+	if (typeof actual.body.pipe === "function") {
+		actual.body.pipe(res);
 	} else {
-	  Readable.fromWeb(actual.body).pipe(res);
+		Readable.fromWeb(actual.body).pipe(res);
 	}
-  
-};
+}
 
 // Template d'objet Artiste à retourner
 

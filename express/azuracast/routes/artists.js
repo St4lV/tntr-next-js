@@ -67,7 +67,7 @@ router.get("/:artist_name/cover", async (req, res) => {
 	  return res.status(response.code).json(response);
 	}
 
-	await getMediaRequest(response.log.art,res);
+	await getMediaRequest(response.log.art,res,req);
 
   } catch (error) {
 	console.error(error);
@@ -120,7 +120,7 @@ router.get("/:artist_name/:episode_name/cover", async (req, res) => {
 	  return res.status(response.code).json(response);
 	}
 
-	await getMediaRequest(response.log.art,res);
+	await getMediaRequest(response.log.art,res,req);
 
   } catch (error) {
 	console.error(error);
@@ -140,7 +140,7 @@ router.get("/:artist_name/:episode_name.mp3", async (req, res) => {
 	const episode=await Episode.findOne({episode_unique_name:episode_name});
 	const episode_id=episode.episode_id_azuracast;
 
-	await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res);
+	await getMediaRequest(`${azuracast_server}/api/station/${station_shortcode}/public/podcast/${artist_id}/episode/${episode_id}/download.mp3?refresh=0`,res,req);
 
   } catch (error) {
 	console.error(error);

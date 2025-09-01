@@ -52,7 +52,7 @@ router.get("/mountpoints/:mount", async (req, res) => {
   try {
 	const { mount } = req.params;
 
-	await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res);
+	await getMediaRequest(`${azuracast_server}/listen/tntr/${mount}`,res,req);
 
   } catch (error) {
 	console.error(error);
