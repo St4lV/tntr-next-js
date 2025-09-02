@@ -18,6 +18,13 @@ export default function Footer() {
         updateVolume(cached_volume);
         document.getElementById("footer-volume-range").value=cached_volume
         muteVolume(JSON.parse(localStorage.getItem("audioplayer-muted") !== null ? localStorage.getItem("audioplayer-muted") : false));
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.src = "";
+                audioRef.current.load();
+            }
+        };
     }, [])
 
     useEffect(() => {
@@ -79,8 +86,7 @@ export default function Footer() {
             const audio = audioRef.current;
             audio.pause();
             audio.removeAttribute("src");
-            audio.load();
-
+            audio.src = "";
             const freshUrl = media_played + (media_played.includes("?") ? "&" : "?") + "nocache=" + Date.now();
             audio.src = freshUrl;
             audio.load();

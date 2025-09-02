@@ -123,25 +123,40 @@ async function getApiRequest(address) {
 
 // Template requête GET Media à Azuracast
 async function getMediaRequest(media_url, res, req) {
-	const forwardedHeaders = { ...req.headers };
-	forwardedHeaders['x-forwarded-for'] = forwardedHeaders['x-forwarded-for']?.replace(/::ffff:/g, "");
-	console.log("Forwarding headers:", forwardedHeaders);
-	delete forwardedHeaders['host'];
-	delete forwardedHeaders['connection'];
-	delete forwardedHeaders['content-length'];
+    const forwardedHeaders = { ...req.headers };
+    forwardedHeaders['x-forwarded-for'] = forwardedHeaders['x-forwarded-for']?.replace(/::ffff:/g, "");
+    delete forwardedHeaders['host'];
+    delete forwardedHeaders['connection'];
+    delete forwardedHeaders['content-length'];
 
-	forwardedHeaders['authorization'] = `Bearer ${api_key}`;
+    forwardedHeaders['authorization'] = `Bearer ${api_key}`;
+    const controller = new AbortController();
+    /*const timeout = setTimeout(() => {
+        controller.abort();
+    }, 30_000); */
 
-	const actual = await fetch(media_url, {
-		headers: forwardedHeaders,
-	});
-
+    let actual;
+	actual = await fetch(media_url, { headers: forwardedHeaders, signal: controller.signal });
 	actual.headers.forEach((value, name) => res.setHeader(name, value));
+
+	res.on('close', function(){
+		if (actual?.body?.destroy) {
+			actual.body.destroy();
+			controller.abort();
+			res.end();
+		}
+	});
 
 	if (typeof actual.body.pipe === "function") {
 		actual.body.pipe(res);
 	} else {
-		Readable.fromWeb(actual.body).pipe(res);
+		const readable = Readable.fromWeb(actual.body);
+		readable.pipe(res);
+		res.on('close', () => {
+			readable.destroy();
+			controller.abort();
+			res.end();
+		});
 	}
 }
 
