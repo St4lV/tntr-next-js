@@ -83,6 +83,9 @@ EOF
     mv discordjs/.env discordjs/.env.bak
     mv express/.env express/.env.bak
     mv nextjs/.env nextjs/.env.bak
+    mv nextjs/public/sitemap.xml nextjs/public/sitemap.xml.bak
+    mv nextjs/public/robots.txt nextjs/public/robots.txt.bak
+    mv nextjs/public/.htaccess nextjs/public/.htaccess.bak
     find . -type f ! -name "*.bak" -delete
     curl -L -o tntr_app.zip https://github.com/St4lV/tntr-next-js/archive/refs/heads/main.zip
     unzip tntr_app.zip -d ../
@@ -90,6 +93,9 @@ EOF
     mv discordjs/.env.bak discordjs/.env
     mv express/.env.bak express/.env
     mv nextjs/.env.bak nextjs/.env
+    mv nextjs/public/sitemap.xml.bak nextjs/public/sitemap.xml 
+    mv nextjs/public/robots.txt.bak nextjs/public/robots.txt
+    mv nextjs/public/.htaccess.bak nextjs/public/.htaccess
     chmod +x tntr-script.sh
     docker compose down
     docker container prune -f
