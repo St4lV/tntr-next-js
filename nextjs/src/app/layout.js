@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
 			/>
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-			<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@100..900&display=swap" rel="stylesheet"/>
+			<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 			
 			<meta name="google-site-verification" content="cCnNinz1iS12t7Hg_AY0m9Zsl40wHLpis3uHDfrzH1Y" />

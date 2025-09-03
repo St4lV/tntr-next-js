@@ -28,9 +28,9 @@ export default function EndPage(){
                     <div id="endpage-comp-contact">
                     <h2>Contact :</h2>
                     <div id="endpage-contact-links">
-                        <a href="https://github.com/St4lV/tntr-next-js" target="_blank" rel="noopener noreferrer">{brand.github}</a>
-                        <a href="https://discord.com/invite/mCY6mPP7Gw" target="_blank" rel="noopener noreferrer">{brand.discord}</a>
-                        <a href="https://www.instagram.com/tirnatek/" target="_blank" rel="noopener noreferrer">{brand.instagram}</a>
+                        <a href="https://github.com/St4lV/tntr-next-js" target="_blank" rel="noopener noreferrer" aria-label='Page github'>{brand.github}</a>
+                        <a href="https://discord.com/invite/mCY6mPP7Gw" target="_blank" rel="noopener noreferrer" aria-label='Serveur discord'>{brand.discord}</a>
+                        <a href="https://www.instagram.com/tirnatek/" target="_blank" rel="noopener noreferrer" aria-label='Page instagram'>{brand.instagram}</a>
                     </div>
                     </div>
                 </div>
