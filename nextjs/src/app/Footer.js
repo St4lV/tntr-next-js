@@ -188,7 +188,7 @@ export default function Footer() {
                     </div>
                     
                 </div>
-                <button id="footer-play-button" onClick={togglePlay}>{is_media_paused ? play_btn : pause_btn}</button>
+                <button id="footer-play-button" onClick={togglePlay} aria-label="Jouer / Mettre en pause">{is_media_paused ? play_btn : pause_btn}</button>
                 <div id="footer-btn-select" data-opened={header_menu_opened}>
                         {is_radio_playing ? (
                             <select
@@ -203,13 +203,13 @@ export default function Footer() {
                                 ))}
                             </select>
                         ) : (
-                            <button id="return-to-direct-btn" onClick={returnToDirect}>
+                            <button aria-label="Retour au direct" id="return-to-direct-btn" onClick={returnToDirect}>
                                 Retour au direct
                             </button>
                         )}
                         <hr/>
                         <div id="footer-volume-container">
-                            <button id="footer-volume-icon" onClick={(()=>{muteVolume(!muted_volume)})}>{muted_volume ? volume_icon.muted : act_volume >= 30 ? volume_icon.max : act_volume < 30 && act_volume >= 10 ? volume_icon.mid : volume_icon.off}</button>
+                            <button id="footer-volume-icon" onClick={(()=>{muteVolume(!muted_volume)})} aria-label="Taire le volume">{muted_volume ? volume_icon.muted : act_volume >= 30 ? volume_icon.max : act_volume < 30 && act_volume >= 10 ? volume_icon.mid : volume_icon.off}</button>
                             <input id="footer-volume-range" type="range" min="0" max="50" defaultValue={act_volume} onChange={((e)=>{updateVolume(e.target.value)})}/>
                         </div>
                     </div>
