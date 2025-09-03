@@ -1,7 +1,9 @@
 "use client"
-
 import { useState } from "react";
+
 import Link from "next/link";
+import Image from 'next/image'
+
 import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
 
@@ -65,25 +67,20 @@ export default function Home() {
 				: `${durationMinutes}min`;
 
 			return (
-				<div key={`${i.artist_unique_name}-${i.title_unique_name}`}>
-					<li
-						key={i.artist_unique_name + "-" + i.title_unique_name}
-						id={i.artist_unique_name + "-" + i.title_unique_name}
-						className="home-last-release-comp"
-					>
-						<Link href={`/sets/${i.artist_unique_name}/${i.title_unique_name}`}>
-						<h2 className="home-last-release-title">{i.title}</h2>
-						<img src={i.cover} className="last-sets-img" alt={i.title} />
-						<br />
-						<h3 className="home-last-release-title">{i.artist}</h3>
-						<br />
-						<p className="home-last-release-date-duration">
-							{releasedAtFormatted} - {durationFormatted}
-						</p>
-						<br/>
-						</Link>
-					</li>
-				</div>
+				<li key={`${i.artist_unique_name}-${i.title_unique_name}`}id={i.artist_unique_name + "-" + i.title_unique_name} className="home-last-release-comp">
+					<Link href={`/sets/${i.artist_unique_name}/${i.title_unique_name}`}>
+					<h2 className="home-last-release-title">{i.title}</h2>
+					<center>
+					<Image className="last-sets-img" src={i.cover} width={150} height={150}  alt={i.title}/>
+					</center>
+					<br />
+					<h3 className="home-last-release-title">{i.artist}</h3>
+					<p className="home-last-release-date-duration">
+						{releasedAtFormatted} - {durationFormatted}
+					</p>
+					<br/>
+					</Link>
+				</li>
 			);
 		});
 	}
@@ -92,17 +89,17 @@ export default function Home() {
 		if (!last_djs) return null;
 
 		return last_djs.map((i) => (
-			<div key={i.title_min}>
-				<li data-artist={i.title_min} className="last-dj-released home-last-release-comp">
-					<Link href={`/sets/${i.title_min}`}>
-					<h2 className="home-last-release-artist-title">{i.title}</h2>
-					<br/>
-					<img src={i.cover} className="last-djs-img" alt={i.title} />
-					<br/>
-					<p className="home-last-release-artist-desc">{i.desc_short}</p>
-					</Link>
-				</li>
-			</div>
+			<li key={i.title_min} data-artist={i.title_min} className="last-dj-released home-last-release-comp">
+				<Link href={`/sets/${i.title_min}`}>
+				<h2 className="home-last-release-artist-title">{i.title}</h2>
+				<br/>
+				<center>
+				<Image src={i.cover} width={150} height={150} className="last-djs-img" alt={i.title} />
+				</center>
+				<br/>
+				<p className="home-last-release-artist-desc">{i.desc_short}</p>
+				</Link>
+			</li>
 		));
 	}
 
@@ -114,7 +111,7 @@ export default function Home() {
 					<table id="schedule-table">
 					<caption>
 						<h2>Planning de diffusion</h2>
-						<h4>(Effectif jusqu'au lendemain, minuit.)</h4>
+						<h3>(Effectif jusqu'au lendemain, minuit.)</h3>
 					</caption>
 					<thead>
 						<tr>
