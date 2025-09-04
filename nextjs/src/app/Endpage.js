@@ -22,7 +22,7 @@ export default function EndPage(){
                     <hr/>
                     <div id="endpage-comp-qsn">
                     <h2>Qui sommes-nous :</h2>
-                    <p id="endpage-comp-qsn-text">Tirnatek est une webradio issue du millieu de la free party, créé par des passionnés du millieu cherchant à associer leur passion pour l'informatique et la fête libre. Nous recensons {artists_list.length} artistes, comprenant des DJs, des producteurs venant de toute la france pour partager leur sets et leur passion. Envoyez nous une candidature pour rejoindre l'aventure !</p>
+                    <p id="endpage-comp-qsn-text"><strong>Tirnatek</strong> est une <strong>webradio tekno</strong> issue du millieu de la <strong>free party</strong>, créé par des passionnés du millieu cherchant à associer leur passion pour l'informatique et la fête libre. Nous recensons {artists_list.length} artistes, comprenant des <strong>DJ</strong>s, des producteurs venant de toute la france pour partager leur <strong>sets</strong> et leur passion. Envoyez nous une candidature pour rejoindre l'aventure !</p>
                     </div>
                     <hr/>
                     <div id="endpage-comp-contact">

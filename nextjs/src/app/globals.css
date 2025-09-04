@@ -18,6 +18,9 @@ body {
         align-items: center;
     }
 
+strong,p,tr{
+    font-weight: 500;
+}
 @media (min-width: 958px) {
 
     h1{
