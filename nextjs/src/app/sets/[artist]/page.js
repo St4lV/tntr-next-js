@@ -1,7 +1,9 @@
 'use client'
 import { use, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+
 import Link from "next/link";
+import Image from 'next/image';
 
 import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
@@ -139,7 +141,7 @@ export default function ArtistPage({ params }) {
 					<hr/>
 					<div className="episodes-comp-internal">
 						<Link href={`/sets/${set.artist_unique_name}/${set.title_unique_name}`}>
-							<img className={`episodes-img episode-${set.title_unique_name}`} src={set.cover} alt={`${set.title} cover`}/>
+							<Image className={`episodes-img episode-${set.title_unique_name}`} src={set.cover} height={200} width={200} alt={`${set.title} cover`}/>
 						</Link>
 						<div className="episodes-text">
 							<div className="episode-title-header">
@@ -185,7 +187,7 @@ export default function ArtistPage({ params }) {
 					</div>
 					<hr/>
 					<div id="artist-page-internal-comp">
-						<img id="artist-page-artist-cover" src={act_artist_obj.cover || "/DefaultIMG.png"} alt={act_artist_obj.title}/>
+						<Image id="artist-page-artist-cover" src={act_artist_obj.cover || "/DefaultIMG.png"} alt={act_artist_obj.title} height={200} width={200}/>
 						<p id="artist-page-artist-desc"> {act_artist_obj.desc || ""}</p>
 					</div>
 					<hr/>

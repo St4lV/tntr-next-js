@@ -1,7 +1,10 @@
 'use client'
 
 import React from "react"
+
 import Link from 'next/link'
+import Image from 'next/image';
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -131,7 +134,7 @@ export default function ArtistSetsPage({ params }) {
 				<article key={act_set_obj.title_unique_name} className="episodes-comp">
 					<hr/>
 					<div className="episodes-comp-internal">
-						<img className={`episodes-img episode-${act_set_obj.title_unique_name}`} src={act_set_obj.cover} alt={`${act_set_obj.title} cover`}/>
+						<Image className={`episodes-img episode-${act_set_obj.title_unique_name}`} height={200} width={200} src={act_set_obj.cover} alt={`${act_set_obj.title} cover`}/>
 						<div className="episodes-text">
 							<div className="episode-title-header">
 								<div className="episode-title-header-comp">

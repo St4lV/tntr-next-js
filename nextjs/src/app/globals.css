@@ -477,7 +477,7 @@ body {
     .artist-comp-desc{
         font-size: 0.8em;
         overflow-y: hidden;
-        max-height: 84px;
+        max-height: 73px;
         white-space: pre-line;
     }
 
@@ -511,8 +511,10 @@ body {
     }
 
     #artist-page-artist-cover{
-        width: 200px;
-        height: 200px;
+        min-width : 200px;
+        min-height: 200px;
+        max-width : 200px;
+        max-height: 200px;
         border-radius: 50%;
     }
 
@@ -556,8 +558,11 @@ body {
     }
 
     .episodes-img{
-        width: 200px;
-        height: 200px;
+        min-width : 200px;
+        min-height: 200px;
+        max-width : 200px;
+        max-height: 200px;
+        border-radius: 3%;
     }
 
     .episodes-text{
@@ -1129,8 +1134,10 @@ body {
     }
 
     #artist-page-artist-cover{
-        width: 100px;
-        height: 100px;
+        min-width : 100px;
+        min-height: 100px;
+        max-width : 100px;
+        max-height: 100px;
         border-radius: 50%;
     }
 
