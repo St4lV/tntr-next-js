@@ -434,7 +434,10 @@ body {
     /*MAIN / ARTISTES / DJs*/
 
     .available-djs-img{
-        height: 150px;
+        min-height: 150px;
+        min-width : 150px;
+        max-height: 150px;
+        max-width : 150px;
         border-radius: 50%;
     }
 
@@ -1047,8 +1050,10 @@ body {
     /*MAIN / ARTISTES / DJs*/
 
     .available-djs-img{
-        height: 80px;
-        width: 80px;
+        min-height: 80px;
+        min-width : 80px;
+        max-height: 80px;
+        max-width : 80px;
         border-radius: 50%;
         margin: 5px 0px;
     }

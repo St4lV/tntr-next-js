@@ -1,7 +1,10 @@
 "use client"
 
 import { useState } from "react";
+
 import Link from "next/link";
+
+import Image from 'next/image';
 
 import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
@@ -26,7 +29,7 @@ export default function Home() {
             <Link href={`/sets/${i.title_min}`}>
               <h3 className="artist-comp-title">{i.title}</h3>
 			        <hr/>
-              <img src={i.cover} className="available-djs-img" alt={i.title}/>
+              <Image src={i.cover} className="available-djs-img" alt={i.title} height={150} width={150}/>
               {i.episodes_nb} sets
               <hr/>
               <p className="artist-comp-desc">{i.desc_short}</p>
