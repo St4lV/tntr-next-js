@@ -182,7 +182,7 @@ export default function Footer() {
             </div>
             <div id="footer-data-container">
                 <div id="footer-song-data-container">
-                    <Image height={120} width={120} id="song-cover" src="/DefaultIMG.png" alt="Cover" />
+                    <Image height={120} width={120} id="song-cover" src={ img_from_playing ||"/DefaultIMG.png"} alt="Cover" />
                     <div id="footer-song-data">
                         <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
                         <p id="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
