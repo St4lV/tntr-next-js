@@ -30,24 +30,6 @@ app.get("/update-mongo-db", async (req, res) => {
 	return res.status(200).json({code:200,type:"Success",log:"Updated"});
 });
 
-/////////////////////// AZURACAST ///////////////////////
-
-const azuracast_routes =require("./azuracast/routes/main");
-
-app.use(`${express_values.public_route}/radio/`, azuracast_routes);
-
-///////////////////////// USERS /////////////////////////
-
-const users_routes =require("./users/routes/main");
-
-//app.use(`${express_values.public_route}/users/`, users_routes);
-
-/////////////////////// INTERNAL ////////////////////////
-
-const internal_routes =require("./internal/routes/main");
-
-//app.use(`/internal/`, internal_routes);
-
 //////////////////////// UTILS //////////////////////////
 
 app.get(`${express_values.public_route}/sitemap.xml`, async (req, res) => {
