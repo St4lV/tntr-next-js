@@ -178,6 +178,22 @@ strong,p,tr{
         min-height: 150px;
     }
 
+    #footer-open-player{
+        position: fixed;
+        bottom: 5px;
+        right: 1%;
+        cursor: pointer;
+        transition: all 0.5s ;
+    }
+
+    #footer-open-player[data-opened=true]{
+        bottom: 155px;
+    }
+
+    #footer-open-player svg{
+        width: 30px;
+        height: auto;
+    }
 
     #footer-progress-bar{
         width: 100%;
@@ -819,28 +835,52 @@ strong,p,tr{
         max-height: 0px;
         min-height: 0px;
         overflow: hidden;
-        transition: all 0.5s ;
+        transition: all 0.2s linear 0.1s;
     }
 
     footer[data-opened=true]{
         max-height: 100px;
         min-height: 100px;
+        transition: all 0.2s linear ;
     }
 
     #footer-progress-bar{
         width: 100%;
         height: 5px;
         position: fixed;
-        bottom: 0px;
+        bottom: 100px;
         opacity: 0;
         background-color: white;
-        transition: min-heigth max-heigth 0.3s linear;
-        transition: opacity 0.3s linear 0.35s ;
+        transition: min-heigth max-heigth 0.1s linear;
+        transition: opacity 0.1s linear ;
     }
 
     #footer-progress-bar[data-player-opened=true]{
         bottom: 100px;
         opacity: 100;
+        transition: opacity 0.1s linear 0.12s ;
+    }
+
+    #footer-open-player{
+        position: fixed;
+        bottom: 5px;
+        right: 2%;
+        cursor: pointer;
+        transition: all 0.1s linear 0.1s ;
+        background-color: #010101aa;
+        padding: 10px;
+        border-radius: 50%;
+    }
+
+    #footer-open-player[data-opened=true]{
+        bottom: 100px;
+        background-color: #00000000;
+        transition: all 0.1s linear;
+    }
+
+    #footer-open-player svg{
+        width: 30px;
+        height: auto;
     }
 
     #footer-progress-bar-internal{
@@ -970,7 +1010,7 @@ strong,p,tr{
         justify-self: center;
         justify-content: center;
         flex-direction: column;
-        transition: margin-bottom 0.5s linear;
+        transition: margin-bottom 0.1s linear;
     }
 
     main[data-footer-opened=true]{
