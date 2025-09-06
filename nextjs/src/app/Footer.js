@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened} = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer} = useGlobalContext();
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
     const [muted_volume,muteVolume] = useState(false);
@@ -65,7 +65,7 @@ export default function Footer() {
     }, [radio_data]);
 
     async function returnToDirect(){
-        await setMediaPlayed(bitrateOptions[0].value)
+        await setMediaPlayed(radio_mountpoint_select)
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
         setRadioPlaying(true)
         setActSetMetadata({artist:"",title:"",duration:""})
@@ -78,10 +78,10 @@ export default function Footer() {
     const handleBitrateChange = (event) => {
         setRadioPlaying(true)
         setMediaPlayed(event.target.value)
+        setRadioMountPoint(event.target.value)
         setActSetMetadata({artist:"",title:"",duration:""})
         setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
         playMedia(event.target.value);
-
     };
 
     function playMedia(media_played) {
@@ -109,6 +109,7 @@ export default function Footer() {
             audio.pause();
         } else {
             audio.play();
+            openPlayer(true)
         }
     }, [is_media_paused])
 
@@ -175,8 +176,8 @@ export default function Footer() {
     const progress_bar_value = (!is_radio_playing ? Math.min(1000, Number(((audio_player_current_time * 1000) / act_set_metadata.duration).toFixed(0))) : Math.min(1000,Number(((radio_current_time * 1000) / (radio_data?.now_playing?.duration ?? 1)).toFixed(0))));
 
     return (
-        <footer>
-            <div id="footer-progress-bar">
+        <footer data-opened={player_opened}>
+            <div id="footer-progress-bar" data-player-opened={player_opened}>
                 <div id="footer-progress-bar-internal" style={{ width: `${progress_bar_value * 0.1}%`}}
             ></div>
             </div>

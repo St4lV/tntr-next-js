@@ -13,7 +13,7 @@ export default function ArtistPage({ params }) {
   	const router = useRouter();
 	const {artist} = use(params)
 
-	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata} = useGlobalContext();
+	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata, player_opened} = useGlobalContext();
 	
 	const [page_loaded , setPageLoaded] = useState(false)
 	const [act_artist_obj , setActArtistObj] = useState({})
@@ -175,7 +175,7 @@ export default function ArtistPage({ params }) {
 	}
 
 	return (
-		<main>
+		<main data-footer-opened={player_opened}>
 			<div id="main-comp">
 				{page_loaded && act_artist_obj ? (
 				<>

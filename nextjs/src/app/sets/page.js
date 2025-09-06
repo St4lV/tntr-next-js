@@ -10,7 +10,7 @@ import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
 
 export default function Home() {
-	const { artists_list } = useGlobalContext();
+	const { artists_list, player_opened } = useGlobalContext();
 	const [search, setSearch] = useState("");
 
 	function renderDJsList() {
@@ -37,7 +37,7 @@ export default function Home() {
 	}
 
 	return (
-		<main>
+		<main data-footer-opened={player_opened}>
 		<div>
 			<h2>DJ sets</h2>
 			<input type="search" placeholder="Artiste, Soundsystem .. " value={search} onChange={(e) => setSearch(e.target.value)}/>

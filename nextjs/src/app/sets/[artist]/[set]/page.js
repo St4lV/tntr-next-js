@@ -15,7 +15,7 @@ export default function ArtistSetsPage({ params }) {
 	const { artist, set } = React.use(params)
 	const router = useRouter();
 
-	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata} = useGlobalContext();
+	const {artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, setImgFromPlaying, is_media_paused, setMediaPaused, setActSetMetadata, player_opened} = useGlobalContext();
 	
 	const [page_loaded , setPageLoaded] = useState(false)
 	const [act_set_obj , setActSetObj] = useState({})
@@ -126,7 +126,7 @@ export default function ArtistSetsPage({ params }) {
 	};
 
 	return (
-		<main>
+		<main data-footer-opened={player_opened}>
 			<div id="main-comp">
 				{act_set_obj && page_loaded ? (
 				<>
