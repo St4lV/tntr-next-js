@@ -371,15 +371,18 @@ strong,p,tr{
         max-width: 1400px;
         background-color: #010101ee;
         align-self: center;
+        display: flex;
+        flex-direction: column;
 
     }
 
     #main-page-player{
-        padding: 25px 25%;
+        padding: 25px 0px;
         align-items: center;
         justify-content: space-between;
         align-self: center;
         width: 90%;
+        max-width: 700px;
         margin: 20px 0;
     }
 
@@ -389,8 +392,15 @@ strong,p,tr{
 
     }
 
-    /*#main-page-player-metadata{
-    }*/
+    #main-page-player-metadata{
+        min-width: 500px;
+        max-width: 500px;
+        overflow: hidden;
+    }
+
+    #main-page-player-metadata p{
+        margin-left: 10px;
+    }
 
     /*MAIN / HOME / SCHEDULE*/
 
