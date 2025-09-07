@@ -61,7 +61,7 @@ export default function Footer() {
             }
             
         }
-        
+
         if (radio_data?.now_playing?.elapsed !== undefined) {
             setRadioCurrentTime(radio_data.now_playing.elapsed);
         }
@@ -178,6 +178,33 @@ export default function Footer() {
     function togglePlayerOpened(){
         openPlayer(!player_opened)
     }
+
+    useEffect(() => {
+        if (isPlaying){
+            if ("mediaSession" in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: (!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement ..") || "Tirnatek Radio",
+                    artist: (!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing?.song?.artist ?? "Chargement ..") || "Tirnatek Radio",
+                    album: "Tirnatek Radio",
+                    artwork: [
+                        { src: img_from_playing || "/DefaultIMG.png",   sizes: "96x96",   type: "image/png" },
+                        { src: img_from_playing || "/DefaultIMG.png",   sizes: "128x128", type: "image/png" },
+                        { src: img_from_playing || "/DefaultIMG.png",   sizes: "192x192", type: "image/png" },
+                        { src: img_from_playing || "/DefaultIMG.png",   sizes: "256x256", type: "image/png" },
+                        { src: img_from_playing || "/DefaultIMG.png",   sizes: "512x512", type: "image/png" },
+                    ],
+                });
+            }
+
+            navigator.mediaSession.setPositionState({
+                duration: !is_radio_playing ? act_set_metadata.duration : radio_data.now_playing ? radio_data.now_playing.duration : 0,
+                position: !is_radio_playing ? Math.min(audio_player_current_time,act_set_metadata.duration) : radio_data.now_playing ? Math.min(radio_current_time,radio_data.now_playing.duration) : 0,
+                playbackRate: 1,
+            });
+        }
+        
+    }, [radio_data,media_played,isPlaying,is_media_paused,img_from_playing])
+
     return (
         <footer data-opened={player_opened}>
             <button id="footer-open-player" data-opened={player_opened} onClick={togglePlayerOpened}>{player_opened ? down_btn : up_btn}</button>
