@@ -7,12 +7,11 @@ import Image from 'next/image';
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
-    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer} = useGlobalContext();
+    const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer, radio_current_time,setRadioCurrentTime} = useGlobalContext();
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
     const [muted_volume,muteVolume] = useState(false);
     const [audio_player_current_time,setAudioPlayerCurrentTime] = useState(0);
-    const [radio_current_time,setRadioCurrentTime] = useState(0);
 
     const audioRef = useRef(null);
 
@@ -61,6 +60,10 @@ export default function Footer() {
                 setMediaPaused(false)
             }
             
+        }
+        
+        if (radio_data?.now_playing?.elapsed !== undefined) {
+            setRadioCurrentTime(radio_data.now_playing.elapsed);
         }
     }, [radio_data]);
 
@@ -169,12 +172,6 @@ export default function Footer() {
         setAudioPlayerCurrentTime(document.getElementById("audio-player").currentTime)
         setRadioCurrentTime(radio_current_time+1)
     }, [one_second_time_signal])
-
-    useEffect(() => {
-        if (radio_data?.now_playing?.elapsed !== undefined) {
-            setRadioCurrentTime(radio_data.now_playing.elapsed);
-        }
-    }, [radio_data]);
 
     const progress_bar_value = (!is_radio_playing ? Math.min(1000, Number(((audio_player_current_time * 1000) / act_set_metadata.duration).toFixed(0))) : Math.min(1000,Number(((radio_current_time * 1000) / (radio_data?.now_playing?.duration ?? 1)).toFixed(0))));
 

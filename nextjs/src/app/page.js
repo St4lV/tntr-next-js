@@ -8,20 +8,8 @@ import { useGlobalContext } from "@/app/GlobalContext";
 import Endpage from "@/app/Endpage";
 
 export default function Home() {
-	const { schedule, setScheduleEntries, last_djs, last_sets, radio_data, one_second_time_signal, is_media_paused, setMediaPaused, setRadioPlaying, media_played, setMediaPlayed, radio_mountpoint_select, setImgFromPlaying, setActSetMetadata, player_opened, } = useGlobalContext();
+	const { schedule, setScheduleEntries, last_djs, last_sets, radio_data, is_media_paused, setMediaPaused, setRadioPlaying, media_played, setMediaPlayed, radio_mountpoint_select, setImgFromPlaying, setActSetMetadata, player_opened, radio_current_time, } = useGlobalContext();
 	
-    const [audio_player_current_time,setAudioPlayerCurrentTime] = useState(0);
-    const [radio_current_time,setRadioCurrentTime] = useState(0);
-
-	useEffect(() => {
-		setRadioCurrentTime(radio_data?.now_playing?.elapsed)
-	},[radio_data])
-
-	useEffect(() => {
-		setAudioPlayerCurrentTime(document.getElementById("audio-player").currentTime)
-		setRadioCurrentTime(radio_current_time+1)
-	}, [one_second_time_signal])
-
 	function FormatTime(timeInSeconds) {
         const hours = Math.floor(timeInSeconds / 3600);
         const minutes = Math.floor((timeInSeconds % 3600) / 60);
@@ -42,18 +30,12 @@ export default function Home() {
 		if (isPlaying) {
 			setMediaPaused(true);
 		} else {
-			/*setMediaPlayed(radio_mountpoint_select);
-			setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
-			setRadioPlaying(true)
-			setMediaPaused(false);*/
-
 			await setMediaPlayed(radio_mountpoint_select)
 			setImgFromPlaying(radio_data.now_playing?.song?.art || "/DefaultIMG.png");
 			setRadioPlaying(true)
 			setActSetMetadata({artist:"",title:"",duration:""})
 			setMediaPaused(false)
-
-			}
+		};
 	};
 
 	const [table_open, setTableOpen] = useState(false);

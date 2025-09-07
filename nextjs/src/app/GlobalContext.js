@@ -110,7 +110,8 @@ export default function Context({children}){
     const [is_media_paused, setMediaPaused]=useState(true)
     const [one_second_time_signal, setOneSecondTimeSignal]=useState(false)
     const [radio_mountpoint_select, setRadioMountPoint]=useState(media_played)
-    const [player_opened, openPlayer] = useState(false);
+    const [player_opened, openPlayer] = useState(false);    
+    const [radio_current_time,setRadioCurrentTime] = useState(0);
 
     const [header_menu_opened, setHeaderMenuOpened]=useState(false)
 
@@ -142,7 +143,7 @@ export default function Context({children}){
     }, [schedule_entries]);
 
     return (
-        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, setOneSecondTimeSignal, header_menu_opened, setHeaderMenuOpened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer }}>
+        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, setOneSecondTimeSignal, header_menu_opened, setHeaderMenuOpened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer, radio_current_time,setRadioCurrentTime }}>
             {children}
         </GlobalContext.Provider>
         );
