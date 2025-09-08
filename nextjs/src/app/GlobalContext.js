@@ -55,8 +55,9 @@ export default function Context({children}){
             result = data
             
         } finally {
-            if(result){
+            if(result?.log){
                 setLastSets(result.log)
+                localStorage.setItem("last-sets-list",JSON.stringify(result.log));
             }
             
         }
@@ -76,8 +77,9 @@ export default function Context({children}){
             result = data
             
         } finally {
-            if (result){
+            if (result?.log){
                 setLastDJs(result.log)
+                localStorage.setItem("last-djs-list",JSON.stringify(result.log))
             }
         }
     }
@@ -96,8 +98,9 @@ export default function Context({children}){
             result = data
             
         } finally {
-            if (result){
+            if (result?.log){
                 setArtistList(result.log)
+                localStorage.setItem("artist-list",JSON.stringify(result.log));
             }
             
         }
@@ -116,6 +119,7 @@ export default function Context({children}){
     const [header_menu_opened, setHeaderMenuOpened]=useState(false)
 
     useEffect(() => {
+        //setArtistList(localStorage.getItem("artist-list") || [])
         getRadioData();
         getLastSets();
         getLastDJs();
