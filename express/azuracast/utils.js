@@ -123,28 +123,49 @@ async function getApiRequest(address) {
 
 // Template requête GET Media à Azuracast
 async function getMediaRequest(media_url, res, req) {
-    const forwardedHeaders = { ...req.headers };
-    forwardedHeaders['x-forwarded-for'] = forwardedHeaders['x-forwarded-for']?.replace(/::ffff:/g, "");
-    delete forwardedHeaders['host'];
-    delete forwardedHeaders['connection'];
-    delete forwardedHeaders['content-length'];
+	const forwardedHeaders = { ...req.headers };
 
-    forwardedHeaders['authorization'] = `Bearer ${api_key}`;
-    const controller = new AbortController();
-    /*const timeout = setTimeout(() => {
-        controller.abort();
-    }, 30_000); */
+	forwardedHeaders["x-forwarded-for"] = forwardedHeaders["x-forwarded-for"]?.replace(/::ffff:/g, "");
+	delete forwardedHeaders["host"];
+	delete forwardedHeaders["connection"];
+	delete forwardedHeaders["content-length"];
 
-    let actual;
-	actual = await fetch(media_url, { headers: forwardedHeaders, signal: controller.signal });
-	actual.headers.forEach((value, name) => res.setHeader(name, value));
+	if (req.headers.range) {
+		forwardedHeaders["range"] = req.headers.range;
+	}
 
-	res.on('close', function(){
+	forwardedHeaders["authorization"] = `Bearer ${api_key}`;
+
+	const controller = new AbortController();
+	const actual = await fetch(media_url, {
+		headers: forwardedHeaders,
+		signal: controller.signal,
+	});
+
+	res.statusCode = actual.status;
+
+	const hopByHopHeaders = [
+		"transfer-encoding",
+		"connection",
+		"keep-alive",
+		"proxy-authenticate",
+		"proxy-authorization",
+		"te",
+		"trailer",
+		"upgrade",
+	];
+
+	actual.headers.forEach((value, name) => {
+		if (!hopByHopHeaders.includes(name.toLowerCase())) {
+			res.setHeader(name, value);
+		}
+	});
+
+	res.on("close", () => {
 		if (actual?.body?.destroy) {
 			actual.body.destroy();
-			controller.abort();
-			res.end();
 		}
+		controller.abort();
 	});
 
 	if (typeof actual.body.pipe === "function") {
@@ -155,10 +176,10 @@ async function getMediaRequest(media_url, res, req) {
 		res.on('close', () => {
 			readable.destroy();
 			controller.abort();
-			res.end();
 		});
 	}
 }
+
 
 // Template d'objet Artiste à retourner
 
