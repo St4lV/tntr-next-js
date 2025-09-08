@@ -379,6 +379,10 @@ strong,p,tr{
         width: 40px;
     }
 
+    .main-page-player-play-button{
+        margin-right: 15%;
+    }
+
     /*MAIN / HOME / RADIO PLAYER*/
 
     #main-page-player-holder{
