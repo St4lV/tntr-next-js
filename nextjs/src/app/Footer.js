@@ -93,7 +93,7 @@ export default function Footer() {
             audio.pause();
             audio.removeAttribute("src");
             audio.src = "";
-            const freshUrl = media_played + (media_played.includes("?") ? "&" : "?") + "nocache=" + Date.now();
+            const freshUrl = media_played + (media_played.includes("/ap1/v1/radio/mountpoints/tntr") ? (media_played.includes("?") ? "&" : "?") + "nocache=" + Date.now() : "");
             audio.src = freshUrl;
             audio.load();
             audio.play().catch((err) => {
