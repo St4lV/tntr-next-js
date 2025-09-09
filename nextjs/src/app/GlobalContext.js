@@ -6,104 +6,84 @@ const GlobalContext = createContext();
 
 export default function Context({children}){
 
+    async function fetchData(url) {
+        let result;
+        try {
+            const response = await fetch(url, {
+            method: "GET", 
+            headers: { "Content-Type": "application/json" }
+        });
+            const data = await response.json();
+            result = data
+        } finally {
+            return result.log
+        }
+    };
+    
+    /////////// SCHEDULE ///////////
+
     const [schedule, setSchedule]= useState({})
     const [schedule_entries, setScheduleEntries]= useState(9)
 
     async function getSchedule() {
-        let result;
         const url = "/ap1/v1/radio/schedule";
-        try {
-        const response = await fetch(url, {
-            method: "GET", 
-            headers: { "Content-Type": "application/json" }
-        });
-        result = await response.json();
-        } finally {
-            setSchedule(result)
-        }
+        let result = await fetchData(url)
+        setSchedule(result)
     }
-        
+       
+    /////////// RADIO DATA ///////////
+
     const [radio_data, setRadioData]=useState({})
 
     async function getRadioData(){
-        let result;
         const url = "/ap1/v1/radio/now_playing"
-        try {
-            const response = await fetch(url, {
-            method: "GET", 
-            headers: { "Content-Type": "application/json" }
-        });
-            const data = await response.json();
-            result = data
-            
-        } finally {
-            setRadioData(result.log)
-        }
+        let result = await fetchData(url)
+        setRadioData(result)
     }
-        
+    
+    /////////// LAST SETS ///////////
+
     const [last_sets, setLastSets]=useState([])
 
     async function getLastSets(){
-        let result;
-        const url = "/ap1/v1/radio/sets/latests"
-        try {
-            const response = await fetch(url, {
-            method: "GET", 
-            headers: { "Content-Type": "application/json" }
-        });
-            const data = await response.json();
-            result = data
-            
-        } finally {
-            if(result?.log){
-                setLastSets(result.log)
-                localStorage.setItem("last-sets-list",JSON.stringify(result.log));
-            }
-            
-        }
+        const url = "/ap1/v1/radio/sets/latests";
+        let result = await fetchData(url);
+        setLastSets(result)
+        localStorage.setItem("last-sets-list",JSON.stringify(result));
+
     }
         
+    /////////// LAST DJS ///////////
+
     const [last_djs, setLastDJs]=useState([])
 
     async function getLastDJs(){
-        let result;
         const url = "/ap1/v1/radio/artists/latests"
-        try {
-            const response = await fetch(url, {
-            method: "GET", 
-            headers: { "Content-Type": "application/json" }
-        });
-            const data = await response.json();
-            result = data
-            
-        } finally {
-            if (result?.log){
-                setLastDJs(result.log)
-                localStorage.setItem("last-djs-list",JSON.stringify(result.log))
-            }
-        }
+        let result = await fetchData(url);
+        setLastDJs(result)
+        localStorage.setItem("last-djs-list",JSON.stringify(result))
     }
+
+    /////////// ARTIST LIST ///////////
         
     const [artists_list, setArtistList]=useState([])
 
     async function getArtistList(){
-        let result;
         const url = "/ap1/v1/radio/artists"
-        try {
-            const response = await fetch(url, {
-            method: "GET", 
-            headers: { "Content-Type": "application/json" }
-        });
-            const data = await response.json();
-            result = data
-            
-        } finally {
-            if (result?.log){
-                setArtistList(result.log)
-                localStorage.setItem("artist-list",JSON.stringify(result.log));
-            }
-            
-        }
+        let result = await fetchData(url);
+        setArtistList(result)
+        localStorage.setItem("artist-list",JSON.stringify(result));
+    }
+    
+    /////////// EPISODES LIST ///////////
+        
+    const [episodes_list, setEpisodeList]=useState([])
+
+    async function getArtistList(){
+        const url = "/ap1/v1/radio/artists"
+        let result = await fetchData(url);
+        setEpisodeList(result)
+        localStorage.setItem("episodes-list",JSON.stringify(result));
     }
     
     const [media_played, setMediaPlayed]=useState("/ap1/v1/radio/mountpoints/tntr128.mp3")
@@ -120,7 +100,6 @@ export default function Context({children}){
 
     useEffect(() => {
         //setArtistList(localStorage.getItem("artist-list") || [])
-        getRadioData();
         getLastSets();
         getLastDJs();
         getArtistList();
@@ -147,11 +126,11 @@ export default function Context({children}){
     }, [schedule_entries]);
 
     return (
-        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, setOneSecondTimeSignal, header_menu_opened, setHeaderMenuOpened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer, radio_current_time,setRadioCurrentTime }}>
+        <GlobalContext.Provider value={{ schedule, setScheduleEntries , radio_data, last_djs, last_sets, artists_list, episodes_list, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying, img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, setOneSecondTimeSignal, header_menu_opened, setHeaderMenuOpened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer, radio_current_time,setRadioCurrentTime }}>
             {children}
         </GlobalContext.Provider>
         );
 }
 export function useGlobalContext() {
     return useContext(GlobalContext);
-    }
+}

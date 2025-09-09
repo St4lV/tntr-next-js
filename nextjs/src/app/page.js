@@ -51,9 +51,8 @@ export default function Home() {
 	};
 
 	function renderSchedule() {
-		if (!schedule?.log) return null;
-
-		return schedule.log.map((i, idx) => {
+		if (Object.keys(schedule).length === 0) return null;
+		return schedule.map((i, idx) => {
 			const date = new Date(i.start);
 			return (
 				<tr key={idx}>
