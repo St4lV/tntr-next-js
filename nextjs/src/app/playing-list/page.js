@@ -6,7 +6,7 @@ import Endpage from "@/app/Endpage";
 import Image from 'next/image';
 
 export default function PlayingList(){
-    const { radio_data } = useGlobalContext();
+    const { radio_data, player_opened } = useGlobalContext();
 
     function getTime(timestamp){
         const date = new Date(timestamp)
@@ -19,7 +19,7 @@ export default function PlayingList(){
     let song_nb=0;
 
     return(
-        <main>
+        <main data-footer-opened={player_opened}>
             <div id="main-comp">
                 <hr/>
                 <div id='playing-list-top-comp'>

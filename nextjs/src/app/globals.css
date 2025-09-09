@@ -256,11 +256,12 @@ strong,p,tr{
     }
 
     #song-cover{
-    min-height: 120px;
-    min-width: 120px;
-    max-height: 120px;
-    max-width: 120px;
-    margin-top: 15px ;
+        min-height: 120px;
+        min-width: 120px;
+        max-height: 120px;
+        max-width: 120px;
+        margin-top: 15px ;
+        border-radius: 5%;
     }
 
     #src-bitrate-list{
@@ -297,9 +298,31 @@ strong,p,tr{
 
     #footer-dj-set-player{
         position: fixed;
+        top: 110px;
         width: 100%;
-        height: 100%;
+        bottom: 153px;
         background-color: #010101aa;
+    }
+
+    #set-range-progression{
+        width: 80%;
+    }
+
+    #footer-dj-set-player-container{
+        background-color: #010101aa;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    #footer-dj-set-player-img{
+        border-radius: 5%;
+        max-height: 500px;
+        max-width : 500px;
+        min-height: 200px;
+        min-width : 200px;
     }
 
     /*MAIN*/
@@ -1071,6 +1094,38 @@ strong,p,tr{
         width: 100%;
     }
 
+    /*DJ SET PLAYER*/
+
+    #footer-dj-set-player{
+        position: fixed;
+        top: 90px;
+        width: 100%;
+        bottom: 105px;
+        background-color: #010101aa;
+    }
+
+    #set-range-progression{
+        width: 80%;
+        margin-bottom: 5%;
+    }
+
+    #footer-dj-set-player-container{
+        background-color: #010101aa;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    #footer-dj-set-player-img{
+        border-radius: 5%;
+        max-height: 300px;
+        max-width : 300px;
+        min-height: 90px;
+        min-width : 90px;
+    }
+
     /*/// MAIN ///*/
 
     main{
@@ -1083,16 +1138,17 @@ strong,p,tr{
         justify-self: center;
         justify-content: center;
         flex-direction: column;
-        transition: margin-bottom 0.1s linear;
+        transition: margin-bottom 0.12s linear 0.12s;
     }
 
     main[data-footer-opened=true]{
         margin-bottom: 106px;
+        transition: margin-bottom 0.12s linear;
     }
 
     #main-comp{
         width: 96%;
-        min-height: 85vh;
+        min-height: 90vh;
         margin: 0px 2%;
         display: flex;
         flex-direction: column;
@@ -1194,6 +1250,7 @@ strong,p,tr{
     #main-page-player-song-img{
         height: 90px;
         width: 90px;
+        border-radius: 5%;
     }
 
     #main-page-player-song-data{

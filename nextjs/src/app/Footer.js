@@ -214,12 +214,21 @@ export default function Footer() {
     function toggleDJsetPlayer(){
         if (!is_radio_playing){
             setDjSetPlayerOpened(!dj_set_player_opened)
-            console.log(dj_set_player_opened)
         } else {
             router.push("/playing-list")
         }
     }
 
+    function updateTimeProgression(val){
+        setAudioPlayerCurrentTime(val*10)
+        const audio_player = document.getElementById("audio-player");
+        audio_player.currentTime=val*10
+    }
+    useEffect(() =>{
+        if( is_radio_playing || header_menu_opened ){
+            setDjSetPlayerOpened(false)
+        }
+    },[is_radio_playing, header_menu_opened])
 
     return (
         <footer data-opened={player_opened}>
@@ -265,10 +274,20 @@ export default function Footer() {
                 <source src={media_played} type="audio/mpeg" />
                 Votre navigateur ne supporte pas l'audio HTML5.
             </audio>
-            {dj_set_player_opened ? (
+            {!is_radio_playing ? 
+            (dj_set_player_opened ? (
             <div id="footer-dj-set-player">
-                
-            </div>):""}
+                <center id="footer-dj-set-player-container">
+                <Image src={img_from_playing} width={500} height={500} alt="Image du set joué" id="footer-dj-set-player-img"/>
+                <div>
+                    <h2>{act_set_metadata.artist} - {act_set_metadata.title}</h2>
+                    <p>{FormatTime(audio_player_current_time.toFixed(0))} / {FormatTime(act_set_metadata.duration.toFixed(0))}</p>
+                </div>
+                <input type="range" min={0} max={((act_set_metadata.duration+1)*0.1).toFixed(0)} value={audio_player_current_time*0.1} onChange={((e)=>{updateTimeProgression(e.target.value)})} id="set-range-progression"/>
+                </center>
+            </div>)
+            :"")
+            :""}
         </footer>
     );
 }
