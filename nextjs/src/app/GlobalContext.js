@@ -79,8 +79,8 @@ export default function Context({children}){
         
     const [episodes_list, setEpisodeList]=useState([])
 
-    async function getArtistList(){
-        const url = "/ap1/v1/radio/artists"
+    async function getEpisodeList(){
+        const url = "/ap1/v1/radio/sets"
         let result = await fetchData(url);
         setEpisodeList(result)
         localStorage.setItem("episodes-list",JSON.stringify(result));
@@ -103,6 +103,7 @@ export default function Context({children}){
         getLastSets();
         getLastDJs();
         getArtistList();
+        getEpisodeList();
 
         //Requêtes avec timer régulier
         const radio_data_interval = setInterval(() => {
