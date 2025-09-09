@@ -38,12 +38,14 @@ export default function Home() {
 
 	return (
 		<main data-footer-opened={player_opened}>
-		<div>
-			<h2>DJ sets</h2>
-			<input type="search" placeholder="Artiste, Soundsystem .. " value={search} onChange={(e) => setSearch(e.target.value)}/>
+		<div id="main-comp">
+			<div>
+				<h2>DJ sets</h2>
+				<input type="search" placeholder="Artiste, Soundsystem .. " value={search} onChange={(e) => setSearch(e.target.value)}/>
+			</div>
+			<ul id="available-djs">{renderDJsList()}</ul>
+			<Endpage/>
 		</div>
-		<ul id="available-djs">{renderDJsList()}</ul>
-		<Endpage/>
 		</main>
 	);
 	}
