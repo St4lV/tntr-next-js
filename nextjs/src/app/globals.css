@@ -233,6 +233,7 @@ strong,p,tr{
         display: flex;
         align-items: center;
         margin-left: 20px;
+        cursor: pointer;
     }
 
     #footer-song-data{
@@ -290,6 +291,15 @@ strong,p,tr{
     #footer-volume-range{
         width: 100%;
         margin-right: 10px 
+    }
+
+    /*DJ SET PLAYER*/
+
+    #footer-dj-set-player{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #010101aa;
     }
 
     /*MAIN*/
@@ -568,6 +578,64 @@ strong,p,tr{
         white-space: pre-line;
     }
 
+    /* PLAYING LIST*/
+
+    #playing-list-top-comp{
+        display: flex;
+        background-color: #010101ee;
+        margin-bottom: 10px;
+    }
+    #playing-list-top-comp .playing-list-top-container{
+        width: 100%;
+    }
+
+    .playing-list-top-container h2,.playing-list-history-container h2{
+        margin-left: 5px;
+    }
+
+    .playing-list-top-container{
+        border-left: solid 1px white;
+        border-right: solid 1px white;
+    }
+
+    .playing-list-history-container{
+        border: solid 1px white;
+    }
+
+    .playing-list-song-container{
+        margin: 10px 0px;
+    }
+
+    .playing-list-song-comp{
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .playing-list-song-data{
+        margin-left: 10px;
+    }
+
+    .playing-list-song-cover{
+        border-radius: 5%;
+    }
+
+    #playing-list-history{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #playing-list-history .playing-list-song-container{
+        min-width: 50% ;
+    }
+
+    .playing-list-history-container{
+        background-color: #010101ee;
+        width: 50%;
+        margin: 15px 0;
+    }
+
     /* ARTISTS SETS*/
 
     #copy-notif{
@@ -801,7 +869,7 @@ strong,p,tr{
     }
 
     #header-side-menu[data-opened=true]{
-        height: 117px;
+        height: 174px;
         transition: height 0.12s linear;
     }
 
@@ -917,6 +985,7 @@ strong,p,tr{
         align-items: center;
         width: 100%;
         max-width: 270px;
+        cursor: pointer;
 
     }
 
@@ -946,7 +1015,7 @@ strong,p,tr{
         display: flex;
         overflow: hidden;
         background-color: black;
-        top: 206px;
+        top: 264px;
         height: 0;
     }
 
@@ -1287,6 +1356,58 @@ strong,p,tr{
         max-height: 35px;
         max-width: 80px;
         white-space: pre-line;
+    }
+
+    /* PLAYING LIST*/
+
+    #playing-list-top-comp{
+        background-color: #010101ee;
+        margin-bottom: 10px;
+    }
+    #playing-list-top-comp .playing-list-top-container{
+        width: 100%;
+    }
+
+    .playing-list-top-container h2,.playing-list-history-container h2{
+        margin-left: 5px;
+    }
+
+    .playing-list-history-container{
+        border-bottom: solid 1px white;
+    }
+
+    .playing-list-song-container{
+        margin: 10px 0px;
+    }
+
+    .playing-list-song-comp{
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .playing-list-song-data{
+        margin-left: 10px;
+    }
+
+    .playing-list-song-cover{
+        border-radius: 5%;
+    }
+
+    #playing-list-history{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #playing-list-history .playing-list-song-container{
+        min-width: 50% ;
+    }
+
+    .playing-list-history-container{
+        background-color: #010101ee;
+        width: 100%;
+        margin: 15px 0;
     }
 
     /* ARTISTS SETS*/

@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from 'next/navigation'
 
 import Image from 'next/image';
 
 import { useGlobalContext } from "@/app/GlobalContext";
 
 export default function Footer() {
+    
+    const router = useRouter();
+
     const { radio_data, media_played, setMediaPlayed, is_radio_playing, setRadioPlaying,img_from_playing, setImgFromPlaying, is_media_paused, setMediaPaused, act_set_metadata, setActSetMetadata, one_second_time_signal, header_menu_opened, radio_mountpoint_select, setRadioMountPoint, player_opened, openPlayer, radio_current_time,setRadioCurrentTime} = useGlobalContext();
     const [bitrateOptions, setBitrateOptions] = useState([]);
     const [act_volume,setVolume] = useState(50);
@@ -205,6 +209,18 @@ export default function Footer() {
         
     }, [radio_data,media_played,isPlaying,is_media_paused,img_from_playing])
 
+    const [dj_set_player_opened,setDjSetPlayerOpened]=useState(false)
+
+    function toggleDJsetPlayer(){
+        if (!is_radio_playing){
+            setDjSetPlayerOpened(!dj_set_player_opened)
+            console.log(dj_set_player_opened)
+        } else {
+            router.push("/playing-list")
+        }
+    }
+
+
     return (
         <footer data-opened={player_opened}>
             <button id="footer-open-player" data-opened={player_opened} onClick={togglePlayerOpened}>{player_opened ? down_btn : up_btn}</button>
@@ -213,7 +229,7 @@ export default function Footer() {
             </div>
             </div>
             <div id="footer-data-container">
-                <div id="footer-song-data-container">
+                <div id="footer-song-data-container" onClick={toggleDJsetPlayer}>
                     <Image height={120} width={120} id="song-cover" src={ img_from_playing ||"/DefaultIMG.png"} alt="Cover" />
                     <div id="footer-song-data">
                         <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
@@ -249,6 +265,10 @@ export default function Footer() {
                 <source src={media_played} type="audio/mpeg" />
                 Votre navigateur ne supporte pas l'audio HTML5.
             </audio>
+            {dj_set_player_opened ? (
+            <div id="footer-dj-set-player">
+                
+            </div>):""}
         </footer>
     );
 }
