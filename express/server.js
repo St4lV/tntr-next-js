@@ -64,3 +64,7 @@ app.get(`${express_values.public_route}/sitemap.xml`, async (req, res) => {
 	res.setHeader("Content-Type", "application/xml");
     res.status(200).send(response)
 });
+
+app.use((req, res) => {
+  res.status(418).end();
+});
