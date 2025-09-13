@@ -1,6 +1,6 @@
 {
   "name": "tntr-nextjs-frontend",
-  "version": "3.0.71",
+  "version": "3.0.72",
   "private": false,
   "author": "St4lV",
   "license": "MIT",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.1",
-    "next": "15.3.3",
+    "next": "^15.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
