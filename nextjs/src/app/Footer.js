@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/navigation'
 
 import Image from 'next/image';
+import Link from "next/link";
 
 import { useGlobalContext } from "@/app/GlobalContext";
 
@@ -148,6 +149,8 @@ export default function Footer() {
     }
     const up_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg>;
     const down_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/></svg>;
+
+    const cross_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>;
 	
     const isPlaying = !is_media_paused;
     const togglePlay = () => {
@@ -280,10 +283,13 @@ export default function Footer() {
                 <center id="footer-dj-set-player-container">
                 <Image src={img_from_playing} width={500} height={500} alt="Image du set joué" id="footer-dj-set-player-img"/>
                 <div>
+                    <Link href={`/sets/${act_set_metadata.artist_link}/${act_set_metadata.set_link}`}onClick={function(){toggleDJsetPlayer()} }>
                     <h2>{act_set_metadata.artist} - {act_set_metadata.title}</h2>
+                    </Link>
                     <p>{FormatTime(audio_player_current_time.toFixed(0))} / {FormatTime(act_set_metadata.duration.toFixed(0))}</p>
                 </div>
                 <input type="range" min={0} max={((act_set_metadata.duration+1)*0.1).toFixed(0)} value={audio_player_current_time*0.1} onChange={((e)=>{updateTimeProgression(e.target.value)})} id="set-range-progression"/>
+                <button id="footer-dj-set-player-cross-button" onClick={toggleDJsetPlayer}>{cross_btn}</button>
                 </center>
             </div>)
             :"")

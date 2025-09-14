@@ -132,7 +132,7 @@ export default function ArtistPage({ params }) {
 					setRadioPlaying(false);
 					setMediaPlayed(set.media);
 					setImgFromPlaying(set.cover);
-        			setActSetMetadata({artist:set.artist,title:set.title,duration:set.duration});
+        			setActSetMetadata({artist:set.artist,title:set.title,duration:set.duration,artist_link:set.artist_unique_name,set_link:set.title_unique_name});
 				}
 			};
 

@@ -121,7 +121,7 @@ export default function ArtistSetsPage({ params }) {
 			setRadioPlaying(false);
 			setMediaPlayed(act_set_obj.media);
 			setImgFromPlaying(act_set_obj.cover);
-        	setActSetMetadata({artist:act_set_obj.artist,title:act_set_obj.title,duration:act_set_obj.duration});
+        	setActSetMetadata({artist:act_set_obj.artist,title:act_set_obj.title,duration:act_set_obj.duration,artist_link:act_set_obj.artist_unique_name,set_link:act_set_obj.title_unique_name });
 		}
 	};
 

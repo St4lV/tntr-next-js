@@ -325,6 +325,18 @@ strong,p,tr{
         min-width : 200px;
     }
 
+    #footer-dj-set-player-cross-button{
+        position: fixed;
+        top: 110px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    #footer-dj-set-player-cross-button svg{
+        height: 30px;
+        width: auto;
+    }
+
     /*MAIN*/
 
     main{
@@ -1126,6 +1138,18 @@ strong,p,tr{
         min-width : 90px;
     }
 
+    #footer-dj-set-player-cross-button{
+        position: fixed;
+        top: 95px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+    #footer-dj-set-player-cross-button svg{
+        height: 26px;
+        width: auto;
+    }
+    
     /*/// MAIN ///*/
 
     main{
