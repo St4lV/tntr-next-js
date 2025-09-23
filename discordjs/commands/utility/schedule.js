@@ -14,11 +14,9 @@ module.exports = {
 		} else {
 			var schedule = schedule_request.log
 			response='## Tirnatek Radio Schedule :\n> ';
-			for (let i of schedule){
-				const start_at = new Date(i.start_timestamp*1000)
-				const hours = start_at.getHours().toString().padStart(2, '0');
-				const mins = start_at.getMinutes().toString().padStart(2, '0');
-				response+=`> \`${hours}h${mins} : ${i.title}\`\n`
+			for (const i of schedule) {
+				const [hours, mins] = i.start.toString().split("T")[1].split(":");
+				response += `> \`${hours}h${mins} : ${i.title}\`\n`;
 			}
 		}
 
