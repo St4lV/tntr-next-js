@@ -30,9 +30,14 @@ const mongo_db_values = {
 const maria_db_values = {
     server:process.env.MARIADB_SERVER,
     port:process.env.MARIADB_SERVER_PORT,
-    database:process.env.MARIADB_USER,
-    user:process.env.MARIADB_USER_PASSWORD,
-    password:process.env.MARIADB_DATABASE,
+    database:process.env.MARIADB_DATABASE,
+    user:process.env.MARIADB_USER,
+    password:process.env.MARIADB_USER_PASSWORD,
 }
 
-module.exports = {express_values, azuracast_values, frontend_values, mongo_db_values, maria_db_values}
+const discordjs_values = {
+    server:process.env.DISCORDJS_SERVER,
+    port:process.env.DISCORDJS_PORT,
+}
+
+module.exports = {express_values, azuracast_values, frontend_values, mongo_db_values, maria_db_values, discordjs_values}
