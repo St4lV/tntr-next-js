@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 require('dotenv').config();
+const express = require('express');
 
 const { Client,  Collection, Events, GatewayIntentBits } = require('discord.js');
 const token = process.env.DISCORD_APP_TOKEN;
@@ -9,6 +10,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
+
+// DISCORD JS INIT
 
 client.login(token);
 client.commands = new Collection();
@@ -57,3 +60,18 @@ client.on(Events.InteractionCreate, async interaction => {
 		return;
 	}
 });
+
+// API
+
+const app = express(); 
+app.listen(3002);
+app.use(express.json());
+
+const internal_routes = require("./api/internal/routes/main")(client);
+
+app.use(`/internal/`, internal_routes)
+
+app.use((req, res) => {
+    res.status(418).end();
+});
+module.exports = {client}
