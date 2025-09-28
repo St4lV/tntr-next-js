@@ -140,7 +140,7 @@ strong,p,tr{
 
     #connection-comp-pages{
         position: fixed;
-        height: 450px;
+        height: 500px;
         width: 320px;
         top: 40%;
         left: 50%;
@@ -160,6 +160,31 @@ strong,p,tr{
         background-color: black;
         width: 320px;
         height: 450px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #connection-comp-page-2{
+        border: 2px solid white;
+        border-radius: 5%;
+        background-color: black;
+        min-width: 370px;
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #connected-menu{
+        border: 2px solid white;
+        border-radius: 5%;
+        background-color: black;
+        min-width: 370px;
+        height: 450px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     /*FOOTER*/
 
@@ -675,7 +700,7 @@ strong,p,tr{
 
     #copy-notif{
         position: fixed;
-        top: 150px;
+        top: 100px;
         background-color: #010101cc;
         width: 100%;
     }
@@ -693,6 +718,7 @@ strong,p,tr{
         padding-left: 10px;
         height: 50px;
         width: 50px;
+        cursor: pointer;
     }
 
     #artist-page-artist-header-share-btn *{
@@ -818,6 +844,21 @@ strong,p,tr{
     .episode-page-text{
         margin-left:20px ;
         width: 100%;
+    }
+
+    #episode-page-header{
+        display: flex;
+        align-items: center;
+    }
+
+    #episode-page-episode-header-share-btn{
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    #episode-page-episode-header-share-btn svg{
+        height: 25px;
+        width: 25px;
     }
 
     #episode-page-title{
@@ -1502,22 +1543,23 @@ strong,p,tr{
 
     #artist-page-artist-header{
         display: flex;
+        align-items: center;
     }
 
     #artist-page-artist-name{
         font-size: 2em;
-        margin-bottom: 10px;
     }
 
     #artist-page-artist-header-share-btn{
-        padding-left: 10px;
+        margin-left: 10px;
         height: 50px;
         width: 50px;
+        cursor: pointer;
     }
 
-    #artist-page-artist-header-share-btn *{
-        width:  70%;
-        height: 70%;
+    #artist-page-artist-header-share-btn svg{
+        width:  20px;
+        height: 20px;
     }
 
     #artist-page-artist-cover{
@@ -1637,4 +1679,20 @@ strong,p,tr{
         padding: 10px 0px;
         margin: -10px 0;
     }
+
+    #episode-page-header{
+        display: flex;
+        align-items: center;
+    }
+
+    #episode-page-episode-header-share-btn{
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    #episode-page-episode-header-share-btn svg{
+        height: 20px;
+        width: 20px;
+    }
+
 }

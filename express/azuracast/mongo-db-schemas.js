@@ -26,6 +26,7 @@ const episode_schema = mongoose.model("Episode", new mongoose.Schema({
   episode_name: { type: String, required: true}, // Nom d'affichage
   episode_unique_name: { type: String, required: true}, //Nom unique en minuscule
   episode_id_azuracast:{ type: String, required: true, unique: true },
+  link: {type: String}, //lien de la page
   cover: { type: String}, //lien de l'image de la photo de profil de l'artiste
   banner: { type: String}, //lien de l'image de la bannière de l'artiste
   desc: { type: String}, //description

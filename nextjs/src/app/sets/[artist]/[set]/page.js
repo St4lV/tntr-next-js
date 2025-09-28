@@ -21,6 +21,7 @@ export default function ArtistSetsPage({ params }) {
 	const [act_set_obj , setActSetObj] = useState({})
 	const [artist_sets, setArtistSets]= useState([])
 	const [act_set_playing, setActSetPlaying]=useState(false)
+	const [notification_showed, showNotification]= useState(false)
 
 	async function isArtistExist(){
 		if (artists_list.length ===0){return}
@@ -110,7 +111,7 @@ export default function ArtistSetsPage({ params }) {
 
 	const play_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/></svg>
 	const pause_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/></svg>
-  
+	const share_btn = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"/></svg>
 	
 	const isPlaying = media_played === act_set_obj.media && !is_media_paused;
 	const togglePlay = () => {
@@ -125,12 +126,22 @@ export default function ArtistSetsPage({ params }) {
 		}
 	};
 
+	function copyLinkToClipboard() {
+		showNotification(true);
+		setTimeout(() => showNotification(false), 2000);
+		navigator.clipboard.writeText(act_set_obj.link);
+	}
+
 	return (
 		<main data-footer-opened={player_opened}>
 			<div id="main-comp">
 				{act_set_obj && page_loaded ? (
 				<>
-				<h2 id="episodes-page-title"><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
+				<div id="show-notification">{notification_showed && (<p id="copy-notif">Lien copié dans le presse-papier !</p>)}</div>
+				<div id="episode-page-header">
+					<h2 id="episodes-page-title"><Link href={"/sets/"+artist}>{act_set_obj.artist}</Link>{" - "+act_set_obj.title}</h2>
+					<button onClick={copyLinkToClipboard} id="episode-page-episode-header-share-btn">{share_btn}</button>
+				</div>
 				<article key={act_set_obj.title_unique_name} className="episodes-comp">
 					<hr/>
 					<div className="episodes-comp-internal">

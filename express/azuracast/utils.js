@@ -74,6 +74,7 @@ async function updateEpisodesFromAzuracast() {
 				episode_name: j.title, // Nom d'affichage
 				episode_unique_name: URLize(j.title),
 				episode_id_azuracast:j.id,
+				link: `${frontend_domain}/sets/${URLize(i.title)}/${URLize(j.title)}`,
 				cover: `${front_api_link}/radio/artists/${URLize(i.title)}/${URLize(j.title)}/cover`,
 				banner: "", //lien de l'image de la bannière de l'artiste
 				desc: j.description, //description
@@ -200,12 +201,14 @@ function artistTemplate(i){
 };
 
 // Template d'objet Episode à retourner
+
 function episodeTemplate(i){
   return {
         artist:i.artist_name,
         artist_unique_name:i.artiste_unique_name,
         title:i.episode_name,
         title_unique_name:i.episode_unique_name,
+		link:i.link,
         desc:i.desc,
         duration:i.length,
         cover:i.cover,
