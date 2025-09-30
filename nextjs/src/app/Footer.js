@@ -251,7 +251,7 @@ export default function Footer() {
                     </div>
                     
                 </div>
-                <button id="footer-play-button" onClick={togglePlay} aria-label="Jouer / Mettre en pause">{is_media_paused ? play_btn : pause_btn}</button>
+                <button className="footer-play-button" onClick={togglePlay} aria-label="Jouer / Mettre en pause">{is_media_paused ? play_btn : pause_btn}</button>
                 <div id="footer-btn-select" data-opened={header_menu_opened}>
                         {is_radio_playing ? (
                             <select aria-label="Sélection de la source audio" name="bitrate" id="src-bitrate-list" value={media_played || ""} onChange={handleBitrateChange}>

@@ -11,7 +11,6 @@ export default async function RootLayout({ children }) {
     return (
         <html lang="fr">
         <head>
-            <meta charSet="UTF-8"/>
             <title>Tirnatek Radio</title>
             <meta
                 name="description"

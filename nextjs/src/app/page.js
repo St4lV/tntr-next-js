@@ -141,13 +141,13 @@ export default function Home() {
 						<div id="main-page-player-metadata">
 							<Image id="main-page-player-song-img" src={radio_data?.now_playing?.song?.art ||"/DefaultIMG.png"} alt="Couverture" width={100} height={100}/>
 							<div id="main-page-player-song-data">
-								<p id="song-title">{radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
-								<p id="song-title">{radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
-								<p id="song-title">{
+								<p className="song-title">{radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
+								<p className="song-title">{radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
+								<p className="song-title">{
 									radio_data.now_playing ? `${FormatTime(radio_current_time)} / ${FormatTime(radio_data.now_playing.duration)}`: "Chargement .."}</p>
 							</div>
 						</div>
-						<button id="footer-play-button" className="main-page-player-play-button" onClick={togglePlay} aria-label="Jouer / Mettre en pause">{media_played === radio_mountpoint_select ? (is_media_paused ? play_btn : pause_btn ):play_btn}</button>
+						<button className="footer-play-button main-page-player-play-button" onClick={togglePlay} aria-label="Jouer / Mettre en pause">{media_played === radio_mountpoint_select ? (is_media_paused ? play_btn : pause_btn ):play_btn}</button>
 					</div>
 					<h2>Planning de diffusion</h2>
 					<hr/>

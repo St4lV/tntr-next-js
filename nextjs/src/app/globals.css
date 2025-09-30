@@ -249,7 +249,7 @@ strong,p,tr{
         align-items: center;
     }
 
-    #footer-play-button *{
+    .footer-play-button *{
         height: 70px;
         width: 70px;
     }
@@ -1044,13 +1044,13 @@ strong,p,tr{
         align-items: center;
     }
 
-    #footer-play-button{
+    .footer-play-button{
         padding: 10px;
         margin-left: 10px;
         min-width: 75px;
     }
 
-    #footer-play-button *{
+    .footer-play-button *{
         height: 50px;
         width: auto;
     }
