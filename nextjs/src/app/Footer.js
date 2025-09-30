@@ -235,7 +235,7 @@ export default function Footer() {
 
     return (
         <footer data-opened={player_opened}>
-            <button id="footer-open-player" data-opened={player_opened} onClick={togglePlayerOpened}>{player_opened ? down_btn : up_btn}</button>
+            <button id="footer-open-player" data-opened={player_opened} onClick={togglePlayerOpened} alt="Ouvir le lecteur">{player_opened ? down_btn : up_btn}</button>
             <div id="footer-progress-bar" data-player-opened={player_opened}>
                 <div id="footer-progress-bar-internal" style={{ width: `${progress_bar_value * 0.1}%`}}>
             </div>
