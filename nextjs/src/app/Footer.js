@@ -244,9 +244,9 @@ export default function Footer() {
                 <div id="footer-song-data-container" onClick={toggleDJsetPlayer}>
                     <Image height={120} width={120} id="song-cover" src={ img_from_playing ||"/DefaultIMG.png"} alt="Cover" />
                     <div id="footer-song-data">
-                        <p id="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
-                        <p id="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
-                        <p id="song-title">{
+                        <p className="song-title">{!is_radio_playing ? act_set_metadata.title : radio_data.now_playing?.song?.title ?? "Chargement .."}</p>
+                        <p className="song-title">{!is_radio_playing ? act_set_metadata.artist : radio_data.now_playing?.song?.artist ?? "Chargement .."}</p>
+                        <p className="song-title">{
                             !is_radio_playing ? `${FormatTime(audio_player_current_time)} / ${FormatTime(act_set_metadata.duration)}` : radio_data.now_playing ? `${FormatTime(radio_current_time)} / ${FormatTime(radio_data.now_playing.duration)}`: "Chargement .."}</p>
                     </div>
                     
