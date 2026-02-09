@@ -16,6 +16,14 @@ export default async function RootLayout({ children }) {
                 name="description"
                 content="Tekno Webradio basée en France, écoutez notre sélection de musiques tekno en direct, ainsi que les derniers DJ sets des artistes collaborant avec nous !"
             />
+			<link rel="manifest" href="/manifest.json" />
+			<meta name="theme-color" content="#1a1a2e" />
+			<meta name="apple-mobile-web-app-capable" content="yes" />
+			<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+			<meta name="apple-mobile-web-app-title" content="Tirnatek Radio" />
+			<link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+			<link rel="preconnect" href="https://fonts.googleapis.com" nonce={nonce} />
             <link rel="preconnect" href="https://fonts.googleapis.com" nonce={nonce}/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" nonce={nonce}/>
             <link 

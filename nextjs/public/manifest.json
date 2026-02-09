@@ -1,0 +1,28 @@
+{
+	"name": "Tirnatek Radio",
+	"short_name": "Tirnatek",
+	"description": "Tekno Webradio basée en France, écoutez notre sélection de musiques tekno en direct, ainsi que les derniers DJ sets des artistes collaborant avec nous !",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait",
+	"background_color": "#000000",
+	"theme_color": "#1a1a2e",
+	"icons": [
+		{
+			"src": "/DefaultIMG.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/DefaultIMG.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "/DefaultIMG.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	]
+}

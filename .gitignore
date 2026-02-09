@@ -54,3 +54,9 @@
 
 /discordjs/.env
 /discordjs/node_modules
+
+/.env.server
+
+nextjs/public/sw.js
+nextjs/public/workbox-*.js
+nextjs/public/swe-worker-*.js
